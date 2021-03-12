@@ -1,0 +1,182 @@
+\documentclass[11pt, a4paper, onecolumn]{article}
+\usepackage{mathptmx}
+\usepackage[11pt]{moresize}
+%\usepackage[czech]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{pdfx}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\graphicspath{ {./img/} }
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage{tikz}
+%\usepackage{svg}
+\usepackage{listings}
+\usepackage{subfiles}
+\usepackage[affil-it]{authblk}
+\usepackage{etoolbox}
+\usepackage{lmodern}
+\usepackage[makeroom]{cancel}
+\usepackage{microtype}
+\usepackage{fbox}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{nameref}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\advance\textwidth by 2cm
+\advance\hoffset by 0cm
+\advance\voffset by 0cm
+\advance\textheight by 2cm
+\usepackage[hmargin=1in,top=1in,bottom=1.2in]{geometry}
+\crefname{equation}{}{}
+\crefname{theorem}{}{}
+\usepackage{amsthm}
+%\usepackage{mathtools}
+
+\makeatletter
+\def\th@plain{%
+  \thm@notefont{\upshape}% same as heading font
+  \itshape % body font
+}
+\def\th@definition{%
+  \thm@notefont{\bfseries}% same as heading font
+  \normalfont % body font
+}
+\makeatother
+
+\makeatletter
+\newcommand{\dotminus}{\mathbin{\text{\@dotminus}}}
+
+\newcommand{\@dotminus}{%
+  \ooalign{\hidewidth\raise1ex\hbox{.}\hidewidth\cr$\m@th-$\cr}%
+}
+\makeatother
+
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+\newcommand*\Diff[1]{\mathop{}\!\mathrm{d^#1}}
+\newcommand{\twopartdef}[4]
+{
+	\left\{
+		\begin{array}{ll}
+			#1 & \mbox{pro } #2 \\
+			#3 & \mbox{pro } #4
+		\end{array}
+	\right.
+}
+\newcommand{\threepartdef}[6]
+{
+	\left\{
+		\begin{array}{lll}
+			#1 & \mbox{pro } #2 \\
+			#3 & \mbox{pro } #4 \\
+			#5 & \mbox{pro } #6
+		\end{array}
+	\right.
+}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=1pt] (char) {#1};}}
+
+\usepackage{titling}
+\newcommand{\subtitle}[1]{%
+  \posttitle{%
+    \par\end{center}
+    \begin{center}\Large#1\end{center}
+    \vskip0.5em}%
+}
+
+\newtheoremstyle{novy_radek}% name
+{10pt}% Space above
+{10pt}% Space below
+{}% Body font
+{}% Indent amount
+{\bfseries}% Theorem head font
+{.\mbox{}}% Punctuation after theorem head
+{\newline}% Space after theorem head
+{}% Theorem head spec (can be left empty, meaning ‘normal’)
+\DeclareMathOperator{\N}{\mathbb{N}}
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\Q}{\mathbb{Q}}
+%\DeclareMathOperator{\Sp}{\mathbb{S}}
+%\DeclareMathOperator{\Real}{\mathbb{R}}
+%\DeclareMathOperator{\Comp}{\mathbb{C}}
+%\DeclareMathOperator{\Holo}{\mathcal{H}}
+%\DeclareMathOperator{\Ukruh}{\mathcal{U}}
+%\DeclareMathOperator{\F}{\mathcal{F}}
+%\DeclareMathOperator*{\Arg}{Arg}
+%\DeclareMathOperator*{\Log}{Log}
+%\DeclareMathOperator{\Img}{Im}
+%\DeclareMathOperator{\Rel}{Re}
+%\DeclareMathOperator{\ind}{ind}
+%\DeclareMathOperator{\res}{res}
+%\DeclareMathOperator{\Ext}{Ext}
+%\DeclareMathOperator{\Int}{Int}
+
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
+\SetMathAlphabet{\mathcal}{bold}{OMS}{cmsy}{b}{n}
+\newcommand{\bigO}{\mathcal{O}}
+
+\theoremstyle{plain}% default
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{consequence}[theorem]{Consequence}
+\newtheorem{amendment}[theorem]{Dodatek}
+
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{notation}[theorem]{Značení}
+\newtheorem*{notation*}{Značení}
+\newtheorem{agreement}[theorem]{Agreement}
+\newtheorem{reminder}[theorem]{Připomenutí}
+\newtheorem{excercise}[theorem]{Cvičení}
+
+%\theoremstyle{remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{note}[theorem]{Note}
+\newtheorem*{note*}{Note} %Nečíslovaná poznámka, obdobně lze definovat i ostatní, když bude potřeba
+\newtheorem{observation}[theorem]{Observation}
+
+\theoremstyle{novy_radek}
+\newtheorem{properties}[theorem]{Properties\vspace{2mm}}
+\newtheorem{propertiesBasic}[theorem]{Basic Properties\vspace{2mm}}
+
+\title{Complexity}
+\author{Ondřej Čepek}
+\title{\textbf{\Huge Complexity}}
+\subtitle{doc. RNDr. Ondřej Čepek, Ph.D.}
+\date{\today}
+\author{\vspace{-10mm}}
+%\date{} % Toggle commenting to test
+
+\begin{document}
+
+\maketitle
+\setlength{\parindent}{0in}
+\thispagestyle{empty}
+\newpage\phantom{blah}
+\thispagestyle{empty}
+\newpage
+\pagenumbering{arabic}
+\setcounter{tocdepth}{2}
+\tableofcontents
+\newpage
+
+\subfile{prednasky/01_prednaska}
+%\subfile{prednasky/02_prednaska}
+%\subfile{prednasky/03_prednaska}
+%\subfile{prednasky/04_prednaska}
+%\subfile{prednasky/05_prednaska}
+%\subfile{prednasky/06_prednaska}
+%\subfile{prednasky/07_prednaska}
+%\subfile{prednasky/08_prednaska}
+%\subfile{prednasky/09_prednaska}
+%\subfile{prednasky/10_prednaska}
+%\subfile{prednasky/11_prednaska}
+%\subfile{prednasky/12_prednaska}
+%\subfile{prednasky/13_prednaska}
+
+\end{document}

@@ -1,0 +1,219 @@
+\section{\texorpdfstring{Repetition, NS hierarchy}{Repetition, NS hierarchy}}
+\vspace{5mm}
+\large
+
+\begin{theorem}[NT and DS relation]
+	\[ \forall f:\N \to \N: NT(f(n)) \subseteq DS(f(n)) \]
+\end{theorem}
+
+\begin{proof}
+Construct TM with following algorithm:
+\begin{enumerate}
+	\item k = 1
+	\item do
+	\item forall y vetev delky k
+	\item Simuluj M(x) dle y
+	\item If(Acc) prijmi
+	\item k++;
+	\item until vsechny simulace M(x) dle y ktera odmlitly
+		// pokud vsechny vetve odmitli, neexistuje pr. vypocet
+	\item reject
+\end{enumerate}
+
+M pracuje v case $g(n) = O(f(n))$, vypocet v 4. skonci do g(n) kroku.
+
+Prostor: \\
+1) na ulozeni k potrebujeme g(n) prostoru, $ k \leq g(n) $. \\
+2) Na simulace M(x) dle y potrebujeme O(g(n)) prostoru.
+
+Korektnost: \\
+Chceme aby det. TS prijimal stejny jazyk nako puvodni NTS. Pokud existuje pr. vypocet NTS, TS prijme dle nejakeho y. Opacne dojde k $ k = g(n)$ a TS odmitne.
+
+Zacykleni nemuze nastat, dle definice cas. slozitosti.
+
+Technical details:\\
+Constructed TM should have 2 tapes:\\
+a) working tape\\
+b) tape to store $y$ (vector that encode branch of NTM)
+\end{proof}
+
+\begin{note}
+	If we are constrained to use single tape, any $k$ tape machine can be compressed to 1 tape machine. We need 2 steps:
+
+\begin{enumerate}
+	\item compress $\Sigma \to \Sigma^k$
+	\item How to deal with many heads of the original TM? $\Rightarrow$ simulate 1 step of the original machine by many steps in new TM.
+		In total, time complexity is $\bigO(n^2)$ and space complexity is $\bigO(n)$.
+\end{enumerate}
+\end{note}
+
+\begin{theorem}[NS and DT relation]
+	\[\forall f:\N \to \N, \forall L \in NS(f(n)) \Rightarrow \exists c_L: L \in DT\left(c_L^{f(n)}\right) \]
+\end{theorem}
+\begin{proof}
+	All accepting conf. leaves are bounded by the \# of conf. However, \# of all paths $2^{c_L^{f(n)}}$.
+	How to avoid double exponent? $\Rightarrow$ Perform BFH in conf. graph.
+	\# of edges could be quadratic , however
+	\[ \left(c_L^{f(n)}\right)^2 = \left(c_L^2\right)^{f(n)} \]
+	$c_L^2$ is another constant.
+\end{proof}
+
+\paragraph{Universal TM}
+Input: $(x,y)$, where $x$ is Godel number of TM to be simulated. $y$ is input of TM.\\
+Alphabet: $\Sigma = \{ 0, 1 \} $.\\
+Working tapes: 3\\
+\begin{enumerate}
+	\item Tape with transition table of $M_x$.
+	\item Tape with current state $q$
+	\item Working tape
+\end{enumerate}
+If $S(n)$ is space used by $M_x \Rightarrow$ we need $\max(\lceil \log(t) \rceil, S(n), |x|)$.
+
+\begin{observation}
+	If initial TM has $k$ tapes and time complexity is $T(n)$ we can compress to 2 tapes with a cost of time complexity being $\bigO(T(n) \log(n))$. \\
+	// TODO write proof (moving blocks on tape)
+
+	Therefore simulating TM with multiple tapes could be reduces to 2 tapes, then simulate on Universal TM.
+	Time complexity of Universal TM is dominated by finding the transition $\Rightarrow \bigO(|x| \cdot T(n))$.
+\end{observation}
+
+\begin{definition}
+	Function $f$ is \emph{Space constructible} $\iff \exists$ TM with unary alphabet which marks exactly $|f(n)|$ cells on the working tape. E.g. $\log, e^x,$ polynomials.
+\end{definition}
+
+\begin{theorem}[Space hierarchy]
+	Let $S_1, S_2$ are space constructible functions and
+	\[ S_1 \in o(S_2) \Rightarrow DS(S_1(n)) \subsetneq DS(S_2(n)) \]
+\end{theorem}
+\begin{proof}
+	Construction by diagonalization $\Rightarrow$ find a language that is different from all in $\bigO(S_1)$.
+\end{proof}
+
+\begin{definition}
+	Function $f$ is \emph{Time constructible} $\iff \exists$ TM that does exactly $|f(n)|$ steps. You can think of it as alarm clock.
+\end{definition}
+
+\begin{note}
+	Every time constructible function is space constructible.
+\end{note}
+
+\begin{theorem}[Space hierarchy]
+	Let $S_1, S_2$ are time constructible functions and
+	\[ T_1 \cdot \log(T_1(n)) \in o(T_2) \Rightarrow DT(T_1(n)) \subsetneq DT(T_2(n)) \]
+
+	Note that $\log(T_1(n))$ is required because of $k$ to 2 tapes compression.
+\end{theorem}
+\begin{proof}
+	Construction by diagonalization $\Rightarrow$ find a language that is different from all in $\bigO(T_1)$.
+\end{proof}
+
+\begin{theorem}[Savic]
+	Under some mild assumptions (space constructibility, functions bigger than $\log(n)$) following statement is true:
+	\[ NS(f(n)) \subseteq DS(f^2(n)) \]
+
+\end{theorem}
+\begin{proof}
+	Find a path in configuration path. We cannot use neither BFS not DFS as the complexity is linear in edges which is exponential comparing to input.
+	Therefore we use recursive algorithm which for all states $K$ reachable by a path of length
+	\[ \frac{c_L^{f(n)}}{2^i}\]
+	tries to find a path from $C_{init} \to K \to C_{accept}$.
+
+	As we divide path by 2 at every recursive call, recursion tree height is equal to $\log_2(n)$.
+	Therefore time complexity is
+	\[ \log_2(c_L^{f(n)}) = f(n) \cdot \log_2(c_L) \]
+
+	On each level of recursion we have to store $C_{init}, K, C_{accept}$ which requires $\bigO(f(n))$ space.
+	Having $\bigO(f(n))$ levels, total space complexity is $\bigO(f^2(n))$.
+\end{proof}
+
+\begin{note}
+	Time version of Savic would imply $P = NP$.
+\end{note}
+
+\subsection{NS hierarchy}
+
+% todo Cepek has kinda different proof
+\begin{lemma}[Translation lemma]\label{transl_space}
+	Let $S_1(n), S_2(n), f(n)$ be space constructible functions, also
+	\[ S_2(n) \geq n, f(n) \geq n \]
+	Then
+	\[ NS(S_1(n)) \subseteq NS(S_2(n)) \Rightarrow NS(S_1(f(n))) \subseteq NS(S_2(f(n))) \]
+
+	Lemma allows to replace $n \to f(n)$.
+\end{lemma}
+\begin{proof}
+	Let $L_1 \in NS(S_1(f(n)))$ arbitrary, $L_1$ is recognized by NTS $M_1$ in space $S_1(f(n))$.
+	We want to prove that $L_1 \in NS(S_2(f(n)))$ by constructing $L_2 \in NS(S_1(n))$ using padding.
+
+	Define $L_2 := \{ x\triangle^i | M_1 $ accepts $x$ in space $S_1(|x| + i \} $.
+	Where $\triangle$ is a new symbol, that $\notin $ initial $\Sigma$.
+
+	Algorithm of $M_2, L(M_2) = L_2$ on input $x\triangle^i$ is the following:
+\begin{enumerate}
+	\item Mark $S_1(|x| + i)$ cells on tape.
+	\item Simulate $M_1$.
+	\item if($M_1(x)$ accept $\land$ did not use more space than marked in 1) then accept
+\end{enumerate}
+	From the construction, $M_2$ recognizes $L_2$ using $S_1(n)$ space.
+	Consequently, $L_2 \in NS(S_1(n))$.
+	Combining with assumption of the lemma
+	\[ L_2 \in NS(S_2(n)) \]
+	And there exists a TM $M_3$ that recognizes $L_2$ using $S_2(n)$ space.
+
+	The last step is to construct $M_4$ that recognizes $L_1$ using $S_2(f(n))$ space.
+	$M_4$ has 2 working tapes and has following algorithm ($M_4$ on input $x$):
+\begin{enumerate}
+	\item Mark $f(n)$ cells on 1st tape.
+	\item Mark $S_2(f(n))$ cells on 2nd tape. Using 1st tape as "input".
+	\item foreach $x\triangle^i, i = 0, 1, ... $ \\
+		simulate $M_3$ on input $x\triangle^i$.
+		If head of $M_3$ is inside $x$ $M_4$s head is in the same place.
+		Otherwise, head of $M_3$ is inside padding, so $M_4$ uses counters to track $M_3$s position.
+		Counter has length at most $1 + \log i$.
+	\item if($M_3(x)$ accept) then $M_4$ accept.
+	\item else if($1 + \log(i) \leq S_2(f(n))$) then $++i$; \\
+		Counter did not overflow and is less than $S_2(f(n))$.
+	\item else if($1 + \log(i) > S_2(f(n))$) then reject;
+\end{enumerate}
+
+If $M_4$ accepted input $x$, $M_3$ accepted $x\triangle^i$ for some $i \Rightarrow x\triangle^i \in L_2 \Rightarrow M_1$ accepts $x \Rightarrow x \in L_1$.
+
+On the other hand, if $x \in L_1 \Rightarrow x\triangle^i \in L_2$ for $i = f(|x|) - |x|$ therefore counter $i$ requires
+\[ \log(f(|x|) - |x|) \leq S_2(f(|x|)) \]
+space.
+
+\end{proof}
+
+\begin{note}
+	We can also prove Translation Lemma for $DS, NT, DT$.
+\end{note}
+
+\begin{theorem}[NS hierarchy for polynomials]
+	Let $\varepsilon > 0,\, r > 1$. Then
+	\[ NS(n^r) \subsetneq NS(n^{r + \varepsilon}) \]
+\end{theorem}
+\begin{proof}
+	From the density of rationals:
+	\[ \exists s,t \in \N: r \leq \frac{s}{t} \leq \frac{s + 1}{t} \leq r + \varepsilon \]
+	It is sufficient to prove that:
+	\[ NS(n^{\frac{s}{t}}) \subsetneq NS(n^{\frac{s + 1}{t}}) \]
+
+	Assume by contradiction
+	\[ NS(n^{\frac{s+1}{t}}) \subseteq NS(n^{\frac{s}{t}}) \]
+	Now we use \cref{transl_space} for
+	\[ S_1 = \frac{s+1}{t}, S_2 = \frac{s}{t}, f(n) = n^{(s + i)t}, i = 0, 1 ..., t \]
+	We get
+	\[ \forall i: NS((n^{(s + i)t})^{(s + 1)/t} \subseteq NS((n^{(s + i)t})^{s/t} \Rightarrow \forall i: NS(n^{(s + i)(s + 1)}) \subseteq NS(n^{(s + i)s}) \]
+	Now we write for all $i$:
+	\begin{itemize}
+		\item $i = 0:\, NS(n^{s(s + 1)}) \subseteq NS(n^{s^2}) $
+		\item $i = 1:\, NS(n^{(s + 1)(s + 1)}) \subseteq NS(n^{(s + 1)s}) $
+		\item ...
+		\item $i = s:\, NS(n^{(s + 1)2s}) \subseteq NS(n^{(2s)s}) $
+	\end{itemize}
+	From the exponents we conclude that for every inequality right side is a subset of left side.
+	So we get a chain of subsets and can use Savic theorem to get a contradiction:
+	\[ NS(n^{(s + 1)2s}) \subseteq NS(n^{s^2}) \subseteq DS(n^{2s * s}) \subsetneq DS(n^{2s * s + 2s}) \subseteq NS(n^{(s + 1)2s}) \]
+	As the beginning and the end are the same sets and the chain of subsets has strict inclusion.
+
+\end{proof}
