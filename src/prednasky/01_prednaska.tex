@@ -2,6 +2,17 @@
 \vspace{5mm}
 \large
 
+\subsection{Abbreviations}
+\begin{itemize}
+	\item TM - turing machine.
+	\item DTM - deterministic turing machine.
+	\item NTM - non-deterministic turing machine.
+	\item DS - DSPACE
+	\item NS - NSPACE
+	\item DT - DTIME
+	\item NT - NTIME
+\end{itemize}
+
 \begin{theorem}[NT and DS relation]
 	\[ \forall f:\N \to \N: NT(f(n)) \subseteq DS(f(n)) \]
 \end{theorem}
@@ -20,11 +31,11 @@ Construct TM with following algorithm:
 	\item reject
 \end{enumerate}
 
-M pracuje v case $g(n) = O(f(n))$, vypocet v 4. skonci do g(n) kroku.
+M pracuje v case $g(n) = \bigO(f(n))$, vypocet v 4. skonci do g(n) kroku.
 
 Prostor: \\
 1) na ulozeni k potrebujeme g(n) prostoru, $ k \leq g(n) $. \\
-2) Na simulace M(x) dle y potrebujeme O(g(n)) prostoru.
+2) Na simulace M(x) dle y potrebujeme $\bigO(g(n))$ prostoru.
 
 Korektnost: \\
 Chceme aby det. TS prijimal stejny jazyk nako puvodni NTS. Pokud existuje pr. vypocet NTS, TS prijme dle nejakeho y. Opacne dojde k $ k = g(n)$ a TS odmitne.
@@ -52,7 +63,7 @@ b) tape to store $y$ (vector that encode branch of NTM)
 \end{theorem}
 \begin{proof}
 	All accepting conf. leaves are bounded by the \# of conf. However, \# of all paths $2^{c_L^{f(n)}}$.
-	How to avoid double exponent? $\Rightarrow$ Perform BFH in conf. graph.
+	How to avoid double exponent? $\Rightarrow$ Perform BFS in conf. graph.
 	\# of edges could be quadratic , however
 	\[ \left(c_L^{f(n)}\right)^2 = \left(c_L^2\right)^{f(n)} \]
 	$c_L^2$ is another constant.
@@ -108,7 +119,7 @@ If $S(n)$ is space used by $M_x \Rightarrow$ we need $\max(\lceil \log(t) \rceil
 \end{proof}
 
 \begin{theorem}[Savic]
-	Under some mild assumptions (space constructibility, functions bigger than $\log(n)$) following statement is true:
+	Under some mild assumptions $($space constructibility, functions bigger than $\log(n))$ following statement is true:
 	\[ NS(f(n)) \subseteq DS(f^2(n)) \]
 
 \end{theorem}

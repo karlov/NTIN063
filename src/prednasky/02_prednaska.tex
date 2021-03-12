@@ -1,0 +1,161 @@
+\section{\texorpdfstring{TM with Oracle}{TM with Oracle}}
+\vspace{5mm}
+\large
+
+\begin{definition}
+	\textbf{Oracle} TM is a DTM with an Oracle A (where A is a language) differs from an ordinary DTM by the following:
+	\begin{itemize}
+		\item Oracle tape (with same alphabet as TM)
+		\item 3 special states: QUERY, YES, NO
+		\item In QUERY state TM moves to YES state if word on the oracle tape $\in A$ (moves to NO o/w).
+			After the answer oracle tape is erased (to reuse space in Space complexity).
+		\item Language of the accepted word by an oracle TM M is $L(M, A)$.
+	\end{itemize}
+\end{definition}
+
+\begin{note}
+	For NTM definition works the same.
+\end{note}
+
+\begin{note}
+	Ordinary DTM is the same as oracle DTM with $A = \emptyset$.
+\end{note}
+
+Consider now a comparison of the oracle DTM, when oracle language A is \emph{not fixed in advance}.
+Computation forms a tree, that branches at every QUERY.
+
+\begin{observation}
+	Consider NTM vs Oracle DTM.
+
+	"$\Rightarrow$". If NTM M has language $L(M)$, set oracle language $A = L(M)$.
+	"$\Leftarrow$". If oracle language is not recognizable (e.g. HALT), we cannot simulate such NTM.
+\end{observation}
+
+\begin{definition}
+	\emph{Turing reducibility} - let A,B languages.
+	We say that A is (deterministically) Turing reducible to B in poly time if there $\exists$ an oracle DTM M working in poly time st
+	\[ A = L(M, B), A \leq^T B \]
+\end{definition}
+
+\begin{example}
+	$A \in P \Rightarrow A \leq^T \emptyset$. Since we have poly time algorithm without any oracle.
+\end{example}
+
+\begin{definition}
+	Let $A$ be a language, then
+	\[ \TP(A) = \{ B | B \leq^T A \} \]
+\end{definition}
+\begin{definition}
+	Let C be a set of languages then
+	\[ \TP(C) = \{ B |\, \exists A \in C: B \leq^T A \} \]
+\end{definition}
+
+\begin{observation}
+	\[ \TP(\TP) = \TP \]
+\end{observation}
+\begin{proof}
+	$ \TP \subseteq \TP(\TP)$. Let $A \in \TP$, use A as an oracle with 1 QUERY or use empty oracle.
+
+	$\TP(\TP) \subseteq \TP$. Let $B \in \TP(\TP) \iff \exists A \in \TP \exists ODTM\ M: B = L(M, A)$.
+
+	To prove the inclusion, we have to construct ordinary DTM that recognizes A.
+	Such TM $\overline{M}$ simulates M and whenever M enters QUERY state, simulate $M^{\prime}$ to check if word w on oracle tape $\in L(M^{\prime}) = A$.
+
+	Now we have to check time complexity.
+
+	M makes $P(|x|)$ queries (for p polynomial), as the total number of steps is polynomial.
+	Each query word length is at most $p_w(|x|) = t$.
+	Every query has at most $p_q(|t|)$ steps.
+	In total, query is $p_q(p_w(|x|))$.
+	And the total time complexity of the TM is $p(p_q(p_w(|x|)))$.
+	Which is also polynomial.
+\end{proof}
+
+\begin{definition}
+	\emph{Turing reducibility (non-deterministic)} - let A,B languages.
+	We say that A is non-deterministically Turing reducible to B in poly time if there $\exists$ an oracle NTM M working in poly time st
+	\[ A = L(M, B), A \leq^{NP} B \]
+\end{definition}
+
+\begin{definition}
+	Let $A$ be a language, then
+	\[ \TNP(A) = \{ B | B \leq^{NP} A \} \]
+\end{definition}
+\begin{definition}
+	Let C be a set of languages then
+	\[ \TNP(C) = \{ B |\, \exists A \in C: B \leq^{NP} A \} \]
+\end{definition}
+
+\begin{note}
+	Relativised definition also works for other classes, e.g. EXPTIME.
+\end{note}
+
+\begin{definition}
+	\[ PSPACE = \bigcup_{i = 0}^{\infty} DS(n^i) = NPSPACE = \bigcup_{i = 0}^{\infty} NS(n^i) \]
+	Where the 2nd equality holds because of Savic theorem.
+\end{definition}
+
+\begin{definition}
+	$PSPACE(A) = \{ B | \, B$ accepted by an oracle DTM working in poly space, st $B = L(M, A)$.
+
+	Also for class of languages C.
+\end{definition}
+
+\begin{note}
+	\[ \TP \subseteq \TNP \subseteq PSPACE \]
+
+	Where last inclusion hold because of $NT(f(n)) \ subseteq DS(f(n))$.
+
+	Same proof but as for ordinary TM, but with oracle TM that shares same oracle language A.
+\end{note}
+
+\begin{observation}
+	What about $\TNP(\TNP)$? Still an open question, depends on $\TP = \TNP$.
+
+	We cannot simply plug NTM back to the original TM with oracle, as NTM serving as an oracle could have multiple accepting or rejecting leaves.
+\end{observation}
+
+\begin{definition}
+	Consider a sequence
+	\[ \Sigma_0^P, \Sigma_1^P, \Sigma_2^P, ... \]
+	Where $\Sigma_0^P = \TP, \Sigma_{i + 1}^P = \TNP(\Sigma_i^P)$.
+
+	And Polynomial hierarchy(simplified) is:
+	\[ PH = \bigcup_{i \geq 1} \Sigma_i^P \]
+\end{definition}
+
+\begin{theorem}[Polynomial hierarchy(simplified)]
+	\[ PH \subseteq PSPACE \]
+
+	In plain words, PH is only smth in between NP and PSPACE.
+\end{theorem}
+\begin{proof}
+	By induction prove $\forall i: \Sigma_i \subseteq PSPACE$.
+
+	\begin{itemize}
+		\item $i = 0 \Rightarrow \TP \subseteq PSPACE$
+		\item $i \to i + 1$, assume $\Sigma_i \subseteq PSPACE$.
+	\end{itemize}
+
+	By definition: $\Sigma_{i + 1} = \TNP(\Sigma_i)$
+	Then
+	\[ \TNP(\Sigma_i) \subseteq \TNP(PSPACE) \]
+	We made set of oracles larger, set of recognized languages cannot shrink.
+
+	Now we use $\forall C: \TNP(C) \subseteq PSPACE(C)$.\\
+	Therefore
+	\[ \TNP(C) \subseteq PSPACE(PSPACE) \subseteq PSPACE \]
+
+	Last inclusion is up to proof (similar to $\TP = \TP(\TP)$):\\
+	\[ B \in PSPACE(PSPACE) \iff \exists A \in PSPACE \exists DTM M: B = L(M, A) \]
+	Where $M$ works in poly space.
+
+	\[ A \in PSPACE \iff \exists DTM \ M_A: A = L(M_A) \]
+	Where $M_A$ works in poly space.
+	Same in $\TP = \TP(\TP)$ proof replace oracle QUERY by DTM computation (which accepts or rejects)
+
+	The last thing is to check that used space is polynomial.
+	Which is true since $\forall t \in QUERY: |t| \leq p(|x|)$ for some polynomial $p$.
+	Space taken by DTM $M^{\prime}$ that computes the QUERY is $p_t(|t|) \leq p_t(p(|x|))$.
+	Also, we can ask exponentially many QUERies, however the space is reused, therefore space is bounded by the largest QUERY.
+\end{proof}
