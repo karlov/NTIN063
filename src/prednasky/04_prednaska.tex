@@ -1,0 +1,126 @@
+\section{\texorpdfstring{Polynomial Hierarchy cont}{Polynomial Hierarchy cont}}
+\vspace{5mm}
+\large
+
+\begin{lemma}
+	Let $C$ be an arbitrary class from PH.
+	Then
+	\[ \forall A \in C \iff A^{\star} \in C \]
+	Where
+	\[ A^{\star} = \{ x |\ \exists n \exists y_1 \in A ... \exists y_2 \in A: x = (y_1, ..., y_n) \]
+	In other words, concatenation of the words from $A$ are also in $A$.
+
+	Note that comma separators are important to stay in the same complexity class.
+	We cannot guess the split by brute force.
+\end{lemma}
+\begin{proof}
+	1) $C = \Sigma_0 = \Pi_0 = \Delta_0 = \TP$.
+	$\Leftarrow$ trivially $A \subseteq A^{\star}$ for $n = 1$.
+	$x = (y)$.
+	$\Rightarrow$. Then
+	\[ \exists DTM\ M: A = L(M)\]
+	We run $M$ on all $y_1, y_2, ..., y_n$.
+	We accept $\iff$ all computations on $y_i$ accepts.
+
+	2) $C = \Delta_k$.
+	Same as in 1). We have DTM with an oracle TM.
+
+	3) $C = \Sigma_k, k > 0$.
+	We have
+	$ \exists NTM M$ with oracle $D \in \Sigma_{k - 1}: A = L(M, D)$.
+	We simulate computation of $M$ on $y_1$.
+	In every accepting path, we run $M$ on $y_2$. And so on.
+
+	4) $C = \Pi_k$
+	If there is at least one $y_i \in co-A$, whole string $(y_1, y_2, ..., y_n)$.
+	Therefore we proceed roughly the same as in 3), but we proceed for rejecting leaves.
+\end{proof}
+
+\begin{consequence}
+	If we have $A,B,T \in C \Rightarrow D \in C$ where
+	\[ D = \{ x |\ \exists a \in A, \exists b \in B, \exists t \in T: x = (a, b, t) \} \]
+
+	Proof is the same, as of the lemma, but we have multiple TM.
+\end{consequence}
+
+\begin{theorem}[Polynomial hierarchy consequences]
+	\[ \exists \Pi_k = \Sigma_{k + 1} \]
+\end{theorem}
+\begin{proof}
+	\[ \exists \Pi_k \subseteq \Sigma_{k + 1} \]
+	\[ A \in \exists \Pi_k \iff \exists B \in \Pi_k \exists p: x \in A \iff \exists^{p(|x|)} y: (x,y) \in B \]
+	Construct an $NTM\ M$ which works as following:
+	\begin{enumerate}
+		\item read x
+		\item guess $y: |y| \leq p(|x|)$.
+		\item ask oracle if $(x,y) \in B$
+	\end{enumerate}
+
+	We get
+	\[ A = L(M, B) \Rightarrow A \in \TNP(\Pi_k) = \TNP(\Sigma_k) = \Sigma_{k + 1} \]
+
+	\[ \exists \Pi_k \supseteq \Sigma_{k + 1} \]
+	Proof by induction on k.
+
+	$k = 0$.
+	\[ \Sigma_1 \subseteq \exists \Pi_0 = \exists \TP = \TNP \]
+
+	induction hypothesis: $\Sigma_k \subseteq \exists \Pi_{k - 1}$.
+	Let $A \in \Sigma_{k + 1}$ be arbitrary.
+	Then
+	\[ \exists NTM\ M \exists B \in \Sigma_k: A = L(M, B) \]
+	$x \in A \iff \exists$ accepting computation (poly long) of $M$ on input $x$ which asks if $z_1, z_2, ..., z_n \in B$ and if $w_1, ..., 2_n \in co-B$.
+	Alternatively
+	\[ x \in A \iff \exists^{p(|x|)} y, \exists^{p(|x|)} z = (z_1, z_2, ..., z_n) \exists^{p(|x|)} w = (w_1, ..., w_n)\]
+	s.t. $y$ encodes an accepting computation of $M$ on $X$ with positive queries $z_1, ..., z_n$ and negative queries $w_1, ..., w_n$.
+
+	We claim that the language L of pairs $(x, y) \in \TP \subseteq \Pi_k$.
+
+	We know
+	%todo finish
+	\[ z_i \in B^{\star} \Rightarrow z \in B^{\star} \in \Sigma_k \subseteq^{i.h.} \exists \Pi_{k - 1}\]
+
+	\[ w_i \in (co-B)^{\star} \Rightarrow z \in B^{\star} \in \Sigma_k \subseteq^{i.h.} \exists \Pi_{k - 1}\]
+
+	So
+	\[x \in A \iff \exists^{p(|x|)} y \exists^{p(|x|)} z \exists^{p_1(|z|)} y \exists^{p(|x|)} w\]
+\end{proof}
+
+\begin{consequence}[Definition of PH by alternating quantifiers]
+	\[ A \in \Sigma_k \iff \exists B \in \TP \exists p: x \in A \iff \exists^{p(|x|)} y_1, \forall^{p(|x|)} y_2 ... : (x, y_1, y_2, ..., y_k) \in B \]
+	Also
+	\[ A \in \Pi_k \iff \exists B \in \TP \exists p: x \in A \iff \forall^{p(|x|)} y_1, \exists^{p(|x|)} y_2 ... : (x, y_1, y_2, ..., y_k) \in B \]
+\end{consequence}
+\begin{proof}
+	Proof by induction on $k$.
+
+	For $k = 0$ we have no quantifiers.
+	\[ A \in \TP \exists B \in \TP \]
+	we can take $A = B$.
+
+	$k \to k + 1$. Let $A \in \Sigma_{k + 1} = \exists \Pi_k$.
+	Then
+	\[ \exists \Pi_k \exists p: x \in A \iff \exists^{p(|x|)} y: (x,y) \in B \]
+	By the i.p.
+	% todo finish, end of the lectures
+	\[ \Rightarrow (x,y) \in B \iff \forall^{p(|x|)} y_1, \exists^{p(|x|)} y_2 ... : ((x,y), y_1, y_2, ..., y_k) \]
+\end{proof}
+
+\begin{example}
+	Language from $\Sigma_2$.
+	Optimization version (Boolean minimization).
+
+	input: CNF $F$\\
+	Output: CNF $H: H \equiv F \land |H|$ is minimal (we can define minimal in many ways, e.g. minimal in bits to represent).
+
+	Now we convert into decision problem.\\
+	input: CNF $F, k \in \N$ \\
+	Question: $\exists CNF\ H: F \equiv \land |H| \leq k $.
+
+	Problem is in $\Sigma_k$ since
+	\[ F \in BM \iff \exists^{|H| \leq |F|} H \forall (x_1, ..., x_n): H \leq k \land F(x_1, ..., x_n) = H(x_1, ..., x_n) \]
+
+	We also know $BM \in \Sigma_2-complete$.
+\end{example}
+
+We have an hard problem, encode it in CNF and solve by CNF machinery.
