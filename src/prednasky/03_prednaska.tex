@@ -1,3 +1,79 @@
 \section{\texorpdfstring{Polynomial Hierarchy}{Polynomial Hierarchy}}
 \vspace{5mm}
 \large
+
+\subsection{Time and Space classes relation}
+
+\begin{reminder}[Space classes]
+	\begin{equation}
+	\begin{split}
+		LOG = DS(\log n) \\
+		NLOG = NS(\log n) \\
+		POLYLOG = \bigcup_{i \geq 0} DS(\log^i n )\\
+		PS = \bigcup_{i \geq 0} DS(n^i)\\
+		NSSP = \bigcup_{i \geq 0} NS(n^i)\\
+		EXPSPACE = \bigcup_{i \geq 0} DS(2^{ni})\\
+	\end{split}
+	\end{equation}
+\end{reminder}
+
+\begin{reminder}[Time classes]
+	No way to define LOG class, as we have to read the input.
+	\begin{equation}
+	\begin{split}
+		\TP = \bigcup_{i \geq 0} DT(n^i)\\
+		\TNP = \bigcup_{i \geq 0} NT(n^i)\\
+		DEXT = \bigcup_{i \geq 0} DT(2^{ni})\\
+		NEXT = \bigcup_{i \geq 0} NT(2^{ni})\\
+		EXPTIME = \bigcup_{i \geq 0} DT(2^{n^i})\\
+		NEXPTIME = \bigcup_{i \geq 0} NT(2^{n^i})\\
+	\end{split}
+	\end{equation}
+\end{reminder}
+
+\begin{definition}
+	Consider a 3 sequences of classes
+	\[ \Sigma_k, \Pi_k, \Delta_k \]
+	Where
+	\begin{enumerate}
+		\item $\Sigma_0 = \Pi_0 = \Delta_0 = \TP$.
+		\item $\Sigma_{k + 1} = \TNP(\Sigma_k)$.
+		\item $\Pi_{k + 1} = co-\TNP(\Sigma_k)$.
+		\item $\Delta_{k + 1} = \TP(\Sigma_k)$.
+	\end{enumerate}
+
+	And Polynomial hierarchy is:
+	\[ PH = \bigcup_{i \geq 1} \Sigma_i^P ( = \bigcup_{i \geq 1} \Pi_i^P = \bigcup_{i \geq 1} \Delta_i^P) \]
+
+\end{definition}
+
+\begin{note}
+	L is a language alphabet $\tau$
+	\[ \overline{L} = \{ x \in \tau^{\ast} |\ x \notin L \} \]
+
+	If C is a class of languages, then
+	\[ L \in C \iff \overline{L} \in co-C \]
+\end{note}
+
+\begin{properties}[Polynomial Hierarchy].
+	\begin{enumerate}[label=\alph*)]
+		\item $\Sigma_1 = \TNP $.
+		\item $\Pi_k = co-\Sigma_k \land \Sigma_k = co-\Pi_k$.
+		\item $\Sigma_{k + 1} = \TNP(\Pi_k)$.
+		\item $\Delta_{k + 1} = \TP(\Pi_k)$.
+		\item $\Pi_{k + 1} = co-\TNP(\Pi_k)$.
+		\item $\Sigma_{k + 1} = \TNP(\Delta_{k + 1})$.
+		\item $\Pi_{k + 1} = co-\TNP(\Delta_{k + 1})$.
+	\end{enumerate}
+\end{properties}
+\begin{proof}
+	a) $\TNP(\TP) = \TNP$ also $\TP(\TP) = \TP$.\\
+	Proof by embedding oracle computation by simulating using DTM.
+\end{proof}
+
+\begin{properties}[Polynomial Hierarchy - 2].
+	%\begin{enumerate}[label=\alph*)]
+	%\end{enumerate}
+\end{properties}
+\begin{proof}
+\end{proof}

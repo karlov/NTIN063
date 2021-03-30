@@ -5,20 +5,19 @@
 \begin{lemma}
 	Let $C$ be an arbitrary class from PH.
 	Then
-	\[ \forall A \in C \iff A^{\star} \in C \]
+	\[ \forall A \in C \iff A^{\ast} \in C \]
 	Where
-	\[ A^{\star} = \{ x |\ \exists n \exists y_1 \in A ... \exists y_2 \in A: x = (y_1, ..., y_n) \]
+	\[ A^{\ast} = \{ x |\ \exists n \exists y_1 \in A ... \exists y_2 \in A: x = (y_1, ..., y_n) \} \]
 	In other words, concatenation of the words from $A$ are also in $A$.
 
 	Note that comma separators are important to stay in the same complexity class.
 	We cannot guess the split by brute force.
 \end{lemma}
 \begin{proof}
-	1) $C = \Sigma_0 = \Pi_0 = \Delta_0 = \TP$.
-	$\Leftarrow$ trivially $A \subseteq A^{\star}$ for $n = 1$.
-	$x = (y)$.
-	$\Rightarrow$. Then
-	\[ \exists DTM\ M: A = L(M)\]
+	1) $C = \Sigma_0 = \Pi_0 = \Delta_0 = \TP$.\\
+	$\Leftarrow$ trivially $A \subseteq A^{\ast}$ for $n = 1$.
+	$x = (y)$.\\
+	\[ \Rightarrow \exists DTM\ M: A = L(M) \]
 	We run $M$ on all $y_1, y_2, ..., y_n$.
 	We accept $\iff$ all computations on $y_i$ accepts.
 
@@ -27,12 +26,12 @@
 
 	3) $C = \Sigma_k, k > 0$.
 	We have
-	$ \exists NTM M$ with oracle $D \in \Sigma_{k - 1}: A = L(M, D)$.
+	$ \exists NTM\ M$ with oracle $D \in \Sigma_{k - 1}: A = L(M, D)$.
 	We simulate computation of $M$ on $y_1$.
 	In every accepting path, we run $M$ on $y_2$. And so on.
 
 	4) $C = \Pi_k$
-	If there is at least one $y_i \in co-A$, whole string $(y_1, y_2, ..., y_n)$.
+	If there is at least one $y_i \in co-A$, whole string $(y_1, y_2, ..., y_n) \in (co-A)^{\ast}$.
 	Therefore we proceed roughly the same as in 3), but we proceed for rejecting leaves.
 \end{proof}
 
@@ -69,18 +68,18 @@
 	Let $A \in \Sigma_{k + 1}$ be arbitrary.
 	Then
 	\[ \exists NTM\ M \exists B \in \Sigma_k: A = L(M, B) \]
-	$x \in A \iff \exists$ accepting computation (poly long) of $M$ on input $x$ which asks if $z_1, z_2, ..., z_n \in B$ and if $w_1, ..., 2_n \in co-B$.
+	$x \in A \iff \exists$ accepting computation (poly long) of $M$ on input $x$ which asks if $z_1, z_2, ..., z_n \in B$ and if $w_1, ..., w_n \in co-B$.
 	Alternatively
-	\[ x \in A \iff \exists^{p(|x|)} y, \exists^{p(|x|)} z = (z_1, z_2, ..., z_n) \exists^{p(|x|)} w = (w_1, ..., w_n)\]
+	\[ x \in A \iff \exists^{p(|x|)} y, \exists^{p(|x|)} z = (z_1, z_2, ..., z_n), \exists^{p(|x|)} w = (w_1, ..., w_n)\]
 	s.t. $y$ encodes an accepting computation of $M$ on $X$ with positive queries $z_1, ..., z_n$ and negative queries $w_1, ..., w_n$.
 
 	We claim that the language L of pairs $(x, y) \in \TP \subseteq \Pi_k$.
 
 	We know
-	%todo finish
-	\[ z_i \in B^{\star} \Rightarrow z \in B^{\star} \in \Sigma_k \subseteq^{i.h.} \exists \Pi_{k - 1}\]
+	%todo rewrite
+	\[ z_i \in B^{\ast} \Rightarrow z \in B^{\ast} \in \Sigma_k \subseteq^{i.h.} \exists \Pi_{k - 1}\]
 
-	\[ w_i \in (co-B)^{\star} \Rightarrow z \in B^{\star} \in \Sigma_k \subseteq^{i.h.} \exists \Pi_{k - 1}\]
+	\[ w_i \in (co-B)^{\ast} \Rightarrow w \in B^{\ast} \in \Sigma_k \subseteq^{i.h.} \exists \Pi_{k - 1}\]
 
 	So
 	\[x \in A \iff \exists^{p(|x|)} y \exists^{p(|x|)} z \exists^{p_1(|z|)} y \exists^{p(|x|)} w\]
@@ -110,17 +109,21 @@
 	Language from $\Sigma_2$.
 	Optimization version (Boolean minimization).
 
-	input: CNF $F$\\
+	Input: CNF $F$\\
 	Output: CNF $H: H \equiv F \land |H|$ is minimal (we can define minimal in many ways, e.g. minimal in bits to represent).
 
 	Now we convert into decision problem.\\
-	input: CNF $F, k \in \N$ \\
-	Question: $\exists CNF\ H: F \equiv \land |H| \leq k $.
+	Input: CNF $F, k \in \N$ \\
+	Question: $\exists CNF\ H: F \equiv H \land |H| \leq k $.
 
 	Problem is in $\Sigma_k$ since
-	\[ F \in BM \iff \exists^{|H| \leq |F|} H \forall (x_1, ..., x_n): H \leq k \land F(x_1, ..., x_n) = H(x_1, ..., x_n) \]
+	\[ F \in BM \iff \exists^{|H| \leq |F|} H, \forall (x_1, ..., x_n): H \leq k \land F(x_1, ..., x_n) = H(x_1, ..., x_n) \]
 
 	We also know $BM \in \Sigma_2-complete$.
 \end{example}
 
-We have an hard problem, encode it in CNF and solve by CNF machinery.
+\begin{note}
+	If we have an hard problem, it can be encoded in CNF and solved by CNF machinery.
+
+	CNF solvers are highly optimized over more than 20 years.
+\end{note}
