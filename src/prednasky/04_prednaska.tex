@@ -7,18 +7,19 @@
 	Then
 	\[ \forall A \in C \iff A^{\ast} \in C \]
 	Where
-	\[ A^{\ast} = \{ x |\ \exists n \exists y_1 \in A ... \exists y_2 \in A: x = (y_1, ..., y_n) \} \]
+	\[ A^{\ast} = \{ x |\ \exists n \exists y_1 \in A \ldots \exists y_2 \in A: x = (y_1, \ldots, y_n) \} \]
 	In other words, concatenation of the words from $A$ are also in $A$.
 
 	Note that comma separators are important to stay in the same complexity class.
 	We cannot guess the split by brute force.
 \end{lemma}
-\begin{proof}
+\begin{proof} Separately for every class in PH.
+
 	1) $C = \Sigma_0 = \Pi_0 = \Delta_0 = \TP$.\\
 	$\Leftarrow$ trivially $A \subseteq A^{\ast}$ for $n = 1$.
 	$x = (y)$.\\
 	\[ \Rightarrow \exists DTM\ M: A = L(M) \]
-	We run $M$ on all $y_1, y_2, ..., y_n$.
+	We run $M$ on all $y_1, y_2, \ldots, y_n$.
 	We accept $\iff$ all computations on $y_i$ accepts.
 
 	2) $C = \Delta_k$.
@@ -31,7 +32,7 @@
 	In every accepting path, we run $M$ on $y_2$. And so on.
 
 	4) $C = \Pi_k$
-	If there is at least one $y_i \in co-A$, whole string $(y_1, y_2, ..., y_n) \in (co-A)^{\ast}$.
+	If there is at least one $y_i \in co-A$, whole string $(y_1, y_2, \ldots, y_n) \in (co-A)^{\ast}$.
 	Therefore we proceed roughly the same as in 3), but we proceed for rejecting leaves.
 \end{proof}
 
@@ -68,10 +69,10 @@
 	Let $A \in \Sigma_{k + 1}$ be arbitrary.
 	Then
 	\[ \exists NTM\ M \exists B \in \Sigma_k: A = L(M, B) \]
-	$x \in A \iff \exists$ accepting computation (poly long) of $M$ on input $x$ which asks if $z_1, z_2, ..., z_n \in B$ and if $w_1, ..., w_n \in co-B$.
+	$x \in A \iff \exists$ accepting computation (poly long) of $M$ on input $x$ which asks if $z_1, z_2, \ldots, z_n \in B$ and if $w_1, \ldots, w_n \in co-B$.
 	Alternatively
-	\[ x \in A \iff \exists^{p(|x|)} y, \exists^{p(|x|)} z = (z_1, z_2, ..., z_n), \exists^{p(|x|)} w = (w_1, ..., w_n)\]
-	s.t. $y$ encodes an accepting computation of $M$ on $X$ with positive queries $z_1, ..., z_n$ and negative queries $w_1, ..., w_n$.
+	\[ x \in A \iff \exists^{p(|x|)} y, \exists^{p(|x|)} z = (z_1, z_2, \ldots, z_n), \exists^{p(|x|)} w = (w_1, \ldots, w_n)\]
+	s.t. $y$ encodes an accepting computation of $M$ on $X$ with positive queries $z_1, \ldots, z_n$ and negative queries $w_1, \ldots, w_n$.
 
 	We claim that the language L of pairs $(x, y) \in \TP \subseteq \Pi_k$.
 
@@ -86,9 +87,9 @@
 \end{proof}
 
 \begin{consequence}[Definition of PH by alternating quantifiers]
-	\[ A \in \Sigma_k \iff \exists B \in \TP \exists p: x \in A \iff \exists^{p(|x|)} y_1, \forall^{p(|x|)} y_2 ... : (x, y_1, y_2, ..., y_k) \in B \]
+	\[ A \in \Sigma_k \iff \exists B \in \TP \exists p: x \in A \iff \exists^{p(|x|)} y_1, \forall^{p(|x|)} y_2 \ldots : (x, y_1, y_2, \ldots, y_k) \in B \]
 	Also
-	\[ A \in \Pi_k \iff \exists B \in \TP \exists p: x \in A \iff \forall^{p(|x|)} y_1, \exists^{p(|x|)} y_2 ... : (x, y_1, y_2, ..., y_k) \in B \]
+	\[ A \in \Pi_k \iff \exists B \in \TP \exists p: x \in A \iff \forall^{p(|x|)} y_1, \exists^{p(|x|)} y_2 \ldots : (x, y_1, y_2, \ldots, y_k) \in B \]
 \end{consequence}
 \begin{proof}
 	Proof by induction on $k$.
@@ -102,7 +103,7 @@
 	\[ \exists \Pi_k \exists p: x \in A \iff \exists^{p(|x|)} y: (x,y) \in B \]
 	By the i.p.
 	% todo finish, end of the lectures
-	\[ \Rightarrow (x,y) \in B \iff \forall^{p(|x|)} y_1, \exists^{p(|x|)} y_2 ... : ((x,y), y_1, y_2, ..., y_k) \]
+	\[ \Rightarrow (x,y) \in B \iff \forall^{p(|x|)} y_1, \exists^{p(|x|)} y_2 \ldots : ((x,y), y_1, y_2, \ldots, y_k) \]
 \end{proof}
 
 \begin{example}
@@ -117,7 +118,7 @@
 	Question: $\exists CNF\ H: F \equiv H \land |H| \leq k $.
 
 	Problem is in $\Sigma_k$ since
-	\[ F \in BM \iff \exists^{|H| \leq |F|} H, \forall (x_1, ..., x_n): H \leq k \land F(x_1, ..., x_n) = H(x_1, ..., x_n) \]
+	\[ F \in BM \iff \exists^{|H| \leq |F|} H, \forall (x_1, \ldots, x_n): H \leq k \land F(x_1, \ldots, x_n) = H(x_1, \ldots, x_n) \]
 
 	We also know $BM \in \Sigma_2-complete$.
 \end{example}

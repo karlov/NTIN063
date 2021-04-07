@@ -91,18 +91,18 @@ Computation forms a tree, that branches at every QUERY.
 \end{note}
 
 \begin{definition}
-	\[ PSPACE = \bigcup_{i = 0}^{\infty} DS(n^i) = NPSPACE = \bigcup_{i = 0}^{\infty} NS(n^i) \]
+	\[ PS = \bigcup_{i = 0}^{\infty} DS(n^i) = NPS = \bigcup_{i = 0}^{\infty} NS(n^i) \]
 	Where the 2nd equality holds because of Savic theorem.
 \end{definition}
 
 \begin{definition}
-	$PSPACE(A) = \{ B | \, B$ accepted by an oracle DTM working in poly space, st $B = L(M, A)$.
+	$PS(A) = \{ B | \, B$ accepted by an oracle DTM working in poly space, st $B = L(M, A)$.
 
 	Also for class of languages C.
 \end{definition}
 
 \begin{note}
-	\[ \TP \subseteq \TNP \subseteq PSPACE \]
+	\[ \TP \subseteq \TNP \subseteq PS \]
 
 	Where last inclusion hold because of $NT(f(n)) \ subseteq DS(f(n))$.
 
@@ -117,7 +117,7 @@ Computation forms a tree, that branches at every QUERY.
 
 \begin{definition}
 	Consider a sequence
-	\[ \Sigma_0^P, \Sigma_1^P, \Sigma_2^P, ... \]
+	\[ \Sigma_0^P, \Sigma_1^P, \Sigma_2^P, \ldots \]
 	Where $\Sigma_0^P = \TP, \Sigma_{i + 1}^P = \TNP(\Sigma_i^P)$.
 
 	And Polynomial hierarchy(simplified) is:
@@ -125,32 +125,32 @@ Computation forms a tree, that branches at every QUERY.
 \end{definition}
 
 \begin{theorem}[Polynomial hierarchy(simplified)]
-	\[ PH \subseteq PSPACE \]
+	\[ PH \subseteq PS \]
 
-	In plain words, PH is only smth in between NP and PSPACE.
+	In plain words, PH is only smth in between NP and PS.
 \end{theorem}
 \begin{proof}
-	By induction prove $\forall i: \Sigma_i \subseteq PSPACE$.
+	By induction prove $\forall i: \Sigma_i \subseteq PS$.
 
 	\begin{itemize}
-		\item $i = 0 \Rightarrow \TP \subseteq PSPACE$
-		\item $i \to i + 1$, assume $\Sigma_i \subseteq PSPACE$.
+		\item $i = 0 \Rightarrow \TP \subseteq PS$
+		\item $i \to i + 1$, assume $\Sigma_i \subseteq PS$.
 	\end{itemize}
 
 	By definition: $\Sigma_{i + 1} = \TNP(\Sigma_i)$
 	Then
-	\[ \TNP(\Sigma_i) \subseteq \TNP(PSPACE) \]
+	\[ \TNP(\Sigma_i) \subseteq \TNP(PS) \]
 	We made set of oracles larger, set of recognized languages cannot shrink.
 
-	Now we use $\forall C: \TNP(C) \subseteq PSPACE(C)$.\\
+	Now we use $\forall C: \TNP(C) \subseteq PS(C)$.\\
 	Therefore
-	\[ \TNP(C) \subseteq PSPACE(PSPACE) \subseteq PSPACE \]
+	\[ \TNP(C) \subseteq PS(PS) \subseteq PS \]
 
-	Last inclusion is up to proof (similar to $\TP = \TP(\TP)$):\\
-	\[ B \in PSPACE(PSPACE) \iff \exists A \in PSPACE \exists DTM M: B = L(M, A) \]
+	Last inclusion is up to prove (similar to $\TP = \TP(\TP)$):\\
+	\[ B \in PS(PS) \iff \exists A \in PS \exists DTM M: B = L(M, A) \]
 	Where $M$ works in poly space.
 
-	\[ A \in PSPACE \iff \exists DTM \ M_A: A = L(M_A) \]
+	\[ A \in PS \iff \exists DTM \ M_A: A = L(M_A) \]
 	Where $M_A$ works in poly space.
 	Same in $\TP = \TP(\TP)$ proof replace oracle QUERY by DTM computation (which accepts or rejects)
 

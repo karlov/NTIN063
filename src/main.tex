@@ -1,7 +1,7 @@
 \documentclass[11pt, a4paper, onecolumn]{article}
 \usepackage{mathptmx}
 \usepackage[11pt]{moresize}
-%\usepackage[czech]{babel}
+\usepackage[english]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -35,7 +35,11 @@
 \crefname{equation}{}{}
 \crefname{theorem}{}{}
 \usepackage{amsthm}
-%\usepackage{mathtools}
+\usepackage{mathtools}
+\usepackage{extarrows}
+
+
+\newcommand\tab[1][1cm]{\hspace*{#1}}
 
 \makeatletter
 \def\th@plain{%
@@ -133,8 +137,8 @@
 \newtheorem{notation}[theorem]{Značení}
 \newtheorem*{notation*}{Značení}
 \newtheorem{agreement}[theorem]{Agreement}
-\newtheorem{reminder}[theorem]{Připomenutí}
-\newtheorem{excercise}[theorem]{Cvičení}
+\newtheorem{reminder}[theorem]{Reminder}
+\newtheorem{exercise}[theorem]{Exercise}
 
 %\theoremstyle{remark}
 \newtheorem{example}[theorem]{Example}

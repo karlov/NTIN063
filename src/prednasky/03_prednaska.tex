@@ -31,6 +31,62 @@
 	\end{equation}
 \end{reminder}
 
+\begin{exercise}
+	Complexity classes
+	\begin{enumerate}[label=\alph*)]
+		\item $NLOG \subseteq \TP$
+		\item $PS = NPS$
+		\item $\TNP \subseteq PS$
+		\item $PS = EXPTIME$
+		\item $NLOG \subsetneq PS \subsetneq EXPSPACE$
+		\item $\TP \subsetneq DEXT \subsetneq EXPTIME$
+	\end{enumerate}
+
+\end{exercise}
+\begin{proof}
+	a)
+	\[ L \in NS(\log n) \Rightarrow \exists c_L: L \in DT(2^{c_L \log n}) = DT((2^{\log n})^{c_L}) = DT(n^{c_L}) \in \TP \]
+	b) $PS \subseteq NPS$ trivial, as deterministic computation is a special case of non-deterministic.
+
+	$NPS \subseteq PS$
+	\[ L \in NS \Rightarrow \exists i: L \in NS(n^i) \]
+	by Savic \cref{savic}
+	\[ L \in DS(n^{2i}) \Rightarrow L \in PS \]
+
+	c) we use time space relation \cref{nt_ds_rel}
+	\[ \forall L \in \TNP \Rightarrow \exists i: L \in NT(n^i) \Rightarrow L \in DS(n^i) \Rightarrow \TNP \subseteq PS \]
+	d)
+	\[ L \in PS \Rightarrow \exists i: L \in DS(n^i) \subseteq NS(n^i) \Rightarrow \exists c_L: L \in DT(2^{c_L \log n}) \subseteq DT(2^{n^{i + 1}}) \subseteq EXPTIME \]
+	e) by Savic \cref{savic}
+	\[ NS(\log n) \subseteq DS(\log^2 n) \]
+	by space hierarchy \cref{s_hier}
+	\[ \log^2 n \in o(n) \Rightarrow DS(\log^2 n) \subsetneq DS(n) \]
+	\[ L \in PS \Rightarrow \exists i: L \in DS(n^i) \subseteq DS(2^n) \]
+	by space hierarchy \cref{s_hier}
+	\[ DS(2^n) \subsetneq DS(2^{2n}) \]
+
+	f)
+	by time hierarchy \cref{t_hier}
+	\[ \TP \subseteq DT(2^n) \subsetneq DT(2^{2n}) \subseteq DEXT \]
+	as
+	\[ 2^n \log(2^n) = n 2^n \in o((2^n)^2) \]
+	Then
+	\[ DEXT \subseteq DT(2^{n^2}) \subsetneq DT(2^{n^3}) \subseteq EXPTIME \]
+	as
+	\[ n^2 (2^{n^2}) \in o (2^{n^3}) \]
+\end{proof}
+
+\begin{note}
+	\[ NLOG \subseteq \TP \subseteq \TNP \subseteq PS \]
+	Also
+	\[ NLOG \subsetneq PS \]
+	Therefore one of the inclusions in first relation should be strict, or all of them. Still open question.
+
+	Moreover, if we prove strict equalities in leftmost and rightmost inclusions $\Rightarrow \TP \neq \TNP$.
+\end{note}
+
+\subsection{Polynomial hierarchy again}
+
 \begin{definition}
 	Consider a 3 sequences of classes
 	\[ \Sigma_k, \Pi_k, \Delta_k \]
@@ -55,7 +111,7 @@
 	\[ L \in C \iff \overline{L} \in co-C \]
 \end{note}
 
-\begin{properties}[Polynomial Hierarchy].
+\begin{properties}[Polynomial Hierarchy] Relations
 	\begin{enumerate}[label=\alph*)]
 		\item $\Sigma_1 = \TNP $.
 		\item $\Pi_k = co-\Sigma_k \land \Sigma_k = co-\Pi_k$.
@@ -69,11 +125,237 @@
 \begin{proof}
 	a) $\TNP(\TP) = \TNP$ also $\TP(\TP) = \TP$.\\
 	Proof by embedding oracle computation by simulating using DTM.
+
+	b) by definition, for $k \geq 1$
+	\[ \Pi_k = co-\TNP(\Sigma_{k - 1}) = co-\Sigma_k \]
+	same for $\Sigma_k$ by symmetry.
+
+	c) we can deduce $\overline{B}$ from questions to $B$ by negating every request.
+
+	% todo d), e)
+
+	f)
+	\[ \Sigma_{k + 1} = \TNP(\Sigma_k) = \TNP(\Delta_{k - 1}) = \TNP(\TP(\Sigma_k)) = \TNP(\Delta_k) \]
+	Clearly
+	\[ \TNP(\Sigma_k) \subseteq \TNP(\TP(\Sigma_k)) \]
+	as we made class of query languages larger.
+	\[ L \in \TNP(\TP(\Sigma_k)) \Rightarrow \exists NTM\ M_n \exists E \in \TP(\Sigma_k): L = L(M_n, E) \]
+	Also
+	\[ E \in \TP(\Sigma_k) \iff \exists DTM\ M_d, \exists Q \in \Sigma_k: E = L(M_d, Q) \]
+	We want $L \in \TNP(\Sigma_k)$.
+	We proceed similarly as in $\TP(\TP) = \TP$ by simulating $M_n$ and every time it ask a query, use $M_d$ to decide.
+
+	% todo
+	g)
+
 \end{proof}
 
-\begin{properties}[Polynomial Hierarchy - 2].
-	%\begin{enumerate}[label=\alph*)]
-	%\end{enumerate}
+\begin{properties}[Polynomial Hierarchy - 2] Relations 2.
+	\begin{enumerate}[label=\alph*)]
+		\item $\Delta_k = co-\Delta_k$
+		\item $\TP(\Delta_k) = \Delta_k$
+		\item $\Sigma_k \cup \Pi_k = \Delta_{k + 1}$
+		\item $\Delta_k = \Sigma_k \cap \Pi_k$
+		\item if $\Sigma_k \subseteq \Pi_k \lor \Pi_k \subseteq \Sigma_k \Rightarrow \Pi_k = \Sigma_k$
+	\end{enumerate}
 \end{properties}
 \begin{proof}
+	a) for deterministic computation we can negate every answer.
+	Specifically this rule means $\TP = co-\TP$
+
+	b) $\Delta_k \subseteq \TP(\Delta_k)$ trivially. Since we can use same language as oracle with 1 query??
+
+	$\TP(\Delta_k) \subseteq \Delta_k$. Proof by induction on $k$:
+	\[ k = 0, \TP(\TP) = \TP \]
+
+	$k \geq 1$ we have $\TP(\Delta_{k - 1}) \subseteq \Delta_{k - 1}$
+	By definition $\TP(\Delta_k) \subseteq \Delta_k$ is equivalent to
+	\[ \TP(\TP(\Delta_{k - 1})) \subseteq \TP(\Delta_{k - 1}) \]
+
+	Both c) and d) use the fact, that deterministic computation is a special case of non-deterministic.
+
+	c) proof consists of 2 steps
+	\begin{enumerate}
+		\item $\Sigma_k \subseteq \Delta_{k + 1} = \TP(\Sigma_k)$\\
+			Same argument as in first inclusion in b).
+			Ask single query to the same language.
+		\item $\Pi_k \subseteq \Delta_{k + 1} = \TP(\Sigma_k)$\\
+			Since we can negate queries
+			\[ \TP(\Sigma_k) = \TP(\Pi_k) \]
+			Therefore using same argument as above with single query
+			\[ \Pi_k \subseteq \TP(\Pi_k) \]
+	\end{enumerate}
+
+	d) proof consists of 2 steps
+	\begin{enumerate}
+		\item TODO check first inclusion
+			\[ \Delta_k = \TP(\Sigma_{k - 1}) \subseteq \TNP(\Sigma_{k - 1}) = \Sigma_k \]
+		\item
+			\[ \Delta_k \xlongequal{a)} co-\Delta_k = co-\TP(\Sigma_{k - 1}) = co-\TP(\Pi_{k - 1}) \subseteq co-\TNP(\Pi_{k - 1}) = \Pi_k \]
+	\end{enumerate}
+
+	e) Assume $\Sigma_k \subseteq \Pi_k$ we need to prove reverse.
+
+	\[ L \in \Pi_k \iff \overline{L} \in co-\Pi_k = \Sigma_k \xRightarrow{assumption} \overline{L} \in co-\Sigma_k = \Pi_k \iff L \in \Sigma_k  \]
+\end{proof}
+
+\begin{theorem}[NP = co-NP]
+	if $A \in \TNP$-complete $\land A \in co-\TNP$-complete $\Rightarrow \TNP \subseteq co-\TNP$.
+\end{theorem}
+\begin{proof}
+	Let $B \in \TNP$ arbitrary.
+	By the $\TNP$-completeness of A $\exists DTM$ transducer $M_t$ st
+	\[ x \in B \iff M_t(x) \in A \]
+
+	\[ A \in co-\TNP \iff \overline{A} \in \TNP \Rightarrow \exists NTM\ M_n: \overline{A} = L(M_n) \]
+	Also by the properties of polynomial reduction
+	\[ x \in \overline{B} \iff M_t(x) \in \overline{A} \]
+	$\overline{A}$ can be recognized by $M_n$, therefore we can recognize $\overline{B}$ by NTM which is a concatenation of $M_t$ and $M_n$.
+	Therefore $\overline{B} \in \TNP \iff B \in co-\TNP $.
+
+	Same proof is valid for oracle TM.
+\end{proof}
+
+\begin{theorem}[NP $\neq$ co-NP]
+	\[ \TNP \cap\ co-\TNP \Rightarrow \TNP \cup\ co-\TNP \subsetneq \Delta_2 \]
+\end{theorem}
+\begin{proof}
+	Let
+	\[ L = \{ (F, F^{\prime} |\ F \in SAT \land F^{\prime} \in \overline{SAT} \} \]
+	We can construct DTM with following algorithm for L
+
+	%todo add identation for readbility
+	\begin{enumerate}
+		\item if($F \in SAT$)
+		\item \tab if($\overline{F} \in SAT$)
+		\item \tab \tab accept
+		\item \tab else
+		\item \tab \tab reject
+		\item else
+		\item \tab reject
+	\end{enumerate}
+
+	Therefore $L \in \TP(SAT) \subseteq \Delta_2 = \TP(\Sigma_1) = \TP(\Pi_k)$.
+
+	Define
+	\[ L_2 = \{ (F, 0)|\ F \in SAT \} \subseteq L \]
+	where $0$ is e.g. $(x \land \neg x)$.
+
+	Trivially $ L_2 \simeq SAT$ therefore L contains $\TNP$-complete language.
+
+	Now assume by contradiction $L \in co-\TNP$.
+	Using previous proof we can deduce $\TNP = co-\TNP$.
+\end{proof}
+
+\subsection{Constrained quantifiers}
+\begin{definition}
+	\[ \exists^{p(n)} x: R(x) := \exists x: |x| \leq p(n) \land R(x) \]
+\end{definition}
+\begin{definition}
+	\[ \forall^{p(n)} x: R(x) := \forall x: |x| \leq p(n) \land R(x) \]
+\end{definition}
+
+\begin{definition}
+	Let $C$ be a class of languages, we define class of languages $\exists C$ as following:
+	\[ A \in (\exists C) \xLeftrightarrow{def} \exists B \in C, \exists p: x \in A \iff \exists^{p(|x|)} y: \langle x, y \rangle \in B \]
+
+	Note that if $C = \TP \Rightarrow \exists \TP = \TNP $.
+	Since $y$ is a branch of NTM (certificate)
+\end{definition}
+
+\begin{definition}
+	Let $C$ be a class of languages, we define class of languages $\forall C$ as following:
+	\[ A \in (\forall C) \xLeftrightarrow{def} \exists B \in C, \forall p: x \in A \iff \forall^{p(|x|)} y: \langle x, y \rangle \in B \]
+
+	Note that if $C = \TP \Rightarrow \forall \TP = co-\TNP $.
+\end{definition}
+
+\begin{lemma}\label{quant_class_rel}
+	Let $C$ be an arbitrary class of languages. Then
+	\begin{equation}
+		co-\exists C = \forall(co-C)
+	\end{equation}
+	As
+	\[ A \in (\exists C) \iff \overline{A} \in (\forall(co-C)) \]
+
+	\begin{equation}
+		C \subseteq \exists C \land C \subseteq \forall C
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	Equation (3): \\
+	Negating the definition
+	\[ A \in (\exists C) \iff \exists B \in C, \exists p: x \in A \iff \exists^{p(|x|)} y: \langle x, y \rangle \in B \]
+	we get
+	\[ x \in \overline{A} \iff \forall^{p(|x|)} y: \langle x, y \rangle \in \overline{B} \]
+	Which is the same as
+	\[ \overline{A} \in \forall (co-C) \iff \exists \overline{B} \in co-C, \exists p: \forall^{p(|x|)} y: \langle x, y \rangle \in \overline{B} \]
+
+	Equation (4): \\
+	For $\exists C$ take $B = A \land y = \emptyset$.
+	Clearly $\langle x, \emptyset \rangle \simeq x$.
+
+	For $\forall C$ take polynomial with degree 0, only $y = \emptyset$ is accepted.
+\end{proof}
+
+\begin{properties}[Polynomial Hierarchy with quantifiers].
+	\begin{enumerate}[label=\alph*)]
+		\item $\exists \TP = \TNP$
+		\item $\forall \TP = co-\TNP $.
+		\item $\forall k > 0: \exists \Sigma_k = \Sigma_k$.
+		\item $\forall k > 0: \forall \Pi_k= \Pi_k$.
+		\item $\forall k \geq 0: \exists \Pi_k = \Sigma_{k + 1}$.
+		\item $\forall k \geq 0: \forall \Sigma_k = \Pi_{k + 1}$.
+	\end{enumerate}
+\end{properties}
+\begin{proof}
+	a) "$\exists \TP \subseteq \TNP$"
+	\[ A \in (\exists \TP) \iff \exists B \in \TP, \exists p: x \in A \iff \exists^{p(|x|)} y: \langle x, y \rangle \in B \]
+	Construct an NTM that accepts A ($L(M) = A$):
+
+	\begin{enumerate}
+		\item guess y: $|y| \leq p(|x|)$
+		\item run deterministic verification $\langle x, y \rangle \in B$
+	\end{enumerate}
+	B is in $\TP$ therefore verification is deterministic.
+	As $|y|$ is bounded by $p(|x|)$ total time complexity is polynomial.
+
+	"$\TNP \subseteq \exists \TP$"
+	\[ A \in \TNP \iff \exists NTM\ M: L(M) = A \]
+	Also
+	\[ x \in A \iff \exists^{p(|x|)} y \]
+	where $y$ encodes the accepting branch of M on input x.
+
+	// todo why??\\
+	Consequently any language $B$ of pairs $\langle x, y \rangle$ is in $\TP$.
+	So, by definition
+	\[ A \in \exists \TP \]
+
+	b) using lemma \cref{quant_class_rel}
+	\[ \forall \TP \xlongequal{\TP = co-\TP} \forall(co-\TP) \xlongequal{\cref{quant_class_rel}} co-\exists \TP \xlongequal{a)} co-\TNP \]
+
+	c) trivially $\Sigma_k \subseteq (\exists \Sigma_k)$. Now reversed.
+
+	% todo finish
+	\[ A \in (\exists \Sigma_k) \iff \exists B \in \Sigma_k, \exists p: x \in A \iff \exists^{p(|x|)} y: \langle x, y \rangle \in B \]
+	We want
+	\[ A \in \TNP(\Sigma_{k - 1}) = \Sigma_k \]
+	So, we construct an NTM M with oracle $C \in \Sigma_{k - 1}: L(M, C) = A$, we also use
+	\[ B \in \TNP(\Sigma_{k - 1} \iff \exists M_B: B = L(M_B, C) \]
+	algorithm of M:
+	\begin{enumerate}
+		\item guess y: $|y| \leq p(|x|)$
+		\item run $M_B$ on $\langle x, y \rangle$.
+	\end{enumerate}
+
+	Note that
+	\[ \exists y \exists z \iff \exists \langle y, z \rangle \]
+
+	d)
+	\[ \forall \Pi_k = \forall(co-\Sigma_k) \xlongequal{\cref{quant_class_rel}} co-\exists \Sigma_k \xlongequal{c)} co-\Sigma_k = \Pi_k \]
+
+	Note that now we cannot prove e)
+
+	f) follows from e)
+	\[ \forall \Sigma_k = \forall(co-\Pi_k) \xlongequal{\cref{quant_class_rel}} co-\exists \Pi_k \xlongequal{e)} co-\Sigma_{k + 1} = \Pi_{k + 1} \]
 \end{proof}

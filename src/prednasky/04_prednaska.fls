@@ -1,0 +1,6 @@
+PWD /home/kyrylo/Documents/UK/Complexity/notes/prednasky
+INPUT /usr/local/texlive/2020/texmf.cnf
+INPUT /usr/local/texlive/2020/texmf-dist/web2c/texmf.cnf
+INPUT /usr/local/texlive/2020/texmf-var/web2c/pdftex/pdflatex.fmt
+INPUT 04_prednaska.tex
+OUTPUT 04_prednaska.log

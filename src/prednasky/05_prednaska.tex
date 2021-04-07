@@ -4,7 +4,7 @@
 
 \begin{consequence}[Polynomial hierarchy collapse]\label{ph_collapse}
 	if $\Sigma_k = \Pi_k$ for some $k > 0$ then
-	\[ \forall j \geq 0 \Sigma_{k + j} = \Pi_{k + j} = \Sigma_k \]
+	\[ \forall j \geq 0: \Sigma_{k + j} = \Pi_{k + j} = \Sigma_k \]
 \end{consequence}
 \begin{proof}
 	By induction on j. For 0 is true by assumption.
@@ -113,7 +113,7 @@ How do we evaluate QBF with no free variables?
 \begin{note}
 	SAT - language of satisfiable CNFs.
 	We can think of it as
-	\[ \exists x_1 \exists x_2 ... \exists x_n (F(x_1, x_2, ..., x_n) \]
+	\[ \exists x_1 \exists x_2 \ldots \exists x_n (F(x_1, x_2, \ldots, x_n) \]
 	Therefore SAT is a special case of QBF.
 \end{note}
 
@@ -226,7 +226,7 @@ How do we evaluate QBF with no free variables?
 	Then restart $M_L$ and discard output with position $ < i$.
 	Repeat.
 
-	We need 2 counters $i, j \in \{ 1, ..., |Y| \}$.
+	We need 2 counters $i, j \in \{ 1, \ldots, |Y| \}$.
 	Which require
 	\[ \log(n^c) = c \log n \]
 	%One counter is incremented with write on output tape, other counter keeps position on the output tape.

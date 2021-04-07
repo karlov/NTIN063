@@ -9,11 +9,12 @@
 	\item NTM - non-deterministic turing machine.
 	\item DS - DSPACE
 	\item NS - NSPACE
+	\item PS - deterministic polynomial space
 	\item DT - DTIME
 	\item NT - NTIME
 \end{itemize}
 
-\begin{theorem}[NT and DS relation]
+\begin{theorem}[NT and DS relation]\label{nt_ds_rel}
 	\[ \forall f:\N \to \N: NT(f(n)) \subseteq DS(f(n)) \]
 \end{theorem}
 
@@ -92,7 +93,7 @@ If $S(n)$ is space used by $M_x \Rightarrow$ we need $\max(\lceil \log(t) \rceil
 	Function $f$ is \emph{Space constructible} $\iff \exists$ TM with unary alphabet which marks exactly $|f(n)|$ cells on the working tape. E.g. $\log, e^x,$ polynomials.
 \end{definition}
 
-\begin{theorem}[Space hierarchy]
+\begin{theorem}[Space hierarchy]\label{s_hier}
 	Let $S_1, S_2$ are space constructible functions and
 	\[ S_1 \in o(S_2) \Rightarrow DS(S_1(n)) \subsetneq DS(S_2(n)) \]
 \end{theorem}
@@ -108,7 +109,7 @@ If $S(n)$ is space used by $M_x \Rightarrow$ we need $\max(\lceil \log(t) \rceil
 	Every time constructible function is space constructible.
 \end{note}
 
-\begin{theorem}[Space hierarchy]
+\begin{theorem}[Time hierarchy]\label{t_hier}
 	Let $S_1, S_2$ are time constructible functions and
 	\[ T_1 \cdot \log(T_1(n)) \in o(T_2) \Rightarrow DT(T_1(n)) \subsetneq DT(T_2(n)) \]
 
@@ -176,7 +177,7 @@ If $S(n)$ is space used by $M_x \Rightarrow$ we need $\max(\lceil \log(t) \rceil
 \begin{enumerate}
 	\item Mark $f(n)$ cells on 1st tape.
 	\item Mark $S_2(f(n))$ cells on 2nd tape. Using 1st tape as "input".
-	\item foreach $x\triangle^i, i = 0, 1, ... $ \\
+	\item foreach $x\triangle^i, i = 0, 1, \ldots $ \\
 		simulate $M_3$ on input $x\triangle^i$.
 		If head of $M_3$ is inside $x$ $M_4$s head is in the same place.
 		Otherwise, head of $M_3$ is inside padding, so $M_4$ uses counters to track $M_3$s position.
@@ -212,14 +213,14 @@ space.
 	Assume by contradiction
 	\[ NS(n^{\frac{s+1}{t}}) \subseteq NS(n^{\frac{s}{t}}) \]
 	Now we use \cref{transl_space} for
-	\[ S_1 = \frac{s+1}{t}, S_2 = \frac{s}{t}, f(n) = n^{(s + i)t}, i = 0, 1 ..., t \]
+	\[ S_1 = \frac{s+1}{t}, S_2 = \frac{s}{t}, f(n) = n^{(s + i)t}, i = 0, 1 \ldots, t \]
 	We get
 	\[ \forall i: NS((n^{(s + i)t})^{(s + 1)/t} \subseteq NS((n^{(s + i)t})^{s/t} \Rightarrow \forall i: NS(n^{(s + i)(s + 1)}) \subseteq NS(n^{(s + i)s}) \]
 	Now we write for all $i$:
 	\begin{itemize}
 		\item $i = 0:\, NS(n^{s(s + 1)}) \subseteq NS(n^{s^2}) $
 		\item $i = 1:\, NS(n^{(s + 1)(s + 1)}) \subseteq NS(n^{(s + 1)s}) $
-		\item ...
+		\item \ldots
 		\item $i = s:\, NS(n^{(s + 1)2s}) \subseteq NS(n^{(2s)s}) $
 	\end{itemize}
 	From the exponents we conclude that for every inequality right side is a subset of left side.
