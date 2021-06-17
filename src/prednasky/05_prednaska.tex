@@ -2,7 +2,20 @@
 \vspace{5mm}
 \large
 
-\begin{consequence}[Polynomial hierarchy collapse]\label{ph_collapse}
+%\subsection{Tutorial}
+
+%\begin{exercise}
+%	\begin{enumerate}[label=\alph*)]
+%		\item $\exists \TP = \TNP$.
+%		\item $\forall \TP = co-\TNP$.
+%		\item $\forall k > 0: \exists \Sigma_k = \Sigma_k$
+%		\item $\forall k > 0: \forall \Pi_k = \Pi_k$
+%		\item $\exists \Pi_k = \Sigma_{k + 1}$
+%		\item $\forall \Sigma_k = \Pi_{k + 1}$
+%	\end{enumerate}
+%\end{exercise}
+
+\begin{consequence}[Polynomial hierarchy collapse at level k]\label{ph_collapse}
 	if $\Sigma_k = \Pi_k$ for some $k > 0$ then
 	\[ \forall j \geq 0: \Sigma_{k + j} = \Pi_{k + j} = \Sigma_k \]
 \end{consequence}
@@ -10,15 +23,14 @@
 	By induction on j. For 0 is true by assumption.
 
 	Induction step:
-	\[ \Sigma_{k + j + 1} =^{c)} \exists \Pi_{k + j} =^{by\ I.H.} \exists \Sigma_{k + j} \]
-	By c)
+	\[ \Sigma_{k + j + 1} \xlongequal{\cref{polyn_q}\ c)} \exists \Pi_{k + j} \xlongequal{I.H.} \exists \Sigma_{k + j} \]
+	By \cref{polyn_q} c)
 	\[ \exists \Sigma_{k + j} = \Sigma_{k + j} \]
 	By I.H. again
 	\[ \Sigma_{k + j} = \Sigma_k \]
 
 	Similarly for $\Pi_{k + j + 1}$.
-	% todo finish
-	\[ \Pi_{k + j + 1} =^{f)} \forall \Sigma_{k + j} = \]
+	\[ \Pi_{k + j + 1} \xlongequal{\cref{polyn_q}\ f)} \forall \Sigma_{k + j} \xlongequal{I.H.} \forall \Pi_{k + j} \xlongequal{I.H.} \Sigma_k \]
 \end{proof}
 
 \begin{consequence}
@@ -38,14 +50,18 @@
 \end{proof}
 
 \begin{consequence}
-	\[ \exists k \in \N: \TP = \Sigma_0 \subset \Sigma_k \Rightarrow \TP \subset \TNP \]
+	\[ \text{If}\ \exists k \in \N: \TP = \Sigma_0 \subset \Sigma_k \Rightarrow \TP \subset \TNP \]
 \end{consequence}
 \begin{proof}
 	By reversing previous condition.
 \end{proof}
 
 \begin{definition}
-	PSPACE-complete
+	$L$ is PSPACE-complete if: \\
+	$L \in PSPACE$ and\\
+	$\forall L_a \in PSPACE: L_a$ is poly time reducible to $L$.
+
+	Note that we use Time reducibility for Space class.
 \end{definition}
 
 \begin{lemma}\label{ph_col_lemma}
@@ -54,12 +70,14 @@
 \begin{proof}
 	Take $L_2 \in PS$ by the polynomial reduction, since
 	\[ \exists DTM\ M_d: x \in L_2 \iff M(x) \in L \]
+	$M_d$ is a transducer.
+
 	Also there is acceptor
 	\[ \exists NTM\ M_n: L = L(M_n, D) \]
 	for some $D \in \Sigma_{k - 1}$
 	Then we construct new NTM by concatenation of $M_d$ and $M_n$.
 
-	% todo join 2 proofs
+	% todo join 2 proofs, predn 5 od 33:00
 	\[ L_2 \in PS \]
 	Therefore
 	\[ PS \subseteq \Sigma_k \]
@@ -89,13 +107,28 @@
 \vspace{5mm}
 \large
 
-\begin{definition}
-	QBF - quantifiable boolean formula
-	%todo
+\begin{definition}[QBF - quantifiable boolean formula]
+	%todo predn 5 od 50:00
+	\begin{enumerate}
+		\item if $x$ is a variable then $x$ is a QBF and $x$ is a \emph{free} variable
+		\item if $E_1, E_2$ are QBF then
+			\[ \neg E_1, (E_1) \land (E_2), (E_1) \lor (E_2) \]
+			are also QBFs.
+
+			And the status of variables (free/bounded) does not change.
+		\item if $E$ is a QBF then
+			\[ \exists x (E), \forall x (E) \]
+			are also QBFs. And all ocurrences of $x$ become bounded.
+			Status of other variables does not change.
+	\end{enumerate}
 \end{definition}
 
 \begin{definition}
-	QBF problem
+	QBF problem (language).
+
+	Input: QBF $F$ with no free variables.
+
+	Question: $F = 1$??
 \end{definition}
 
 How do we evaluate QBF with no free variables?
@@ -103,7 +136,9 @@ How do we evaluate QBF with no free variables?
 	\item $ \exists x (E) \iff E_0 \lor E_1$
 	\item $ \forall x (E) \iff E_0 \land E_1$
 \end{itemize}
-`
+Where $E_0$ is formula where every occurrence of $x$ is replaced by $0$.
+Similarly $E_1$.
+
 \begin{example}
 	\[ \forall x (\forall x (\exists y (x \lor y)) \land \neg x) \]
 	by rules above
@@ -126,8 +161,8 @@ How do we evaluate QBF with no free variables?
 		\item $\neg(E) \to$ evaluate E and negate all results
 		\item $(E_0) \lor (E_1) \to $ evaluate $E_0$, $E_1$ then by disjunction
 		\item $(E_0) \land (E_1) \to $ evaluate $E_0$, $E_1$ then by conjunction
-		\item $\exists (E) \to$ compute $E_l, E_r$, then compute $E_l \lor E_r$
-		\item $\forall(E) \to$ compute $E_l, E_r$, then compute $E_l \land E_r$
+		\item $\exists (E) \to$ compute $E_0, E_1$, then compute $E_0 \lor E_1$
+		\item $\forall(E) \to$ compute $E_0, E_1$, then compute $E_0 \land E_1$
 	\end{itemize}
 
 	We have at most $n$ operators.
@@ -137,19 +172,41 @@ How do we evaluate QBF with no free variables?
 	$\bigO(n^2)$ is enough space for evaluation.
 \end{proof}
 
-\begin{note}
-	% todo replace by bigor
-	\[ F = \bigcap (x_i \to y_i) = \bigcap (\neg x_i \lor y_j)\]
-	The resulting formula is shortest CNF representing $F$.
+\begin{example}
+	\[ F = \vee_{1 \leq j \leq n} (x_i \to y_i) = \vee_{1 \leq j \leq n} (\neg x_i \lor y_j)\]
+	Can be viewed as bipartite graph.
+
+	Claim: The resulting formula is shortest CNF representing $F$.
+	By the completness of resolution.
 	Length changed to $\Theta(n^2)$.
 
 	Now 2nd formula
-	\[ H = (\exists z) [(\bigcap(x_i \to z)) \land (\bigcap (z \to y_j))] \]
-	which is linear. $H$ is an encoding of $F$ with auxiliary variables.
+	\[ H = (\exists z) [(\wedge_{1 \leq i \leq n}(x_i \to z)) \land (\wedge_{1 \leq j \leq n} (z \to y_j))] \]
+	$H$ is an encoding of $F$ with auxiliary variables.
+	Can be viewed as bipartite graph but with single node in between parts.
+	%todo image predn 5 od 1:19:00
+
+	However, $H$ is shorter since it is $\Theta(n)$.
+\end{example}
+\begin{proof}
+	As every $x$ implies every $y$ models of $F$ are:
+	\[ (0, 0, 0, \ldots, *, * \ldots, *) \cup (*, * \ldots, *, 1, 1, \ldots, 1)\]
+	Where $*$ represents arbitrary value.
+
+	If we rewrite $H$ and substitute $0 \lor 1$ for $z$ we get:
+	\[ [(\wedge_{1 \leq i \leq n}(x_i \to 0)) \land (\wedge_{1 \leq j \leq n}(0 \to y_j))] \lor [(\wedge_{1 \leq i \leq n}(x_i \to 1)) \land (\wedge_{1 \leq j \leq n}(1 \to y_j))]\]
+	Therefore models are the same.
+\end{proof}
+
+\begin{note}
+	Trick with auxiliary variables is used, if we have a requirement of only one $x_i$ to be 1.
+	Which can be represented by formula:
+	\[ \wedge_{1 \leq i,j \leq n}(x_i \lor \neg x_j) \]
+	Which is $\Theta(n^2)$ and auxiliary variable makes it linear.
 \end{note}
 
-\begin{theorem}[QBF $\in$ PS-hard]
-	QBF is in PS-hard (sketch).
+\begin{theorem}[QBF is PS-hard]
+	QBF is PS-hard (sketch).
 \end{theorem}
 \begin{proof}
 	Every $L \in PS$ arbitrary can be reduces to QBF in poly time.
@@ -165,10 +222,10 @@ How do we evaluate QBF with no free variables?
 	$x \in L \iff \exists $ path of length $m$ in \emph{configuration graph} from $C_0 \to C{acc}$.
 	Use similar algorithm as in Savic theorem \cref{savic}, but encode computation in QBF.
 
-	Notation, where $\phi$ is an encoding of allowed transition in Cook-Levin theorem.
+	Notation, where $\varphi$ is an encoding of allowed transition in Cook-Levin theorem.
 	We construct QBF $\psi$.
 	\begin{itemize}
-		\item $ \psi_0(C, C^{\prime}) = 1 \iff \phi_m(C, C^{\prime})$ is satisfiable
+		\item $ \psi_0(C, C^{\prime}) = 1 \iff \varphi_m(C, C^{\prime})$ is satisfiable
 		\item $ \psi_i(C, C^{\prime}) = 1 \iff $ there exists path $C \to C^{\prime}$ of length $2^i$
 		\item $ \psi_m(C_0, C_{acc}) = 1 \iff x \in L$
 	\end{itemize}
@@ -182,9 +239,14 @@ How do we evaluate QBF with no free variables?
 	\[ \psi_i(C, C^{\prime}) = \exists C_{int} \forall D_1, D_2 [(D_1 = C \land D_2 = C^{\prime}) \lor (D_1 = C_{int} \land D_2 = C^{\prime})] \Rightarrow \psi(D_1, D_2) \]
 	Formally, implication could be replaced by $\neg x \lor y$.
 	Now
-	\[ |\psi_i| = |\psi_{i - 1}| + \bigO(1) \]
+	\[ |\psi_i| = |\psi_{i - 1}| + \bigO(m) \]
 	Therefore
 	\[ |\psi_m| = \bigO(m^2) \]
+
+	Also, going from $\psi_{i - 1} \to \psi_{i}$ we need 1 existential, 1 universal quantifier.
+	In the end, $\psi_m$ has $m$ pairs of alternating existential and universal quantifiers.
+
+	Therefore $QBF \in \Sigma_m$.
 \end{proof}
 
 \subsection{P-completeness}
@@ -195,12 +257,12 @@ How do we evaluate QBF with no free variables?
 	Therefore we use a different reducibility.
 \end{note}
 
-\begin{definition}
+\begin{definition}[log-space reducibility]
 	A is \emph{log-space} reducible to B if $\exists$ DTM transducer M that works in log space (excluding input and output tape).
 	Such that $x \in A \iff M(x) \in B $.
 \end{definition}
 
-\begin{definition}
+\begin{definition}[$\TP$-complete]
 	L is $\TP$-complete $\iff L \in \TP \land \forall A \in \TP A$ is log-space reducible to L.
 \end{definition}
 
@@ -208,6 +270,7 @@ How do we evaluate QBF with no free variables?
 	Let $L$ be $\TP$-complete and $L \in LOG = DS(\log(n)) \Rightarrow \TP = LOG$.
 \end{theorem}
 \begin{proof}
+	Since $c_n^{\log n} = (2^{\log n})^{\log c_n} = n^{\log c_n}$.
 	\[ LOG \subseteq \TP \]
 	We want
 	\[ \TP \subseteq LOG \]
@@ -226,9 +289,16 @@ How do we evaluate QBF with no free variables?
 	Then restart $M_L$ and discard output with position $ < i$.
 	Repeat.
 
+	Works, because we do not worry about Time, but space.
+
 	We need 2 counters $i, j \in \{ 1, \ldots, |Y| \}$.
 	Which require
 	\[ \log(n^c) = c \log n \]
+
+	Where $i$ keeps the position, updates with every move of the head.
+	$j$ is reset to $0$ and is incremented with every symbol $M_{log}$ outputs.
+
+	Symbols are discarded until $i = j$.
 	%One counter is incremented with write on output tape, other counter keeps position on the output tape.
 	%while(work)
 	%{
@@ -247,7 +317,7 @@ How do we evaluate QBF with no free variables?
 	Proof is same, but acceptor is non deterministic.
 \end{consequence}
 
-Question: what if we use log-space reducibility in $\TNP$-complete definition?
+Q: what if we use log-space reducibility in $\TNP$-complete definition?
 This is stricter, since if we can reduce in log-space, we can also reduce in polynomial time (by time and space comparison with $2^n$).
 
 \begin{theorem}[Szelepcsenyi-Immerman]
