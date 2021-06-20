@@ -9,10 +9,7 @@
 \usepackage{pdfx}
 \usepackage{latexsym}
 \usepackage{graphicx}
-\graphicspath{ {./img/} }
-\usepackage[utf8]{inputenc}
-\usepackage{textcomp}
-\usepackage{tikz}
+\graphicspath{ {./img/} } \usepackage[utf8]{inputenc} \usepackage{textcomp} \usepackage{tikz}
 %\usepackage{svg}
 \usepackage{listings}
 \usepackage{subfiles}
@@ -37,7 +34,7 @@
 \usepackage{amsthm}
 \usepackage{mathtools}
 \usepackage{extarrows}
-
+\usepackage{cite}
 
 \newcommand\tab[1][1cm]{\hspace*{#1}}
 
@@ -106,7 +103,8 @@
 \DeclareMathOperator{\Q}{\mathbb{Q}}
 \DeclareMathOperator{\TP}{\mathbb{P}}
 \DeclareMathOperator{\TNP}{\N\mathbb{P}}
-%\DeclareMathOperator{\Sp}{\mathbb{S}}
+\DeclareMathOperator{\Ppoly}{\TP/poly}
+\DeclareMathOperator{\szo}{\{ 0, 1 \}}
 %\DeclareMathOperator{\Real}{\mathbb{R}}
 %\DeclareMathOperator{\Comp}{\mathbb{C}}
 %\DeclareMathOperator{\Holo}{\mathcal{H}}
@@ -129,13 +127,14 @@
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{consequence}[theorem]{Consequence}
+\newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{amendment}[theorem]{Dodatek}
 
 
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
-\newtheorem{notation}[theorem]{Značení}
-\newtheorem*{notation*}{Značení}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem*{notation*}{Notation}
 \newtheorem{agreement}[theorem]{Agreement}
 \newtheorem{reminder}[theorem]{Reminder}
 \newtheorem{exercise}[theorem]{Exercise}
@@ -176,13 +175,17 @@
 \subfile{prednasky/03_prednaska}
 \subfile{prednasky/04_prednaska}
 \subfile{prednasky/05_prednaska}
-%\subfile{prednasky/06_prednaska}
-%\subfile{prednasky/07_prednaska}
+\subfile{prednasky/06_prednaska}
+\subfile{prednasky/07_prednaska}
 %\subfile{prednasky/08_prednaska}
 %\subfile{prednasky/09_prednaska}
 %\subfile{prednasky/10_prednaska}
 %\subfile{prednasky/11_prednaska}
 %\subfile{prednasky/12_prednaska}
 %\subfile{prednasky/13_prednaska}
+
+\newpage
+\bibliography{main}{}
+\bibliographystyle{plain}
 
 \end{document}

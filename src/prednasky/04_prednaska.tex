@@ -1,6 +1,6 @@
-\section{\texorpdfstring{Polynomial Hierarchy cont}{Polynomial Hierarchy cont}}
-\vspace{5mm}
-\large
+%\section{\texorpdfstring{Polynomial Hierarchy cont}{Polynomial Hierarchy cont}}
+%\vspace{5mm}
+%\large
 
 \begin{lemma}
 	Let $C$ be an arbitrary class from PH.
@@ -86,11 +86,11 @@
 	\[x \in A \iff \exists^{p(|x|)} y \exists^{p(|x|)} z \exists^{p_1(|z|)} y \exists^{p(|x|)} w\]
 \end{proof}
 
-\begin{consequence}[Definition of PH by alternating quantifiers]
+\begin{definition}[PH by alternating quantifiers]\label{ph_altern}
 	\[ A \in \Sigma_k \iff \exists B \in \TP \exists p: x \in A \iff \exists^{p(|x|)} y_1, \forall^{p(|x|)} y_2 \ldots : (x, y_1, y_2, \ldots, y_k) \in B \]
 	Also
 	\[ A \in \Pi_k \iff \exists B \in \TP \exists p: x \in A \iff \forall^{p(|x|)} y_1, \exists^{p(|x|)} y_2 \ldots : (x, y_1, y_2, \ldots, y_k) \in B \]
-\end{consequence}
+\end{definition}
 \begin{proof}
 	Proof by induction on $k$.
 

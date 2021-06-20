@@ -1,6 +1,6 @@
-\section{\texorpdfstring{Polynomial Hierarchy cont}{Polynomial Hierarchy cont}}
-\vspace{5mm}
-\large
+%\section{\texorpdfstring{Polynomial Hierarchy cont}{Polynomial Hierarchy cont}}
+%\vspace{5mm}
+%\large
 
 %\subsection{Tutorial}
 
@@ -14,6 +14,8 @@
 %		\item $\forall \Sigma_k = \Pi_{k + 1}$
 %	\end{enumerate}
 %\end{exercise}
+
+\subsection{PH collapse}
 
 \begin{consequence}[Polynomial hierarchy collapse at level k]\label{ph_collapse}
 	if $\Sigma_k = \Pi_k$ for some $k > 0$ then
@@ -152,8 +154,8 @@ Similarly $E_1$.
 	Therefore SAT is a special case of QBF.
 \end{note}
 
-\begin{theorem}
-	QBF is in PS.
+\begin{theorem}[QBF $\in$ PS]
+	QBF $\in$ PS.
 \end{theorem}
 \begin{proof}
 	We construct DTM to evaluate QBF without free variables as following
@@ -257,7 +259,7 @@ Similarly $E_1$.
 	Therefore we use a different reducibility.
 \end{note}
 
-\begin{definition}[log-space reducibility]
+\begin{definition}[log-space reducibility]\label{log_red}
 	A is \emph{log-space} reducible to B if $\exists$ DTM transducer M that works in log space (excluding input and output tape).
 	Such that $x \in A \iff M(x) \in B $.
 \end{definition}
@@ -266,7 +268,7 @@ Similarly $E_1$.
 	L is $\TP$-complete $\iff L \in \TP \land \forall A \in \TP A$ is log-space reducible to L.
 \end{definition}
 
-\begin{theorem}[P-complete vs LOG]
+\begin{theorem}[P-complete vs LOG]\label{p_comp_log}
 	Let $L$ be $\TP$-complete and $L \in LOG = DS(\log(n)) \Rightarrow \TP = LOG$.
 \end{theorem}
 \begin{proof}
@@ -320,8 +322,110 @@ Similarly $E_1$.
 Q: what if we use log-space reducibility in $\TNP$-complete definition?
 This is stricter, since if we can reduce in log-space, we can also reduce in polynomial time (by time and space comparison with $2^n$).
 
-\begin{theorem}[Szelepcsenyi-Immerman]
+\subsection{$NL = co-NL$ by Szelepcsenyi-Immerman}
+% 6th lecture
+
+\begin{theorem}[Szelepcsenyi-Immerman(1988)]
 	\[NL = co-NL \]
 \end{theorem}
 \begin{proof}
+	Similar proof as in case $L \in \TNP$-complete $\land L \in co-\TNP$.
+	But the reducibility is again log space \cref{log_red}.
+
+	Assume, $L \in NL$-complete.
+	Let $L_a \in NL$ be arbitrary.
+
+	Let $M_{log}$ be a log space transducer, $M$ be acceptor for $co-L$.
+
+	Then $M_{log} + M$ is an acceptor for $co-L_a$.
+
+	Output of the transducer can be quite large.
+	Which then becomes working tape for acceptor.
+	Similarly, as in previous theorem \cref{p_comp_log} output of the transducer is added character by character.
+
+	Let the desirable language be
+	\[ L = PATH = \{ (G, s, t)|\ \text{G is an undirected graph in which}\ \exists Path(s, t) \} \]
+	Graph can be encoded by the following:
+	\begin{itemize}
+		\item for $n$ vertices $\log n$ counter is enough.
+		\item for each vertex we store list of neighbors.
+	\end{itemize}
+
+	Easy to see, that PATH $\in \TP$, since BFS, DFS can solve problem in poly time.
+
+	PATH $\in LOG$ is an open question.
+	However, with NTS log space is enough since we can try all paths with size $n$ by picking the next neighbor randomly.
+	In each step it is sufficient to remember code of the current vertex and path size counter on separate tapes.
+	Both of them are of size $\bigO(\log n)$.
+
+	The algorithm:
+	\begin{enumerate}
+		\item vertex curr $= s; counter = 0$;
+		\item while($counter < n$)\{
+		\item pick neighbor U at random; if($U = t$) accept;
+		\item $curr = U$;
+		\item \}
+		\item reject.
+	\end{enumerate}
+
+	To show that PATH is $NL$-hard, we will treat the graph as the configuration graph.
+	And the $Path(s, t)$ will be a path from $C_0$ to $C_{accept}$.
+	WLOG there is only one $C_{accept}$ configuration.
+
+	Let $L_a \in NL$ be arbitrary, therefore $\exists$ log space acceptor $M: L_a = L(M)$.
+
+	Transducer $M_{log}$ encodes the configuration graph of $L_a$.
+
+	Code of the acceptor is not a problem, as size of $M$ does not depend on the input.
+	Transition table if $M$ is embedded in the control unit.
+
+	Space needed for 1 configuration of $M$ is $\bigO(\log n)$.
+	As the work tape is bounded by the assumption, and for the position of the head $\bigO(\log n)$ is also enough.
+
+	The last step is to prove co-PATH $\in NL$.
+	Algorithm is the following:
+	\begin{itemize}
+		\item count vertices reachable from $s$ in G.
+		\item count vertices reachable from $s$ in $G \setminus \{t\}$.
+		\item if equal - accept.
+	\end{itemize}
+
+	There is no need to generate encoding of graph $G \setminus \{t\}$, since $t$ is part of input and we can ignore it by single "if".
+
+	How to count reachable vertices? The number is bounded by $n$ therefore, $\bigO(\log n)$ space is enough.
+
+	\begin{definition}
+		\[ R_i = \{ u |\ u\ \text{is reachable from}\ s\ \text{by path length}\ \leq i \} \]
+		Also
+		\[ R_i = R_{i - 1} \cup \{ a |\ \exists b \in R_{i - 1}: (a, b) \in E(G) \} \]
+	\end{definition}
+
+	We want to compute $|R_n|$.
+	To do so, we compute non-deterministically compute $|R_0|, |R_1|, \ldots, |R_n|$.
+	At each step, we remember only the last number.
+	Algorithm to compute $R_i$:
+	% todo rewrite, extremely messy
+	\begin{enumerate}
+		\item $|R_0| = 1|$;
+		\item guess $0 \leq g \leq n$ and verify:
+			\begin{enumerate}
+				\item $g \geq |R_i|$\\
+					Generate non-deterministically all subsets $V \subseteq V(G)$ of vertices of size $g$.
+					Vertices are ordered by increasing number of their codes.
+					Check whether $\forall v \in V: \exists Path(s, v): |Path(s, v)| = g$.
+				\item $g \leq |R_i|$.\\
+					Is equivalent to check
+					\[ |V \setminus R_i| \geq n - g \]
+					Algorithm:
+					% todo rewrite as procedure
+					\begin{enumerate}
+						\item non deterministically generate $V_t \subseteq V(G): |V_t| = (n - g)$ vertices.
+						\item $\forall a \in V_t$ check $a \in V(G) \setminus R_i$.
+						\item generate $V_r \subseteq V(G): |V_r| = |R_{i - 1}|$ non deterministically: select $|R_{i - 1}|$ vertices and check $Path(s, a): |Path(s, a)| = i - 1$.
+						\item $\forall b \in V_r$ check $a \ne b \land (b, a) \notin E(G)$.
+					\end{enumerate}
+			\end{enumerate}
+	\end{enumerate}
+
+	Required space is again $\bigO(\log n)$ as in each step algorithm stores constant number of vertices.
 \end{proof}

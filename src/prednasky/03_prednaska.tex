@@ -2,6 +2,53 @@
 \vspace{5mm}
 \large
 
+\subsection{Simplified PH}
+
+\begin{definition}
+	Consider a sequence
+	\[ \Sigma_0^P, \Sigma_1^P, \Sigma_2^P, \ldots \]
+	Where $\Sigma_0^P = \TP, \Sigma_{i + 1}^P = \TNP(\Sigma_i^P)$.
+
+	And Polynomial hierarchy(simplified) is:
+	\[ PH = \bigcup_{i \geq 1} \Sigma_i^P \]
+\end{definition}
+
+\begin{theorem}[Polynomial hierarchy(simplified)]
+	\[ PH \subseteq PS \]
+
+	In plain words, PH is only smth in between NP and PS.
+\end{theorem}
+\begin{proof}
+	By induction prove $\forall i: \Sigma_i \subseteq PS$.
+
+	\begin{itemize}
+		\item $i = 0 \Rightarrow \TP \subseteq PS$
+		\item $i \to i + 1$, assume $\Sigma_i \subseteq PS$.
+	\end{itemize}
+
+	By definition: $\Sigma_{i + 1} = \TNP(\Sigma_i)$
+	Then
+	\[ \TNP(\Sigma_i) \subseteq \TNP(PS) \]
+	We made set of oracles larger, set of recognized languages cannot shrink.
+
+	Now we use $\forall C: \TNP(C) \subseteq PS(C)$.\\
+	Therefore
+	\[ \TNP(C) \subseteq PS(PS) \subseteq PS \]
+
+	Last inclusion is up to prove (similar to $\TP = \TP(\TP)$):\\
+	\[ B \in PS(PS) \iff \exists A \in PS \exists DTM M: B = L(M, A) \]
+	Where $M$ works in poly space.
+
+	\[ A \in PS \iff \exists DTM \ M_A: A = L(M_A) \]
+	Where $M_A$ works in poly space.
+	Same in $\TP = \TP(\TP)$ proof replace oracle QUERY by DTM computation (which accepts or rejects)
+
+	The last thing is to check that used space is polynomial.
+	Which is true since $\forall t \in QUERY: |t| \leq p(|x|)$ for some polynomial $p$.
+	Space taken by DTM $M^{\prime}$ that computes the QUERY is $p_t(|t|) \leq p_t(p(|x|))$.
+	Also, we can ask exponentially many QUERies, however the space is reused, therefore space is bounded by the largest QUERY.
+\end{proof}
+
 \subsection{Time and Space classes relation}
 
 \begin{reminder}[Space classes]
@@ -85,7 +132,7 @@
 	Moreover, if we prove strict equalities in leftmost and rightmost inclusions $\Rightarrow \TP \neq \TNP$.
 \end{note}
 
-\subsection{Polynomial hierarchy again}
+\subsection{Full Polynomial hierarchy}
 
 \begin{definition}
 	Consider a 3 sequences of classes
@@ -191,7 +238,7 @@
 		\item TODO check first inclusion
 			\[ \Delta_k = \TP(\Sigma_{k - 1}) \subseteq \TNP(\Sigma_{k - 1}) = \Sigma_k \]
 		\item
-			\[ \Delta_k \xlongequal{a)} co-\Delta_k = co-\TP(\Sigma_{k - 1}) = co-\TP(\Pi_{k - 1}) \subseteq co-\TNP(\Pi_{k - 1}) = \Pi_k \]
+			\[ \Delta_k \stackrel{\text{a)}}{=} co-\Delta_k = co-\TP(\Sigma_{k - 1}) = co-\TP(\Pi_{k - 1}) \subseteq co-\TNP(\Pi_{k - 1}) = \Pi_k \]
 	\end{enumerate}
 
 	e) Assume $\Sigma_k \subseteq \Pi_k$ we need to prove reverse.
