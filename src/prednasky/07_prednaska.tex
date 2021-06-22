@@ -1,0 +1,142 @@
+\section{\texorpdfstring{TM with advice}{TM with advice}}
+\vspace{5mm}
+\large
+% 8th lecture
+
+\begin{definition}
+	Let $T, s: \N \to \N$. Then
+	\[ DT(T(n))|_{a(n)} \]
+	is a class of languages recognizable by DTM in time $T(n)$ with $s(n)$ bit advice $\alpha_n$.
+	\[ L \in DT(T(n))|_{s(n)} \iff \exists DTM M \& \exists \{\alpha_n\}_{n \in \N}, \alpha_n \in \{ 0, 1 \}^{s(n)}: \]
+	\[ \forall x \in \{ 0, 1 \}^n: x \in L \iff M(x, \alpha_n) = 1 \]
+	And M makes $\bigO(T(n))$ steps on the input $(x, \alpha_n)$.
+\end{definition}
+
+\begin{note}
+	TM with advice is an non-uniform computation as advice size depends on input size.
+\end{note}
+
+\begin{theorem}[$\Ppoly$]
+	$\Ppoly = \bigcup_{c, d} DT(n^c)|_{n^d} $
+\end{theorem}
+\begin{proof}
+	"$\subseteq$".
+	Let $L \in \Ppoly$ then by definition exists polynomial time circuit $\{ C_n \}$ that recognizes $L$.
+	We set $\{ \alpha(n) \} = \{ C_n \}$ (via encoding) and the DTM M simulates $C_n$ on $x$.
+
+	As circuit is of polynomial size, M works in polynomial time.
+	Therefore
+	\[ L \in \bigcup_{c, d} DT(n^c)|_{n^d} \]
+
+	"$\supseteq$". Let $L \in \bigcup_{c, d} DT(n^c)|_{n^d} \Rightarrow \exists DTM M$ which works in time $T(n)$, uses advice $\{ \alpha(n) \}$ of size $a(n)$ and $L = M(x, \alpha_n)$.
+
+	Like in proof $\TP \subseteq \Ppoly$ \cref{tp_ppoly} there exists a polynomial size family of $\{ C_n \}$:
+	\[ \forall x \in \{ 0, 1 \}^n \forall \alpha \in \{ 0, 1 \}^{a(n)}: M(x, \alpha) = C_m(x, \alpha), m = n + a(n) \]
+
+	Now we hardcode $\{ \alpha_n \}$ into the circuit.
+	Define
+	\[ C_m^{hard}(x) = C_m(x, \alpha_n) \]
+	Then
+	\[ x \in L \iff M(x, \alpha_n) = 1 \iff C_m(x, \alpha_n) = 1 \iff C_m^{hard}(x) = 1 \Rightarrow L \in \Ppoly \]
+\end{proof}
+
+\begin{note}
+	Not every boolean function can be computed by a polynomial size circuit.
+\end{note}
+
+\begin{theorem}
+	\[ \forall n > 1, \exists f: \szo^n \to \szo \]
+	such that $f$ cannot be computed by circuit $|C| = \frac{2^n}{10n}$.
+\end{theorem}
+\begin{proof}
+	Idea: show the mismatch between \# of functions and \# of circuits.
+
+	Let $C$ be a circuit, $|C| = m$.
+	Since every elementary gate has at most 2 inputs, $C$ has $\leq 2m$ edges.
+	Therefore $C$ can be represented by a binary string of length $3m \log m$.
+	So
+	\[ |\{ C |\ |C| = m \}| = 2^{3m \log m} \]
+	However, there are $2^{2^n}$ functions.
+
+	Setting $m = \frac{2^n}{10n}$ we have at most
+	\[ 2^{3 \frac{2^n}{10n} \log (\frac{2^n}{10n})} \leq 2^{3 \frac{2^n}{10n} n} = 2^{\frac{3}{10} 2^n} < 2^{2^n} \]
+	circuits.
+\end{proof}
+
+\begin{consequence}
+	With growing $n$ more and more functions are not computable by polynomial circuits.
+\end{consequence}
+
+\begin{note}[Open Problem]
+	If we can find a family of functions $\{ f_n\}$ that are not computable by polynomial size circuit such that $L \in \TNP$.
+	Would imply $\TNP \nsubseteq \Ppoly \Rightarrow \TP \neq \TNP$.
+\end{note}
+
+\begin{definition}[$\Pi_n, \Sigma_n$-SAT]
+	\[ \Sigma_n-SAT = \exists x_1 \forall x_2 \ldots Q x_n \varphi(x_1, \ldots, x_n) = 1 \]
+	\[ \Pi_n-SAT = \forall x_1 \exists x_2 \ldots Q x_n \varphi(x_1, \ldots, x_n) = 1 \]
+	Where $Q$ is either $\exists$ of $\forall$ depending on parity of $n$, $\varphi \in CNF$.
+\end{definition}
+
+\begin{lemma}[$\Pi_n, \Sigma_n$-complete language]
+	$\Sigma_n-SAT$ is $\Sigma_n$-complete.
+	$\Pi_n-SAT$ is $\Pi_n$-complete.
+\end{lemma}
+\begin{proof}
+	For $\Sigma_n$ only as proof for $\Pi_n$ is the same.
+
+	Let $L \in \Sigma_n$ arbitrary.
+	By the PH definition via alternating quantifiers \cref{ph_altern}:
+	\[ \exists p \exists L_{po} \in \TP: x \in L \iff \exists^{p(n)} y_1, \forall^{p(n)} \ldots Q^{p(n)} y_n: (x, y_1, \ldots, y_n) \in L_{po} \]
+	Let $M$ be a DTM which accepts $L_{po}$.
+	From Cook-Levin theorem we can encode the computation of $M$ by a CNF $\varphi_n$:
+	\[ x \in L \iff \exists^{q(|x|)} t_1, \forall^{q(|x|)} \ldots Q^{q(|x|)} t_n: \varphi_n(v, t_1, \ldots, t_n) = 1 \]
+	where $v$ encodes input $x$ and $t_i$ encodes $y_i$ (both as binary string).
+	All encodings are of size $q(|x|)$.
+
+	$L$ can be a language over any alphabet, however the blowup of binary encoding would be logarithmic with respect to alphabet size.
+\end{proof}
+
+\begin{theorem}[Karp-Lipton(1980)]
+	$\TNP \subseteq \Ppoly \Rightarrow PH = \Sigma_2^p$.
+\end{theorem}
+\begin{proof}
+	% todo check
+	Suffices to prove $\Pi_2 \subseteq \Sigma_2$ rest follows from \cref{ph_collapse}???
+	To do that we need to prove
+	\[\exists L \in \Pi_2\text{-complete}\ \& L \in \Sigma_2 \]
+
+	Idea: show $\Pi_2$-SAT $\in \Sigma_2$.
+
+	$\Pi_2$-SAT is a language of following CNF formulas:
+	\begin{equation}
+		\forall x \in \szo^n \exists y \in \szo^n: \varphi(x, y) = 1
+		\tag{$*$}
+	\end{equation}
+	If we fix $x$ we get a language
+	\[ L_x = \{ (\varphi, x) |\ \exists y \in \szo^n: \varphi(x, y) = 1 \} \]
+	Then
+	\[ \forall x: L_x \in \Sigma_1 = \TNP \stackrel{\text{assumption}}{\subseteq} \Ppoly \]
+	Therefore $\exists \{ C_k \}: |C_k| = p(k)$ such that
+	\[ \forall \varphi_{n + m} \forall x \in \szo^n: C_k(\varphi_{n + m}, x) = 1 \iff \forall y \in \szo^n \varphi(x, y) = 1 \]
+	Where $k$ is \# of bits to encode $(\varphi, x)$.
+
+	Main idea: change $\{ C_k \}$ to a new family $\{ C_k^{out} \}$ which also outputs the satisfiable assignment.
+	Meaning if $C_k$ outputs 1 then $C_k^{out}$ outputs $y \in \szo^n: \varphi(x, y) = 1$.
+
+	$C_k^{out}$ outputs such $y$ bit by bit by chaining circuits that do $\varphi \land y[i]$ where $i$ is the bit position in $y$.
+	We assume $|C_k^{out}| \leq q(n)$.
+	We can encode $C_k^{out}$ into a bit string of length $r(k) \leq \bigO(q^2(n))$.
+
+	Then,
+	\begin{equation}
+		\exists y \in \szo^{r(k)} \forall x \in \szo^n: \varphi(x, y) = C_k^{out}(\varphi, x)) = 1
+	\tag{$**$}
+	\end{equation}
+
+	Claim $(*) \iff (**)$ since if $(*)$ is true than $\exists$ circuit that on input $(\varphi, x)$ outputs $y$ such that $\varphi(x, y) = 1$.
+	If $(*)$ is false $\Rightarrow \exists x: \forall y: \varphi(x, y) = 0$ then $(**)$ is also false.
+
+	Also $(**)$ is a $\Sigma_2$ formula, therefore $\Pi_2$-SAT $\in \Sigma_2$.
+
+\end{proof}
