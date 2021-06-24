@@ -35,7 +35,7 @@
 	\[ \Pi_{k + j + 1} \xlongequal{\cref{polyn_q}\ f)} \forall \Sigma_{k + j} \xlongequal{I.H.} \forall \Pi_{k + j} \xlongequal{I.H.} \Sigma_k \]
 \end{proof}
 
-\begin{consequence}
+\begin{consequence}[PH not collapse]
 	Either $\forall k: \Sigma_k \subset \Sigma_{k + 1}$ or PH collapses.
 \end{consequence}
 \begin{proof}
@@ -58,7 +58,7 @@
 	By reversing previous condition.
 \end{proof}
 
-\begin{definition}
+\begin{definition}[PSPACE-complete]
 	$L$ is PSPACE-complete if: \\
 	$L \in PSPACE$ and\\
 	$\forall L_a \in PSPACE: L_a$ is poly time reducible to $L$.
@@ -66,7 +66,7 @@
 	Note that we use Time reducibility for Space class.
 \end{definition}
 
-\begin{lemma}\label{ph_col_lemma}
+\begin{lemma}[$PH = \Sigma_k$]\label{ph_col_lemma}
 	Let $L$ be $PS$-complete and $L \in \Sigma_k$ then $PH = \Sigma_k$.
 \end{lemma}
 \begin{proof}
@@ -125,7 +125,7 @@
 	\end{enumerate}
 \end{definition}
 
-\begin{definition}
+\begin{definition}[QBF problem]
 	QBF problem (language).
 
 	Input: QBF $F$ with no free variables.
@@ -394,7 +394,7 @@ This is stricter, since if we can reduce in log-space, we can also reduce in pol
 
 	How to count reachable vertices? The number is bounded by $n$ therefore, $\bigO(\log n)$ space is enough.
 
-	\begin{definition}
+	\begin{definition}[$R_i$]
 		\[ R_i = \{ u |\ u\ \text{is reachable from}\ s\ \text{by path length}\ \leq i \} \]
 		Also
 		\[ R_i = R_{i - 1} \cup \{ a |\ \exists b \in R_{i - 1}: (a, b) \in E(G) \} \]

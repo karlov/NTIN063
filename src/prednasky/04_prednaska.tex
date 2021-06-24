@@ -2,10 +2,10 @@
 %\vspace{5mm}
 %\large
 
-\begin{lemma}
-	Let $C$ be an arbitrary class from PH.
+\begin{lemma}[$A^{\ast}$]
+	Let $\C$ be an arbitrary class from PH.
 	Then
-	\[ \forall A \in C \iff A^{\ast} \in C \]
+	\[ \forall A \in \C \iff A^{\ast} \in \C \]
 	Where
 	\[ A^{\ast} = \{ x |\ \exists n \exists y_1 \in A \ldots \exists y_2 \in A: x = (y_1, \ldots, y_n) \} \]
 	In other words, concatenation of the words from $A$ are also in $A$.
@@ -37,7 +37,7 @@
 \end{proof}
 
 \begin{consequence}
-	If we have $A,B,T \in C \Rightarrow D \in C$ where
+	If we have $A,B,T \in \C \Rightarrow D \in \C$ where
 	\[ D = \{ x |\ \exists a \in A, \exists b \in B, \exists t \in T: x = (a, b, t) \} \]
 
 	Proof is the same, as of the lemma, but we have multiple TM.
@@ -124,7 +124,7 @@
 \end{example}
 
 \begin{note}
-	If we have an hard problem, it can be encoded in CNF and solved by CNF machinery.
+	If we have a hard problem, it can be encoded in CNF and solved by CNF machinery.
 
 	CNF solvers are highly optimized over more than 20 years.
 \end{note}

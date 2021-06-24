@@ -14,6 +14,7 @@
 	\item NT - NTIME
 	\item QBF - quantifiable boolean formula
 	\item CNF - conjunctive normal form
+	\item PH - polynomial hierarchy
 \end{itemize}
 
 \begin{theorem}[NT and DS relation]\label{nt_ds_rel}
@@ -72,16 +73,18 @@ b) tape to store $y$ (vector that encode branch of NTM)
 	$c_L^2$ is another constant.
 \end{proof}
 
-\paragraph{Universal TM}
+\begin{definition}[Universal TM]
 Input: $(x,y)$, where $x$ is Godel number of TM to be simulated. $y$ is input of TM.\\
 Alphabet: $\Sigma = \{ 0, 1 \} $.\\
-Working tapes: 3\\
+Working tapes: 3
 \begin{enumerate}
 	\item Tape with transition table of $M_x$.
 	\item Tape with current state $q$
 	\item Working tape
 \end{enumerate}
-If $S(n)$ is space used by $M_x \Rightarrow$ we need $\max(\lceil \log(t) \rceil, S(n), |x|)$.
+If $S(n)$ is space used by $M_x \Rightarrow$ we need $\max(\lceil \log(t) \rceil, S(n), |x|)$.\\
+TODO what is $t$?
+\end{definition}
 
 \begin{observation}
 	If initial TM has $k$ tapes and time complexity is $T(n)$ we can compress to 2 tapes with a cost of time complexity being $\bigO(T(n) \log(n))$. \\
@@ -91,7 +94,7 @@ If $S(n)$ is space used by $M_x \Rightarrow$ we need $\max(\lceil \log(t) \rceil
 	Time complexity of Universal TM is dominated by finding the transition $\Rightarrow \bigO(|x| \cdot T(n))$.
 \end{observation}
 
-\begin{definition}
+\begin{definition}[Space constructible function]
 	Function $f$ is \emph{Space constructible} $\iff \exists$ TM with unary alphabet which marks exactly $|f(n)|$ cells on the working tape. E.g. $\log, e^x,$ polynomials.
 \end{definition}
 
@@ -103,13 +106,13 @@ If $S(n)$ is space used by $M_x \Rightarrow$ we need $\max(\lceil \log(t) \rceil
 	Construction by diagonalization $\Rightarrow$ find a language that is different from all in $\bigO(S_1)$.
 \end{proof}
 
-\begin{definition}
+\begin{definition}[Time constructible function]
 	Function $f$ is \emph{Time constructible} $\iff \exists$ TM that does exactly $|f(n)|$ steps. You can think of it as alarm clock.
 \end{definition}
 
-\begin{note}
+\begin{observation}
 	Every time constructible function is space constructible.
-\end{note}
+\end{observation}
 
 \begin{theorem}[Time hierarchy]\label{t_hier}
 	Let $S_1, S_2$ are time constructible functions and
@@ -217,7 +220,7 @@ space.
 	Now we use \cref{transl_space} for
 	\[ S_1 = \frac{s+1}{t}, S_2 = \frac{s}{t}, f(n) = n^{(s + i)t}, i = 0, 1 \ldots, t \]
 	We get
-	\[ \forall i: NS((n^{(s + i)t})^{(s + 1)/t} \subseteq NS((n^{(s + i)t})^{s/t} \Rightarrow \forall i: NS(n^{(s + i)(s + 1)}) \subseteq NS(n^{(s + i)s}) \]
+	\[ \forall i: NS((n^{(s + i)t})^{(s + 1)/t}) \subseteq NS((n^{(s + i)t})^{s/t}) \Rightarrow \forall i: NS(n^{(s + i)(s + 1)}) \subseteq NS(n^{(s + i)s}) \]
 	Now we write for all $i$:
 	\begin{itemize}
 		\item $i = 0:\, NS(n^{s(s + 1)}) \subseteq NS(n^{s^2}) $

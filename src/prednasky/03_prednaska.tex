@@ -4,7 +4,7 @@
 
 \subsection{Simplified PH}
 
-\begin{definition}
+\begin{definition}[Simplified PH]
 	Consider a sequence
 	\[ \Sigma_0^P, \Sigma_1^P, \Sigma_2^P, \ldots \]
 	Where $\Sigma_0^P = \TP, \Sigma_{i + 1}^P = \TNP(\Sigma_i^P)$.
@@ -134,7 +134,7 @@
 
 \subsection{Full Polynomial hierarchy}
 
-\begin{definition}
+\begin{definition}[Polynomial hierarchy]
 	Consider a 3 sequences of classes
 	\[ \Sigma_k, \Pi_k, \Delta_k \]
 	Where
@@ -158,7 +158,7 @@
 	\[ L \in C \iff \overline{L} \in co-C \]
 \end{note}
 
-\begin{properties}[Polynomial Hierarchy] Relations
+\begin{theorem}[Polynomial Hierarchy] Relations
 	\begin{enumerate}[label=\alph*)]
 		\item $\Sigma_1 = \TNP $.
 		\item $\Pi_k = co-\Sigma_k \land \Sigma_k = co-\Pi_k$.
@@ -168,7 +168,7 @@
 		\item $\Sigma_{k + 1} = \TNP(\Delta_{k + 1})$.
 		\item $\Pi_{k + 1} = co-\TNP(\Delta_{k + 1})$.
 	\end{enumerate}
-\end{properties}
+\end{theorem}
 \begin{proof}
 	a) $\TNP(\TP) = \TNP$ also $\TP(\TP) = \TP$.\\
 	Proof by embedding oracle computation by simulating using DTM.
@@ -197,7 +197,7 @@
 
 \end{proof}
 
-\begin{properties}[Polynomial Hierarchy - 2] Relations 2.
+\begin{theorem}[Polynomial Hierarchy - 2] Relations 2.
 	\begin{enumerate}[label=\alph*)]
 		\item $\Delta_k = co-\Delta_k$
 		\item $\TP(\Delta_k) = \Delta_k$
@@ -205,7 +205,7 @@
 		\item $\Delta_k = \Sigma_k \cap \Pi_k$
 		\item if $\Sigma_k \subseteq \Pi_k \lor \Pi_k \subseteq \Sigma_k \Rightarrow \Pi_k = \Sigma_k$
 	\end{enumerate}
-\end{properties}
+\end{theorem}
 \begin{proof}
 	a) for deterministic computation we can negate every answer.
 	Specifically this rule means $\TP = co-\TP$
@@ -268,7 +268,7 @@
 \end{theorem}
 \begin{proof}
 	Let
-	\[ L = \{ (F, F^{\prime} |\ F \in SAT \land F^{\prime} \in \overline{SAT} \} \]
+	\[ L = \{ (F, F^{\prime}) |\ F \in SAT \land F^{\prime} \in \overline{SAT} \} \]
 	We can construct DTM with following algorithm for L
 
 	%todo add identation for readbility
@@ -295,57 +295,57 @@
 \end{proof}
 
 \subsection{Constrained quantifiers}
-\begin{definition}
+\begin{definition}[Constrained $\exists$]
 	\[ \exists^{p(n)} x: R(x) := \exists x: |x| \leq p(n) \land R(x) \]
 \end{definition}
-\begin{definition}
+\begin{definition}[Constrained $\forall$]
 	\[ \forall^{p(n)} x: R(x) := \forall x: |x| \leq p(n) \land R(x) \]
 \end{definition}
 
-\begin{definition}
-	Let $C$ be a class of languages, we define class of languages $\exists C$ as following:
-	\[ A \in (\exists C) \xLeftrightarrow{def} \exists B \in C, \exists p: x \in A \iff \exists^{p(|x|)} y: \langle x, y \rangle \in B \]
+\begin{definition}[$\exists \C$]
+	Let $\C$ be a class of languages, we define class of languages $\exists \C$ as following:
+	\[ A \in (\exists \C) \stackrel{\text{def}}{\iff} \exists B \in \C, \exists p: x \in A \iff \exists^{p(|x|)} y: \langle x, y \rangle \in B \]
 
-	Note that if $C = \TP \Rightarrow \exists \TP = \TNP $.
+	Note that if $\C = \TP \Rightarrow \exists \TP = \TNP $.
 	Since $y$ is a branch of NTM (certificate)
 \end{definition}
 
-\begin{definition}
-	Let $C$ be a class of languages, we define class of languages $\forall C$ as following:
-	\[ A \in (\forall C) \xLeftrightarrow{def} \exists B \in C, \forall p: x \in A \iff \forall^{p(|x|)} y: \langle x, y \rangle \in B \]
+\begin{definition}[$\forall \C$]
+	Let $\C$ be a class of languages, we define class of languages $\forall \C$ as following:
+	\[ A \in (\forall \C) \stackrel{\text{def}}{\iff} \exists B \in \C, \forall p: x \in A \iff \forall^{p(|x|)} y: \langle x, y \rangle \in B \]
 
-	Note that if $C = \TP \Rightarrow \forall \TP = co-\TNP $.
+	Note that if $\C = \TP \Rightarrow \forall \TP = co-\TNP $.
 \end{definition}
 
-\begin{lemma}\label{quant_class_rel}
-	Let $C$ be an arbitrary class of languages. Then
+\begin{lemma}[$\exists \C, \forall \C, co-\C$]\label{quant_class_rel}
+	Let $\C$ be an arbitrary class of languages. Then
 	\begin{equation}
-		co-\exists C = \forall(co-C)
+		co-\exists \C = \forall(co-\C)
 	\end{equation}
 	As
-	\[ A \in (\exists C) \iff \overline{A} \in (\forall(co-C)) \]
+	\[ A \in (\exists \C) \iff \overline{A} \in (\forall(co-\C)) \]
 
 	\begin{equation}
-		C \subseteq \exists C \land C \subseteq \forall C
+		\C \subseteq \exists \C \land \C \subseteq \forall \C
 	\end{equation}
 \end{lemma}
 \begin{proof}
 	Equation (3): \\
 	Negating the definition
-	\[ A \in (\exists C) \iff \exists B \in C, \exists p: x \in A \iff \exists^{p(|x|)} y: \langle x, y \rangle \in B \]
+	\[ A \in (\exists \C) \iff \exists B \in \C, \exists p: x \in A \iff \exists^{p(|x|)} y: \langle x, y \rangle \in B \]
 	we get
 	\[ x \in \overline{A} \iff \forall^{p(|x|)} y: \langle x, y \rangle \in \overline{B} \]
 	Which is the same as
-	\[ \overline{A} \in \forall (co-C) \iff \exists \overline{B} \in co-C, \exists p: \forall^{p(|x|)} y: \langle x, y \rangle \in \overline{B} \]
+	\[ \overline{A} \in \forall (co-\C) \iff \exists \overline{B} \in co-\C, \exists p: \forall^{p(|x|)} y: \langle x, y \rangle \in \overline{B} \]
 
 	Equation (4): \\
-	For $\exists C$ take $B = A \land y = \emptyset$.
+	For $\exists \C$ take $B = A \land y = \emptyset$.
 	Clearly $\langle x, \emptyset \rangle \simeq x$.
 
-	For $\forall C$ take polynomial with degree 0, only $y = \emptyset$ is accepted.
+	For $\forall \C$ take polynomial with degree 0, only $y = \emptyset$ is accepted.
 \end{proof}
 
-\begin{properties}[Polynomial Hierarchy with quantifiers]\label{polyn_q}
+\begin{theorem}[Polynomial Hierarchy with quantifiers]\label{polyn_q}
 	\begin{enumerate}[label=\alph*)]
 		\item $\exists \TP = \TNP$
 		\item $\forall \TP = co-\TNP $.
@@ -354,7 +354,7 @@
 		\item $\forall k \geq 0: \exists \Pi_k = \Sigma_{k + 1}$.
 		\item $\forall k \geq 0: \forall \Sigma_k = \Pi_{k + 1}$.
 	\end{enumerate}
-\end{properties}
+\end{theorem}
 \begin{proof}
 	a) "$\exists \TP \subseteq \TNP$"
 	\[ A \in (\exists \TP) \iff \exists B \in \TP, \exists p: x \in A \iff \exists^{p(|x|)} y: \langle x, y \rangle \in B \]
@@ -388,7 +388,7 @@
 	We want
 	\[ A \in \TNP(\Sigma_{k - 1}) = \Sigma_k \]
 	So, we construct an NTM M with oracle $C \in \Sigma_{k - 1}: L(M, C) = A$, we also use
-	\[ B \in \TNP(\Sigma_{k - 1} \iff \exists M_B: B = L(M_B, C) \]
+	\[ B \in \TNP(\Sigma_{k - 1}) \iff \exists M_B: B = L(M_B, C) \]
 	algorithm of M:
 	\begin{enumerate}
 		\item guess y: $|y| \leq p(|x|)$

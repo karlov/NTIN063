@@ -2,7 +2,7 @@
 \vspace{5mm}
 \large
 
-\begin{definition}
+\begin{definition}[Oracle TM]
 	\textbf{Oracle} TM is a DTM with an Oracle A (where A is a language) differs from an ordinary DTM by the following:
 	\begin{itemize}
 		\item Oracle tape (with same alphabet as TM)
@@ -31,7 +31,7 @@ Computation forms a tree, that branches at every QUERY.
 	"$\Leftarrow$". If oracle language is not recognizable (e.g. HALT), we cannot simulate such NTM.
 \end{observation}
 
-\begin{definition}
+\begin{definition}[Turing reducibility]
 	\emph{Turing reducibility} - let A,B languages.
 	We say that A is (deterministically) Turing reducible to B in poly time if there $\exists$ an oracle DTM M working in poly time st
 	\[ A = L(M, B), A \leq^T B \]
@@ -41,13 +41,13 @@ Computation forms a tree, that branches at every QUERY.
 	$A \in P \Rightarrow A \leq^T \emptyset$. Since we have poly time algorithm without any oracle.
 \end{example}
 
-\begin{definition}
+\begin{definition}[$\TP(A)$]
 	Let $A$ be a language, then
 	\[ \TP(A) = \{ B | B \leq^T A \} \]
 \end{definition}
-\begin{definition}
-	Let C be a set of languages then
-	\[ \TP(C) = \{ B |\, \exists A \in C: B \leq^T A \} \]
+\begin{definition}[$\TP(\C)$]
+	Let $\C$ be a set of languages then
+	\[ \TP(\C) = \{ B |\, \exists A \in \C: B \leq^T A \} \]
 \end{definition}
 
 \begin{observation}
@@ -71,45 +71,45 @@ Computation forms a tree, that branches at every QUERY.
 	Which is also polynomial.
 \end{proof}
 
-\begin{definition}
+\begin{definition}[Turing reducibility (N)]
 	\emph{Turing reducibility (non-deterministic)} - let A,B languages.
 	We say that A is non-deterministically Turing reducible to B in poly time if there $\exists$ an oracle NTM M working in poly time st
 	\[ A = L(M, B), A \leq^{NP} B \]
 \end{definition}
 
-\begin{definition}
+\begin{definition}[$\TNP(A)$]
 	Let $A$ be a language, then
 	\[ \TNP(A) = \{ B | B \leq^{NP} A \} \]
 \end{definition}
-\begin{definition}
-	Let C be a set of languages then
-	\[ \TNP(C) = \{ B |\, \exists A \in C: B \leq^{NP} A \} \]
+\begin{definition}[$\TNP(\C)$]
+	Let $\C$ be a set of languages then
+	\[ \TNP(\C) = \{ B |\, \exists A \in \C: B \leq^{NP} A \} \]
 \end{definition}
 
 \begin{note}
 	Relativised definition also works for other classes, e.g. EXPTIME.
 \end{note}
 
-\begin{definition}
+\begin{definition}[PS]
 	\[ PS = \bigcup_{i = 0}^{\infty} DS(n^i) = NPS = \bigcup_{i = 0}^{\infty} NS(n^i) \]
 	Where the 2nd equality holds because of Savic theorem.
 \end{definition}
 
-\begin{definition}
-	$PS(A) = \{ B | \, B$ accepted by an oracle DTM working in poly space, st $B = L(M, A)$.
+\begin{definition}[PS(A)]
+	$PS(A) = \{ B | \, B$ accepted by an oracle DTM working in poly space, st $B = L(M, A)\}$.
 
-	Also for class of languages C.
+	Also for class of languages $\C$.
 \end{definition}
 
 \begin{note}
 	\[ \TP \subseteq \TNP \subseteq PS \]
 
-	Where last inclusion hold because of $NT(f(n)) \ subseteq DS(f(n))$.
+	Where last inclusion hold because of $NT(f(n)) \subseteq DS(f(n))$.
 
 	Same proof but as for ordinary TM, but with oracle TM that shares same oracle language A.
 \end{note}
 
-\begin{observation}
+\begin{observation}[Open question]
 	What about $\TNP(\TNP)$? Still an open question, depends on $\TP = \TNP$.
 
 	We cannot simply plug NTM back to the original TM with oracle, as NTM serving as an oracle could have multiple accepting or rejecting leaves.
