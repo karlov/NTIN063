@@ -58,7 +58,7 @@
 \end{definition}
 
 % todo change to Fact and fix cref
-\begin{theorem}[Chernoff]\label{chernoff}
+\begin{theorem}[Chernoff bound]\label{chernoff}
 	Let $x_i, \ldots, x_n$ be independent r.v. such that $x_i \in \szo$ and let $\mu = \sum \E[x_i]$ then
 	\[ \forall c > 0: \Prob[|\sum x_i - \mu| \geq c \cdot \mu ] \leq 2e^{-\min\{ \frac{c^2}{4}, \frac{c}{2} \} \cdot \mu } \]
 \end{theorem}
@@ -129,7 +129,7 @@
 	\[ \sum i (1 - c)^{i - 1} c \]
 	which converges.
 \end{proof}
-\begin{lemma}[Biased coin]
+\begin{lemma}[Biased coin (Von-Neumann)]
 	A biased coin with probability $\Prob[\text{head}]=\rho$ can be simulated in $\bigO(1)$ time by a ``standard'' PTM (with fair coin) if the $i$-th bit of $\rho$ can be generated in $\text{poly}(n) = n^c$.
 \end{lemma}
 \begin{proof}
@@ -200,7 +200,7 @@
 
     Note that we can again prove that class is the same with either expected or exact polynomial time.
 \end{definition}
-\begin{lemma}[On probabilistic classes]
+\begin{lemma}[On probabilistic classes]\label{rp_bpp_zpp_prop}
     \begin{enumerate}
         \item $RP\subseteq \TNP$
         \item $BPP=co-BPP$
@@ -216,18 +216,118 @@
         \item Design new PTM which simulates original PTM but flips all answers.
 		\[ \Prob[\overline{M}(x) = \overline{L}(x)] = \Prob[1 - M(x) = 1 - L(x)] = \Prob[M(x) = L(x)] \geq \frac{2}{3} \]
 	\item Follows from stricter definition of $RP$. Second condition follows from 2).
-        \item $ZPP=RP\cap co-RP$
+        \item $ZPP \subseteq RP\cap co-RP$
+		Follows from the stricter definition of ZPP.
+
+		$ZPP \supseteq RP\cap co-RP$. Let $L \in RP\cap co-RP$ arbitrary.
+		By definition, we have 2 PTM: $M_y, M_n$.
+    		\begin{gather*}
+			x\in L \Rightarrow \Prob[M_y(x)=1] \geq 2/3 \& \Prob[M_n(x)=1] = 1\\
+			x \notin L\Rightarrow\Prob[M_y(x)=0]=1 \& \Prob[M_n(x)=1] \geq 2/3
+    		\end{gather*}
+		Then, if $M_y(x) = 1 \Rightarrow x \in L$ (for sure) and symmetrically $M_n(x) = 1 \Rightarrow x \notin L$ (for sure).
+		Construct new PTM $M$ that simulates both PTM in parallel, output depending on the simulation:
+		\begin{itemize}
+			\item $M_y(x) = 1 \Rightarrow M(X) = 1$
+			\item $M_n(x) = 0 \Rightarrow M(X) = 0$
+			\item $M_y(x) = 0 \& M_n(x) = 1 \Rightarrow$ try simulation again
+		\end{itemize}
+
+		Then
+    		\begin{gather*}
+			x \in L \Rightarrow \Prob[M_y(x) = 0 \& M_n(x) = 1] \leq \frac{1}{3} \cdot 1 = \frac{1}{3} \\
+			x \notin L \Rightarrow \Prob[M_y(x) = 0 \& M_n(x) = 1] \leq 1 \cdot \frac{1}{3} = \frac{1}{3}
+    		\end{gather*}
+
+		Expected \# of repetitions of the simulation is $\leq \sum i \cdot (\frac{1}{3})^i$.
+		Which converges.
     \end{enumerate}
 \end{proof}
-\begin{theorem}[$BPP \subseteq \Ppoly$]
+
+\begin{theorem}[$BPP \subseteq \Ppoly$ (Adleman)]
 	\[ BPP \subseteq \Ppoly \]
 \end{theorem}
 \begin{proof}
-    TODO
+	$L \in BPP \Rightarrow \exists DTM\ M$ with 2 inputs $x \in \szo^n, r \in \szo^m, m = poly(n)$ such that (by \cref{error_reduction}):
+	\[ \Prob[M(x, r) \neq L(x)] \leq \frac{1}{2^{n^2}} \leq \frac{1}{2^{m + 1}} \]
+
+	$r \in \szo^m$ is \emph{bad} for $x \in \szo^m$ if $M(x, r) \neq L(x)$.
+	For a fixed $x$ there are $\frac{2^m}{2^{n + 1}}$ strings $r$ that are bad for $x$.
+	For all $x$ there exists at $\leq 2^n \cdot \frac{2^m}{2^{n + 1}} = 2^m/2$ bad strings.
+	Therefore $\geq 1/2 2^m$ strings are good $\forall x$.
+
+	Pick some $r_0$ that is good for $x$.
+	From $\TP \subseteq \Ppoly$ \cref{tp_ppoly} $M$ can be simulated by polynomial size family of circuits $\{ C_{m + n} \}$.
+	Note that value of $r_0$ is hard wired into the circuit.
+	Then
+	\[ \forall x \in \szo^n: L(x) = M(x, r_0) = C_{m + n}(x) \Rightarrow L \in \Ppoly \]
 \end{proof}
+
 \begin{theorem}[Sipser-Gács-Lautemann]
-    BPP$\subseteq \Sigma^p_2 \cap \Pi_2^p$
+	BPP$\subseteq \Sigma^p_2 \cap \Pi_2^p$
 \end{theorem}
 \begin{proof}
-    TODO
+	Since BPP is closed under complements \cref{rp_bpp_zpp_prop} it is enough to show
+	\[ BPP \subseteq \Sigma^p_2 \]
+
+	$L \in BPP \Rightarrow \exists DTM\ M$ with 2 inputs, size of random bits is $m$, such that (by \cref{error_reduction} setting $d = 1$):
+    	\begin{gather*}
+		x \in L \Rightarrow \Prob[M(x, r) = 1] \geq 1 - \frac{1}{2^n} \\
+		x \notin L \Rightarrow \Prob[M(x, r) = 1] \leq \frac{1}{2^n}
+    	\end{gather*}
+
+	Define
+	\[ \forall x \in \szo^n: S_x := \{ r |\ M(x, r) = 1 \} \]
+	Trivially
+    	\begin{gather*}
+		x \in L \Rightarrow |S_x| \geq (1 - \frac{1}{2^n}) \cdot 2^m \\
+		x \notin L \Rightarrow |S_x| \leq \frac{1}{2^n} \cdot 2^m \\
+    	\end{gather*}
+	Also define
+	\[ \forall k, l \in \szo^m: k + l = k\ XOR\ l = k + l \mod2 \]
+	\[ \forall Z \subseteq \szo^m, u \in \szo^m: Z + u = \{ z + u |\ z \in Z \} \]
+
+	\begin{lemma}[Sipser-Gács-Lautemann 1]
+		Let $Z \subseteq \szo^m \& |Z| \leq 2^{m - n}$.
+		Also let $u_1, \ldots u_k \in \szo^m$.
+		Then for $k = \lceil \frac{m}{n} + 1 \rceil$.
+		\[ \bigcup (Z + u_i) \subsetneq \szo^m \]
+	\end{lemma}
+	\begin{proof}
+		As in Lagrange theorem for groups
+		\[ \forall i: |Z + u_i| = |Z| \]
+		Therefore, even if all $Z + u_i$ are disjoint:
+		\[ \bigcup (Z + u_i) \leq k |Z| \leq \lceil \frac{m}{n} + 1 \rceil \cdot \frac{2^m}{2^n} \leq 2^m \]
+		Holds for large enough $n$ as $m = poly(n)$ but the denominator is exponential $2^n$:
+		\[ \frac{m}{n 2^n} < 1 \]
+	\end{proof}
+
+	\begin{lemma}[Sipser-Gács-Lautemann 2]
+		Let $Z \subseteq \szo^m \& |Z| \geq (1 - 2^m) 2^n$.
+		Then
+		\[ \exists u_1, \ldots u_k \in \szo^m: \bigcup (Z + u_i) = \szo^m \]
+	\end{lemma}
+	\begin{proof}
+		It is enough to prove that for a random choice of $u_1, \ldots u_k$ we get
+		\[ \Prob[\bigcup (Z + u_i) = \szo^m] > 0 \iff \Prob[\bigcup (Z + u_i) \subsetneq \szo^m] < 1 \]
+		Which is equivalent
+		\[ \Prob[\exists r \in \szo^m : r \notin \bigcup (Z + u_i)] < 1 \]
+	Define $r$ is \emph{bad} for $i \iff r \notin Z + u_i \stackrel{XOR}{\iff} r + u_i \notin Z$.
+	Pick $u_1, \ldots u_k \in \szo^m$ uniformly independently.
+	Then
+	\[ \forall r: \Prob[r + u_i \in Z] \geq 1 - 2^m \Rightarrow \Prob[r \ \text{is bad for}\ i] \leq  2^{-n} \]
+	By independent choice of $u_i$:
+	\[ \Prob[r \ \text{is bad }\ \forall i] < 2^{-nk} \]
+	\[ \Prob[\exists r \ \text{is bad }\ \forall i] = \Prob[\exists r: r \notin \bigcup (Z + u_i)] < 2^m \cdot 2^{-nk} \stackrel{nk > m}{<} 2^m \cdot 2^{-m} = 1 \]
+	\end{proof}
+
+	\[ x \in L \iff \exists u_1, \ldots, u_k \in \szo^m: \forall r \in \szo^m: r \in \bigcup (Z + u_i) \]
+	Equivalently
+	\[ x \in L \iff \exists u_1, \ldots, u_k \in \szo^m: \forall r \in \szo^m: \vee_i^k M(x, r + u_i) = 1 \]
+	As $M$ is deterministic and works in polynomial time and we use it $k = \lceil \frac{m}{n} + 1 \rceil$ times: $\vee_i^k M(x, r + u_i)$ can be checked in polynomial time.
+	\[ \vee_i^k M(x, r + u_i) = 1 \in \TP \]
+	The formula is
+	\[ \exists \forall \TP \in \Sigma_2 \]
+
+
 \end{proof}
