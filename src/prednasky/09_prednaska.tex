@@ -7,6 +7,93 @@
 	If $\TP \ne \TNP \Rightarrow \exists L \in \TNP \setminus \TP \& L \notin \TNP$-complete.
 
 	Proves existence of $\TNP$-intermediate problems.
+	Candidates for the $\TNP$-intermediate problems are \emph{Factoring} or \emph{Graph isomorphism}.
 \end{theorem}
 \begin{proof}
+	Idea: find a language $L \in \TNP \cap co-\TNP \land L \notin P$.
+	Language we construct is artificial.
+
+	Not all technical details of the proof will be presented.
+
+	Redefine SAT as
+	\[ SAT = \{ i \in \szo^{\ast} |\ \text{CNF formula with code i is satisfiable} \} \in \TNP \]
+	Let $M_1, M_2, \ldots$ be a list of oracle DTM using $\szo$ alphabet and running in polynomial time.
+
+	Note:
+	\begin{gather*}
+		x \in \TP \Rightarrow \exists i: X = L(M_i, \emptyset) \\
+		x \in \TNP-c \Rightarrow \exists i: SAT = L(M_i, X)
+	\end{gather*}
+	Our goal is to construct language $A$ such that:
+	\begin{gather*}
+		A \notin \{ L(M_1, \emptyset), L(M_2, \emptyset), \ldots \} \\
+		SAT \notin \{ L(M_1, A), L(M_2, A), \ldots \} \\
+	\end{gather*}
+
+	$A$ is defined as $L(N)$ where $N$ is an universal NTM that works in time $p(n)$ and uses subroutines:
+	\paragraph{Agree($M_i, \emptyset, y$)}
+	\begin{enumerate}
+		\item $N$ simulates $M_i$ with oracle $\emptyset$ on $y$ and outputs YES if $M_i$ accepts.
+			Outputs NO if $M_i$ rejects.
+		\item $N$ checks if $y \in A$. //here A simulates itself
+		\item if 1) and 2) have the same result - output YES, o/w NO.
+	\end{enumerate}
+
+	\paragraph{Agree-O($M_i, A, y$)}
+	\begin{enumerate}
+		\item $N$ simulates $M_i$ with oracle $A$ on $y$ and outputs YES if $M_i$ accepts.
+			Outputs NO if $M_i$ rejects.
+
+		//here A simulates itself
+		\item $N$ checks if $y \in SAT$.
+		\item if 1) and 2) have the same result - output YES, o/w NO.
+	\end{enumerate}
+	$N$ works on input $x \in \szo$ with following algorithm ($i$ is the Godel number of TM, $y$ is current string)
+	\begin{enumerate}
+		\item $i = 1, y = ""$ // empty string
+		\item until($N$ makes $p(|x|)$ steps) repeat
+		\item \tab while(AGREE($M_i, \emptyset, y$)) do $y = $ next($y$) // increment
+		\item \tab while(AGREE-O($M_i, A, y$)) do $y = $ next($y$) // increment
+		\item \tab $++i$ // get next TM
+		\item if main loop terminates in step 3 then $N$ accepts $\iff x \in SAT$.
+		\item else $N$ rejects $x$.
+	\end{enumerate}
+
+	$A \in \TNP$ as it is accepted by NTM in polynomial time.
+
+	\paragraph{$A \notin \TNP$-complete} Assume by contradiction that $A \in \TNP$-complete.
+	Then $\exists k: SAT = L(M_k, A)$ also let $k$ be smallest possible.
+	Let $j < k$ be arbitrary and let $x$ be large enough.
+	As by assumption $A \in \TNP$-complete $\Rightarrow A \notin \TP$ as it would contradict $\TP \ne \TNP$.
+	Therefore $A \ne L(M_j, \emptyset) \Rightarrow \exists y: AGREE(M_j, \emptyset, y)$ outputs NO.
+	Then main loop \emph{breaks} from "while" in step 3, because $N$ will eventually find such $y$.
+
+	% todo why is it different from SAT?
+	Moreover, main loop \emph{breaks} from "while" in step 4 for some $l \ne k$ as $SAT = \ne L(M_l, A) \Rightarrow \exists y: AGREE-O(M_l, A, y)$ outputs NO.
+	Finally, main loop never leaves step 4 for $k$.
+
+	Altogether, $\exists c, \forall x: |x| \geq c$ the main loop terminates in step 4 and rejects $x$.
+	So, $N$ accepts a finite language $\Rightarrow A \in P$ which is a contradiction.
+
+	\paragraph{$A \notin \TP$} Assume by contradiction that $A \in \TP$.
+	Then $\exists k: A = L(M_k, \emptyset)$ also let $k$ be smallest possible.
+	Let $x$ be large enough.
+
+	For $j < k$ main loop \emph{breaks} from "while" in step 3 as we assume $k$ is the smallest.
+	Also, main loop \emph{breaks} from "while" in step 4 as we assume $k$ is the smallest.
+	As $A \in \TP \& SAT \ne L(M_j, A)$.
+	Finally, main loop never leaves step 3 for $k$.
+	Therefore, $N$ can accept $x$ only in step 2 of Agree procedure.
+	So
+	\[ \exists c, \forall x: |x| \geq c: x \in A \iff x \in SAT \Rightarrow A \in NPC \]
+	Which is a contradiction with assumption $A \in \TP$.
+
+	\paragraph{Technical details}
+	Note that hardest technical detail is the way $N$ simulates $A$ (itself).
+	Q: again lier's paradox (self-reference)?
+
+	Also, $N$ has to check 2 conditions in both subroutines.
+	Therefore, if the branch is accepting, $N$ returns to the branching point and compares the results.
+	However, such approach does not work for rejecting branches.
+	One of the solution is to choose $|y| \leq \log |x| \Rightarrow 2^{|y|} \leq |x|$ and $N$ can check all branches.
 \end{proof}
