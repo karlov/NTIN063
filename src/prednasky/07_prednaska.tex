@@ -140,3 +140,81 @@
 	Also $(**)$ is a $\Sigma_2$ formula, therefore $\Pi_2$-SAT $\in \Sigma_2$.
 
 \end{proof}
+
+\subsection{Classes AC, NC}
+% 9th lecture
+
+\begin{definition}[Class NC]
+	$L \in NC^i$ if there exists polynomial size family of circuits $\{ C_n \}_{n \in \N}$ accepting $L$ such that $\forall n$ depth of $C_n \in \bigO(\log^i n)$.
+
+	\[ NC = \bigcup NC^i \]
+\end{definition}
+
+\begin{definition}[Class AC]
+	$AC^i$ is defined similarly to $NC^i$ but gates may have arbitrary \# of input and output edges.
+\end{definition}
+
+\begin{theorem}[NC and AC]\label{ac_dc}
+	\[ \forall i: NC^i \subseteq AC^i \subseteq NC^{i + 1} \]
+\end{theorem}
+\begin{proof}
+	By definition:
+	\[ \forall i: NC^i \subseteq AC^i \]
+
+	Let $L \in AC^i$ arbitrary, then there is a circuit $\{ C_n \}_{n \in \N}$ with depth $\bigO(\log^i n)$ that recognizes $L$.
+	$\{ C_n \}_{n \in \N}$ is a polynomial size family of circuits $\Rightarrow \exists p: |C_n| \leq p(n)$.
+	Then, every gate in $C_n$ has fan-in $\leq p(n)$.
+	Replace every gate in $C_n$ by a binary tree of in-2 gates with depth $\log p(n) \in \bigO(\log n)$.
+	% todo picture lecture 9 12:00
+	Therefore, we can construct $C_n^{new}$ with in-2 of depth $\bigO(\log^{i + 1} n)$ that simulates $C_n \Rightarrow L \in NC^{i + 1}$.
+\end{proof}
+
+% book chapter 6.5.1
+\subsection{Connection between NC and parallel computing}
+
+\begin{definition}[Parallel computer]
+	Has $n$ processors, communication between them with global clock.
+	Maximum "distance" (shortest path in graph of processors) between processors is $\bigO(\log n)$.
+
+	For example hypercube architecture: labels of processors are binary numbers with $\log n$ bits.
+	Processors are connected if their labels differ by 1 bit, Hamming distance is 1.
+\end{definition}
+
+\begin{definition}[Efficient parallel algorithm]
+	A computational task is said to have \emph{efficient parallel algorithms} if inputs of size $n$ can be solved using a parallel computer with $n^{\bigO(1)}$ processors and in time $\log^{\bigO(1)} n$.
+
+	Source ~\cite[p.~109]{arora2009computational}.
+\end{definition}
+
+\begin{example}[Transitive closure]
+	Problem of finding a transitive closure of directed graph can be solved by efficient parallel algorithm.
+	Transitive closure adds an $(a, b)$ edge for every $Path(a, b)$.
+
+	Instead of running multiple instances of BFS in parallel, we can multiple the adjacency matrix of a graph.
+	The reachability matrix can be constructed in 1 multiplication $\bigO(1)$ using $n^3$ processors in time $\bigO(\log n)$.
+\end{example}
+
+Q: Do we assume that every processor outputs 1 bit?\\
+A: No, each processor is a TM with output tape. As each of them works in $\log$ time, is uses at most $\log$ space which yields a polynomial size output.
+
+\begin{theorem}[NC and parallel computing]
+	$L$ has an efficient parallel algorithm (which recognizes $L$) $\iff L \in NC$.
+\end{theorem}
+\begin{proof}
+	"$\Rightarrow$". Let efficient parallel algorithm for $L$ has $n^c$ processors and works in time $\bigO(\log^d n)$.
+	Design a circuit $\{ C_n \}$ with $\bigO(n^c \cdot \log^d n)$ processors.
+
+	"Gates" we construct (more precicely, fixed size circuits) are organized in $\bigO(\log^d n)$ levels.
+	Gate at $j$-th level simulates processor in $j$-th step of the computation.
+	The input edges comes from the previous levels and corresponds to the communication channels between the processors.
+
+	Then $L \in AC^d$, by \cref{ac_dc} $L \in NC^d \Rightarrow L \in NC$.
+
+	"$\Leftarrow$" we have a polynomial size circuit with $\log$ depth.
+	Replace every gate by a processor and simulate and interconnect them in some standard way.
+	Sumilating $C_n$ getting all signals from level $j$ to $(j + 1)$ may take $\bigO(\log n)$ steps of the parallel computing.
+	Therefore simulation takes $\bigO(\log^{d + 1} n)$.
+\end{proof}
+
+Q: what is the relationship between $NC$ and $\Ppoly$?\\
+A: $NC, AC \subseteq \Ppoly$, these classes allow fast computaton. Similar to linear or quadratic subclasses in $\TP$.

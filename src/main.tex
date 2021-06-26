@@ -99,15 +99,18 @@
 {.\mbox{}}% Punctuation after theorem head
 {\newline}% Space after theorem head
 {}% Theorem head spec (can be left empty, meaning ‘normal’)
-\DeclareMathOperator{\N}{\mathbb{N}}
-\DeclareMathOperator{\Z}{\mathbb{Z}}
-\DeclareMathOperator{\Q}{\mathbb{Q}}
-\DeclareMathOperator{\TP}{\mathbb{P}}
-\DeclareMathOperator{\TNP}{\N\mathbb{P}}
+\newcommand{\bb}[1]{\mathbb{#1}}
+\DeclareMathOperator{\N}{\bb{N}}
+\DeclareMathOperator{\Z}{\bb{Z}}
+\DeclareMathOperator{\Q}{\bb{Q}}
+\DeclareMathOperator{\TP}{\bb{P}}
+\DeclareMathOperator{\TNP}{\N\bb{P}}
 \DeclareMathOperator{\Ppoly}{\TP/poly}
 \DeclareMathOperator{\szo}{\{ 0, 1 \}}
-%\DeclareMathOperator{\Real}{\mathbb{R}}
+%\DeclareMathOperator{\Real}{\bb{R}}
 \DeclareMathOperator{\C}{\mathcal{C}}
+\DeclareMathOperator{\Prob}{Pr}
+\newcommand{\E}{\bb{E}}
 %\DeclareMathOperator{\Holo}{\mathcal{H}}
 %\DeclareMathOperator{\Ukruh}{\mathcal{U}}
 %\DeclareMathOperator{\F}{\mathcal{F}}
@@ -130,6 +133,7 @@
 \newtheorem{consequence}[theorem]{Consequence}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{amendment}[theorem]{Dodatek}
+%\newtheorem{fact}[theorem]{Fact}
 
 
 \theoremstyle{definition}
@@ -178,7 +182,7 @@
 \subfile{prednasky/05_prednaska}
 \subfile{prednasky/06_prednaska}
 \subfile{prednasky/07_prednaska}
-%\subfile{prednasky/08_prednaska}
+\subfile{prednasky/08_prednaska}
 %\subfile{prednasky/09_prednaska}
 %\subfile{prednasky/10_prednaska}
 %\subfile{prednasky/11_prednaska}

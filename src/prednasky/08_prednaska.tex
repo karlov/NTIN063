@@ -1,0 +1,233 @@
+\section{\texorpdfstring{Randomized computation}{Randomized computation}}
+\vspace{5mm}
+\large
+
+% 9th lecture from 51:50
+
+\begin{definition}[Probabilistic TM (PTM)]
+	TM with 2 transition functions: $\delta_1, \delta_2$.
+	When PTM works on $x$ it at each step selects $\delta_1$ with probability $\frac{1}{2}$ (same for $\delta_2$).
+	PTM uses a fair cons toss that is independent from the previous results.
+
+	PTM M returns a random variable denoted $M(x)$, $M(x) = 1$ if $M$ accepts $x$ and $0$ o/w.
+
+	We say that $M$ runs in tim $T(n)$ if for every input $x$ M stops after at most $T(|x|)$ steps, regardless of the selections.
+\end{definition}
+
+\begin{notation}
+	For a language $L \in \szo^{\ast}$ and $x \in \szo^{\ast}$ we define:
+	\[ L(x) = 1 \iff X \in L \& L(x) = 0 \iff x \notin L \]
+\end{notation}
+
+\begin{definition}[BPP]
+	PTM M accepts the language $L \in \szo^{\ast}$ in time $T(n)$ if
+	\[ \forall x \in \szo^{\ast}: Pr[M(x) = L(x)] \geq \frac{2}{3} \]
+	And $M$ runs in $T(n)$.
+
+	$BPTIME(T(n))$ is a class of languages accepted by PTM in time $T(n)$.
+	\[ BPP = \bigcup BPTIME(n^c) \]
+	BPP - bounded error probabilistic polynomial time.
+\end{definition}
+
+\begin{properties}[BPP]
+	BPP is invariant to (robust):
+	\begin{itemize}
+		\item Accepting probability: BPP will remain the same if we replace $\frac{2}{3}$ by any fraction $\in (\frac{1}{2}, 1)$.
+
+		\item Probabilities of picking $\delta_1$ or $\delta_2$ can also be changed to $p, 1 - p$ instead of $\frac{1}{2}$.
+		\item Running time: $T(n)$ can be replaced by "expected" $T(n)$.
+	\end{itemize}
+\end{properties}
+
+\begin{note}[Open Question]
+	We know:
+	\[ \TP \subseteq BPP \]
+	as we can take $\delta_1 = \delta_2$.
+
+	However the strict inclusion is an open question
+	\[ \TP \subsetneq BPP \]
+\end{note}
+
+\begin{note}[BPP and NP]
+	The idea is similar, but BPP requires $\frac{2}{3}$ of accepting computation branches and $\TNP$ only 1.
+\end{note}
+
+\begin{definition}[Probabilistic TM (PTM) Alternative]
+	Randomness can be presented making PTM accept additional input string, which is random $y \in \szo^{T(n)}$.
+	Each bit tells which transition function to choose.
+\end{definition}
+
+% todo change to Fact and fix cref
+\begin{theorem}[Chernoff]\label{chernoff}
+	Let $x_i, \ldots, x_n$ be independent r.v. such that $x_i \in \szo$ and let $\mu = \sum \E[x_i]$ then
+	\[ \forall c > 0: \Prob[|\sum x_i - \mu| \geq c \cdot \mu ] \leq 2e^{-\min\{ \frac{c^2}{4}, \frac{c}{2} \} \cdot \mu } \]
+\end{theorem}
+
+\begin{theorem}[BPP error reduction]\label{error_reduction}
+	Let $L \in \szo^{\ast}$ be a language, $c > 0$ constant.
+	Assume that there $\exists PTM\ M$ such that
+	\[ \forall x \in \szo^{\ast}: Pr[M(x) = L(x)] \geq \frac{1}{2} + |x|^{-c} \]
+	Note that as $x$ grows, error $|x|^{-c} \to 0$.
+
+	Then
+	\[ \forall d > 0: \exists PTM \ M_e: \forall x \in \szo^{\ast}:Pr[M_e(x) = L(x)] \geq 1 - 2^{-|x|^d} \]
+
+	And if $M$ work in polynomial time so does $M_e$.
+\end{theorem}
+\begin{proof}
+	Idea: $M_e$ runs $M$ $k = 8 \cdot |x|^{2d + c} + 1$ times.
+	Assume $k$ is odd.
+	Obtaining results $y_1, y_2, \ldots y_k$ and $M_e$ accepts iff
+	\[ \sum y_i > \frac{1}{2} k \]
+	Majority decision.
+
+	Denote $x_i \in \szo^{\ast}$ r.v. where
+	\[ x_i = 1 \iff y_i = L(x) \]
+	As each $y_i$ represents different branch of computation, and coin flip is independent, $x_i$ are independent.
+	Then by assumption on $M$
+	\[ \E[x_i] = \Prob[x_i = 1] \geq \frac{1}{2} + |x|^{-c} = p \]
+
+	Define $\delta = \frac{1}{2} |x|^{-c}$ and consider
+	\[ S = \sum x_i \geq pk - \delta pk = pk (1 - \delta) = k \left(\frac{1}{2} |x|^{-c}\right)\left(1 - \frac{1}{2} |x|^{-c}\right) = \frac{1}{2}k + k\left(\frac{3}{4} |x|^{-c} - \frac{1}{2} |x|^{-2c}\right) \]
+	Then as $\left(\frac{3}{4} |x|^{-c} - \frac{1}{2} |x|^{-2c}\right) \geq 0$
+	\[ S = \frac{1}{2}k + k\left(\frac{3}{4} |x|^{-c} - \frac{1}{2} |x|^{-2c}\right)  > \frac{1}{2} k \]
+	We conclude that if $M$ answers correctly at least $> \frac{1}{2} k$ then $M_e$ answers correctly (for sure).
+
+	On the contrary, $M_e$ can make a mistake only if
+	\[ \sum x_i < pk - \delta pk \]
+	So
+	\[ \Prob[\sum x_i < pk - \delta pk] \]
+	is an upper bound of the probability that $M_e$ makes a mistake.
+	Then
+	\[ \E[x_i] \geq p \Rightarrow \sum \E[x_i] \geq pk \]
+	For some $\varepsilon > 0$ denote
+	\[\mu = \sum \E[x_i] = pk + \varepsilon \]
+	Finally compute
+	\[ P_e = \Prob[ pk - \sum x_i > \delta pk] \leq \Prob[ pk - \sum x_i + (1 - \delta)\varepsilon > \delta pk] = \Prob[pk + \varepsilon - \sum x_i > \delta pk + \delta \varepsilon] = \]
+	\[ = \Prob[\mu - \sum x_i > \delta \mu ] = \]
+	As the probability is symmetric and by Chernoff \cref{chernoff}
+	% todo picture 9th lecture 01:58:50
+	\[ = \frac{1}{2} \Prob[|\mu - \sum x_i| > \delta \mu ] \leq \frac{1}{2} 2 e^{-\frac{\delta^2}{4} \mu} \leq e^{-\frac{\delta^2}{4} pk} \]
+	To summarize:
+	\[ P_e = \Prob[M_e\ \text{makes an error}] \leq e^{-\frac{1}{4}\frac{|x|^{-2c}}{4} (\frac{1}{2} + |x|^{-c}) 8 \cdot |x|^{2d + c} + 1} = e^{-\frac{8 \cdot |x|^{2c + d}}{32 \cdot |x|^{2c}} + \frac{8 \cdot |x|^{2c + d}}{16 \cdot |x|^{3c}}} \]
+	By reducing the exponent (2nd summand) and simplifying the first
+	\[ P_e \leq e^{-\frac{1}{4} |x|^d} = (e^{\frac{1}{4}})^{-|x|^d} \leq 2^{-|x|^d} \]
+\end{proof}
+
+\begin{lemma}[Fair coin]
+	A fair coin can be simulated by a PTM with an access to a biased coin with $\Prob[\text{head}]=p\in(0,1)$ in $\bigO(1)$ expected time.
+\end{lemma}
+\begin{proof}
+	In each round PTM flips the biased coin twice if
+	% todo readability
+	\[ \twopartdef{H + H}{}{T + T}{} \Rightarrow \text{new pair of flips} \]
+	Otherwise
+	\[ \twopartdef{H + T}{H, \Prob[H] = p (1 - p)}{T + H}{T, \Prob[H] = (1 - p) p}\]
+	As
+	\[ \Prob[\text{PTM stops at round}\ i] = 2 p (1 - p) = c, c \in (0, 1) \]
+	Then expected \# of trials before PTM stops
+	\[ \sum i (1 - c)^{i - 1} c \]
+	which converges.
+\end{proof}
+\begin{lemma}[Biased coin]
+	A biased coin with probability $\Prob[\text{head}]=\rho$ can be simulated in $\bigO(1)$ time by a ``standard'' PTM (with fair coin) if the $i$-th bit of $\rho$ can be generated in $\text{poly}(n) = n^c$.
+\end{lemma}
+\begin{proof}
+	Let $\rho$ be a binary written as
+	\[ \rho = 0p_1p_2 \ldots \]
+	PTM generates fair sequence $b_1, b_2, \ldots$.
+	If PTM in $i$-th step generates $b_i$ then
+	\begin{itemize}
+		\item $b_i < p_i \Rightarrow H$
+		\item $b_i > p_i \Rightarrow T$
+		\item $b_i = p_i$ go to step $(i + 1)$.
+	\end{itemize}
+	M gets to $i$-th step $\iff$
+	\[ \forall 1 \leq j \leq i - 1: b_j = p_j \]
+	which occurs with probability $\frac{1}{2^{i - 1}}$.
+	% todo did not understand following implication
+	$p_i = 1 \Rightarrow$ return $H$ in step $i$ with probability $\frac{1}{2}$.\\
+	$p_i = 0 \Rightarrow$ return $H$ in step $i$ with probability $0$.
+	Then
+	\[ \Prob[H] = \sum p_i \frac{1}{2^i} = \rho \]
+
+	The expected time $\sum n^i \frac{1}{2^{i - 1}}$ which converges.
+\end{proof}
+
+\begin{definition}[Expected running time]
+    Let $M$ be a PTM and $x$ an input.
+    Then $T_{M,x}$ is a random variable which denotes the time it takes $M$ to halt on $x$.
+    The PTM $M$ runs in expected time $T(n)$ if $\forall x \in \szo^{\ast}: \E[T_{N,x}] \leq T(|x|)$.
+\end{definition}
+
+\begin{theorem}[Markov inequality]\label{markov}
+	Let X be a non-negative r.v. Then
+	\[ \Prob[ X \geq k \E[x]] \leq \frac{1}{k} \]
+\end{theorem}
+
+\begin{observation}
+	Let PTM $M$ have expected time complexity $T(n)$.
+	If we simulate $M$ on PTM $M_s$ with time complexity $100 T(n)$ (by rejecting longer computations), then the probability (by Markov \cref{markov})
+	\[ \Prob[M\ \text{runs longer than}\ 100 T(n)] \leq \frac{1}{100} \]
+	Therefore, $M_s$ rejects if it stops because of the clock, o/w it does the same as $M$.
+	Then $\Prob[M_s\ \text{makes an error}]$ is at most $100$ greater than for $M$.
+
+	We can reduce the error back to the error of $M$ by \cref{error_reduction}.
+\end{observation}
+
+% 10th lecture
+\subsection{Classes RP, ZPP}
+
+\begin{definition}[RTIME, RP]
+	$L\in\text{RTIME}(T(n))\Leftrightarrow\exists$ PTM $M$ working in (expected) time $T(n)$ such that
+    \begin{gather*}
+    	x\in L\Rightarrow \Prob[M(x)=1]\geq 2/3\\
+	x\not\in L\Rightarrow\Prob[M(x)=0]=1
+    \end{gather*}
+
+    $RP=\bigcup_c\text{RTIME}(n^c)$ -- Randomized Polynomial time
+
+    Note that we can again prove that class is the same with either expected or exact polynomial time.
+\end{definition}
+\begin{definition}[ZTIME, ZPP]
+    $L\in\text{ZTIME}(T(n))\Leftrightarrow\exists$ PTM $M$ working in (expected) time $T(n)$ such that
+    \begin{gather*}
+    	x\in L\Rightarrow \Prob[M(x)=1]=1\\
+	x\not\in L\Rightarrow\Prob[M(x)=0]=1
+    \end{gather*}
+
+    $ZPP=\bigcup_c\text{ZTIME}(n^c)$ -- Zero-error Probabilistic Polynomial time
+
+    Note that we can again prove that class is the same with either expected or exact polynomial time.
+\end{definition}
+\begin{lemma}[On probabilistic classes]
+    \begin{enumerate}
+        \item $RP\subseteq \TNP$
+        \item $BPP=co-BPP$
+        \item $RP\subseteq BPP, co-RP\subseteq BPP$
+        \item $ZPP=RP\cap co-RP$
+    \end{enumerate}
+\end{lemma}
+\begin{proof}
+    \begin{enumerate}
+	    \item
+		For $\TNP$ we require at least one accepting computation, by definition of $RP$ we have at least $\frac{2}{3}$ of them.
+		If we allow PTM to work in expected polynomial time, then there is shorter accepting branch of computation.
+        \item Design new PTM which simulates original PTM but flips all answers.
+		\[ \Prob[\overline{M}(x) = \overline{L}(x)] = \Prob[1 - M(x) = 1 - L(x)] = \Prob[M(x) = L(x)] \geq \frac{2}{3} \]
+	\item Follows from stricter definition of $RP$. Second condition follows from 2).
+        \item $ZPP=RP\cap co-RP$
+    \end{enumerate}
+\end{proof}
+\begin{theorem}[$BPP \subseteq \Ppoly$]
+	\[ BPP \subseteq \Ppoly \]
+\end{theorem}
+\begin{proof}
+    TODO
+\end{proof}
+\begin{theorem}[Sipser-Gács-Lautemann]
+    BPP$\subseteq \Sigma^p_2 \cap \Pi_2^p$
+\end{theorem}
+\begin{proof}
+    TODO
+\end{proof}
