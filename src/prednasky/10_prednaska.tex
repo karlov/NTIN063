@@ -3,3 +3,134 @@
 \large
 
 % 12th lecture
+Many problems in $\TNP$ are artificial versions of optimization problems.
+
+\begin{example}[Knapsack]
+	Having $n$ items with sizes $s_1, \ldots, s_n$ and prices $p_1, \ldots, p_n$.
+	Also capacity $c$ - size of knapsack.
+
+	Optimization problem: minimize $\sum p_i$ subject to constraint $\sum s_i \leq c$.
+	Optimization knapsack is $\TNP$-hard.
+
+	Decision problem: add a parameter $k$.
+	Input: $(s_1, \ldots, s_n, p_1, \ldots, p_n, c, k)$. \\
+	Question: $\exists A \subseteq [n]: \sum_{i \in A} p_i \geq k \& \sum_{i \in A} s_i \leq c$.
+
+	Decision knapsack is $\TNP$-complete.
+\end{example}
+
+\begin{example}[Subset sum]
+	Is a modification of Knapsack.\\
+	Input: $a_1, \ldots, a_n, b$.\\
+	Question: $\exists A \subseteq [n]: \sum_{i \in A} a_i = b$.
+
+	Reduction from Knapsack: set $s_i = a_i \& c_i = a_i$.
+\end{example}
+
+Despite Knapsack being $\TNP$-hard, there is an approximation algorithm.
+
+\begin{definition}[FPTAS]
+	Fully polynomial time approximation scheme.
+	Algorithm $A$ with 2 inputs:
+	\begin{enumerate}
+		\item size of the problem $x$.
+		\item allowed precision (relative error) $\varepsilon$.
+	\end{enumerate}
+	Such that $\frac{|A(x) - OPT(x)|}{OPT(x)} \leq \varepsilon$.
+	$A$ runs in polynomial time with respect to $|x|$ and $\frac{1}{\varepsilon}$.
+\end{definition}
+
+Knapsack has a FPTAS algorithm, therefore it can be efficiently approximated with arbitrary error.
+On the other hand, Traveling salesman problem (TSP) does not have such algorithm.
+
+\begin{example}[TSP]
+	Input: complete undirected graph $G = (V, E)$ and function $l:E \to \N$. \\
+	Output: shortest Hamiltonian circuit in $G$.
+\end{example}
+
+\begin{lemma}[Inaproximation of TSP]
+	If there exists polynomial time approximation algorithm $A$ for TSP with ratial error $\rho = \frac{A(x)}{OPT(x)}$.
+	Where $\rho \geq 1$ is constant.
+	Then $\TP = \TNP$.
+\end{lemma}
+\begin{proof}
+	Let us take an instance of HC problem: graph $G = (V, E), |V| = n$, question: $\exists HC \in G$?
+	And convert it into TSP problem
+	\[ G_t = (V, E = V \times V) \]
+	and the lengths:
+	\[ l(e) = \twopartdef {1}{ e \in E} { \rho n + 1 }{e \notin E\ \text{artificial edge}} \]
+
+	If the initial problem is answered YES then $OPT(x) = n$ and the algorithm $A$ for TSP outputs a HC of length $\leq n\rho$.
+	Therefore, $A$ must output HC which was in the initial graph.
+
+	On the contrary, if the initial answer is NO, then $A$ outputs $OPT(x) > n \rho$.
+	GAP construction no HC in $(n, n \rho]$.
+
+	Therefore a polynomial approximation algorithm for TSP gives a polynomial algorithm for HC.
+\end{proof}
+
+\begin{definition}[MAX-3-SAT]
+	For a 3-CNF formula $\varphi, val(\varphi) = \max$ fraction of clauses that can be satisfied by an assignment.
+
+	Note: $\varphi$ is satisfiable $\iff val(\varphi) = 1$.
+
+	For $\rho \leq 1$ and algorithm $A$ is $\rho$-approximation algorithm in MAX-3-SAT if
+	$ \forall \varphi $ with $m$ clauses $A(\varphi)$ outputs and assignment satisfying $\geq \rho \cdot val(\varphi) \cdot m$ clauses.
+
+	In other words $OPT(\varphi) = n$ and
+	\[ \frac{A(\varphi)}{OPT(\varphi)} \geq \rho \cdot m \]
+\end{definition}
+
+\begin{exercise}[MAX-3-SAT algorithm]
+	Greedy algorithm for MAX-3-SAT with $\rho = \frac{1}{2}$:
+	\begin{enumerate}
+		\item take variable $x_i$
+		\item count all clauses where $x_i$ or $\neg x_i$ is present.
+			Take majority and assign $x_i = 1, x_i = 0$ (resp) and remove opposite.
+	\end{enumerate}
+	At every step we satisfy at least half of clauses that contains $x_i$.
+
+	What is the expected \# of satisfied clauses for a random assignment?
+	Assume, every clause has 3 distinct variables, therefore is has 8 possible assignments and only 1 of them does not satisfy the clause.
+	Therefore, $\E[rng] \geq \frac{7}{8} \cdot m$ yielding $\rho = \frac{7}{8}$.
+	Also, $\forall \varepsilon > 0$ there is a deterministic algorithm with $\rho = \frac{7}{8} - \varepsilon$ (derandomization).
+
+ \end{exercise}
+
+ \begin{note}
+	PCP theorem implies that if there is an approximation algorithm with $\rho = \frac{7}{8} + \varepsilon \Rightarrow \TP = \TNP$.
+ \end{note}
+
+\begin{exercise}[Vertex cover algorithm]
+	Input: undirected graph $G = (V, E)$\\
+	Output: minimal vertex cover:
+	\[ S \subseteq V: \forall e = (a, b) \in E: \{ a, b \} \cap S \ne \emptyset \]
+	Even though, Vertex cover is the dual problem for Independent set, the approximation approaches are different.
+
+	% todo finish lecture 12 from 01:02:00
+ \end{exercise}
+
+ \begin{reminder}[$\TNP$ verifier]
+	 Verifier for $L \in \TNP$ is a polynomial time DTM:
+	 \begin{gather*}
+	 	x \in L \Rightarrow \exists y: V^y(x) = 1\\
+	 	x \notin L \Rightarrow \forall y: V^y(x) = 0
+	 \end{gather*}
+	 and $|y| = poly(|x|)$.
+ \end{reminder}
+
+\begin{definition}[Probabilistic verifier]
+	Verifier has a \emph{remote access} to the proof, where proof is some string $\in \szo^{\ast}$.
+	Verifier can access any position independently in constant time.
+\end{definition}
+
+\begin{definition}[PCP verifier]
+	Let $L$ be a language and $q, r:\N \to \N$.
+	We say that $L$  has a $r(n), q(n)$ PCP verifier if there is a \textbf{polynomial time} probabilistic algorithm $A$ which satisfies the following:
+	\begin{itemize}
+		\item Efficiency: on input string $x \in \szo^{\ast}$ given a random access to string $y \in \szo^{\ast}$. A uses at most $r(n)$ random bits and makes at most $q(n)$ queries to some locations in $y$.
+		We denote by $A^y(x)$ a r.v. representing output of $A$ on input $x$ with access to proof $y$.
+	\item Completeness: $x \in L \Rightarrow \exists y \in \szo^{\ast}: \Prob[A^y(x) = 1] = 1$
+	\item Soundness: $x \notin L \Rightarrow \forall y \in \szo^{\ast}: \Prob[A^y(x) = 1] \leq \frac{1}{2}$
+	\end{itemize}
+\end{definition}

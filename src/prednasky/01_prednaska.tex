@@ -30,25 +30,27 @@ Construct TM with following algorithm:
 \begin{enumerate}
 	\item k = 1
 	\item do
-	\item forall y vetev delky k
-	\item Simuluj M(x) dle y
-	\item If(Acc) prijmi
+	\item foreach $y$ branch $|y| = k$
+	\item Simulate M(x) by $y$
+	\item If(Acc) accept
 	\item k++;
-	\item until vsechny simulace M(x) dle y ktera odmlitly
-		// pokud vsechny vetve odmitli, neexistuje pr. vypocet
+	\item until all simulations of M(x) by $y$ that rejected
+		// if all branches rejected $\Rightarrow$ there is no accepting computation
 	\item reject
 \end{enumerate}
 
-M pracuje v case $g(n) = \bigO(f(n))$, vypocet v 4. skonci do g(n) kroku.
+M works in time $g(n) = \bigO(f(n))$, computation in step 4. will do at most g(n) steps.
 
-Prostor: \\
-1) na ulozeni k potrebujeme g(n) prostoru, $ k \leq g(n) $. \\
-2) Na simulace M(x) dle y potrebujeme $\bigO(g(n))$ prostoru.
+Space:\\
+1) to store $k$ we need $g(n)$ of space, $ k \leq g(n) $. \\
+2) To simulate $M(x)$ by $y$ we need $\bigO(g(n))$ space.
 
-Korektnost: \\
-Chceme aby det. TS prijimal stejny jazyk nako puvodni NTS. Pokud existuje pr. vypocet NTS, TS prijme dle nejakeho y. Opacne dojde k $ k = g(n)$ a TS odmitne.
+Correctness: \\
+We want constructed DTM to accept the same language as initial NTM.
+If there is an accepting branch of NTM, DTM also accepts by some branch $y$.
+Otherwise we reach $k = g(n)$ and DTM rejects.
 
-Zacykleni nemuze nastat, dle definice cas. slozitosti.
+TM cannot loop forever by the definition of time complexity (we restrict the languages to recursive).
 
 Technical details:\\
 Constructed TM should have 2 tapes:\\
@@ -70,8 +72,8 @@ b) tape to store $y$ (vector that encode branch of NTM)
 	\[\forall f:\N \to \N, \forall L \in NS(f(n)) \Rightarrow \exists c_L: L \in DT\left(c_L^{f(n)}\right) \]
 \end{theorem}
 \begin{proof}
-	All accepting conf. leaves are bounded by the \# of conf. However, \# of all paths $2^{c_L^{f(n)}}$.
-	How to avoid double exponent? $\Rightarrow$ Perform BFS in conf. graph.
+	All accepting configuration leaves are bounded by the \# of configurations. However, \# of all paths $2^{c_L^{f(n)}}$.
+	How to avoid double exponent? $\Rightarrow$ Perform BFS in configuration graph.
 	\# of edges could be quadratic , however
 	\[ \left(c_L^{f(n)}\right)^2 = \left(c_L^2\right)^{f(n)} \]
 	$c_L^2$ is another constant.
@@ -107,7 +109,7 @@ TODO what is $t$?
 	\[ S_1 \in o(S_2) \Rightarrow DS(S_1(n)) \subsetneq DS(S_2(n)) \]
 \end{theorem}
 \begin{proof}
-	Construction by diagonalization $\Rightarrow$ find a language that is different from all in $\bigO(S_1)$.
+	Construction by Cantor diagonalization method $\Rightarrow$ find a language that is different from all in $\bigO(S_1)$.
 \end{proof}
 
 \begin{definition}[Time constructible function]
@@ -125,7 +127,7 @@ TODO what is $t$?
 	Note that $\log(T_1(n))$ is required because of $k$ to 2 tapes compression.
 \end{theorem}
 \begin{proof}
-	Construction by diagonalization $\Rightarrow$ find a language that is different from all in $\bigO(T_1)$.
+	Construction by Cantor diagonalization method $\Rightarrow$ find a language that is different from all in $\bigO(T_1)$.
 \end{proof}
 
 \begin{theorem}[Savic]\label{savic}
