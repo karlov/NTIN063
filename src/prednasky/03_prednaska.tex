@@ -41,11 +41,11 @@
 
 	\[ A \in PS \iff \exists DTM \ M_A: A = L(M_A) \]
 	Where $M_A$ works in poly space.
-	Same in $\TP = \TP(\TP)$ proof replace oracle QUERY by DTM computation (which accepts or rejects)
+	Same in $\TP = \TP(\TP)$ proof \cref{p_eq_pp} replace oracle QUERY by DTM computation (which accepts or rejects)
 
 	The last thing is to check that used space is polynomial.
 	Which is true since $\forall t \in QUERY: |t| \leq p(|x|)$ for some polynomial $p$.
-	Space taken by DTM $M^{\prime}$ that computes the QUERY is $p_t(|t|) \leq p_t(p(|x|))$.
+	Space taken by DTM $M_A$ that computes the QUERY is $p_t(|t|) \leq p_t(p(|x|))$.
 	Also, we can ask exponentially many QUERies, however the space is reused, therefore space is bounded by the largest QUERY.
 \end{proof}
 
@@ -78,7 +78,7 @@
 	\end{equation}
 \end{reminder}
 
-\begin{exercise}
+\begin{theorem}[Complexity classes relations]
 	Complexity classes
 	\begin{enumerate}[label=\alph*)]
 		\item $NLOG \subseteq \TP$
@@ -88,11 +88,10 @@
 		\item $NLOG \subsetneq PS \subsetneq EXPSPACE$
 		\item $\TP \subsetneq DEXT \subsetneq EXPTIME$
 	\end{enumerate}
-
-\end{exercise}
+\end{theorem}
 \begin{proof}
 	a)
-	\[ L \in NS(\log n) \Rightarrow \exists c_L: L \in DT(2^{c_L \log n}) = DT((2^{\log n})^{c_L}) = DT(n^{c_L}) \in \TP \]
+	\[ L \in NS(\log n) \stackrel{\cref{ns_dt}}{\Rightarrow} \exists c_L: L \in DT(2^{c_L \log n}) = DT((2^{\log n})^{c_L}) = DT(n^{c_L}) \in \TP \]
 	b) $PS \subseteq NPS$ trivial, as deterministic computation is a special case of non-deterministic.
 
 	$NPS \subseteq PS$
@@ -100,10 +99,10 @@
 	by Savic \cref{savic}
 	\[ L \in DS(n^{2i}) \Rightarrow L \in PS \]
 
-	c) we use time space relation \cref{nt_ds_rel}
-	\[ \forall L \in \TNP \Rightarrow \exists i: L \in NT(n^i) \Rightarrow L \in DS(n^i) \Rightarrow \TNP \subseteq PS \]
+	c)
+	\[ \forall L \in \TNP \stackrel{\cref{nt_ds_rel}}{\Rightarrow} \exists i: L \in NT(n^i) \Rightarrow L \in DS(n^i) \Rightarrow \TNP \subseteq PS \]
 	d)
-	\[ L \in PS \Rightarrow \exists i: L \in DS(n^i) \subseteq NS(n^i) \Rightarrow \exists c_L: L \in DT(2^{c_L \log n}) \subseteq DT(2^{n^{i + 1}}) \subseteq EXPTIME \]
+	\[ L \in PS \Rightarrow \exists i: L \in DS(n^i) \subseteq NS(n^i) \stackrel{\cref{ns_dt}}{\Rightarrow}\exists c_L: L \in DT(2^{c_L \log n}) \subseteq DT(2^{n^{i + 1}}) \subseteq EXPTIME \]
 	e) by Savic \cref{savic}
 	\[ NS(\log n) \subseteq DS(\log^2 n) \]
 	by space hierarchy \cref{s_hier}
@@ -150,13 +149,13 @@
 
 \end{definition}
 
-\begin{note}
-	L is a language alphabet $\tau$
+\begin{definition}[Language complement]
+	$L$ is a language over alphabet $\tau$
 	\[ \overline{L} = \{ x \in \tau^{\ast} |\ x \notin L \} \]
 
-	If C is a class of languages, then
-	\[ L \in C \iff \overline{L} \in co-C \]
-\end{note}
+	If $\C$ is a class of languages, then
+	\[ L \in \C \iff \overline{L} \in co-\C \]
+\end{definition}
 
 \begin{theorem}[Polynomial Hierarchy] Relations
 	\begin{enumerate}[label=\alph*)]
@@ -171,7 +170,7 @@
 \end{theorem}
 \begin{proof}
 	a) $\TNP(\TP) = \TNP$ also $\TP(\TP) = \TP$.\\
-	Proof by embedding oracle computation by simulating using DTM.
+	Proof by embedding oracle computation via DTM simulation.
 
 	b) by definition, for $k \geq 1$
 	\[ \Pi_k = co-\TNP(\Sigma_{k - 1}) = co-\Sigma_k \]
@@ -181,8 +180,8 @@
 
 	% todo d), e)
 
-	f)
-	\[ \Sigma_{k + 1} = \TNP(\Sigma_k) = \TNP(\Delta_{k - 1}) = \TNP(\TP(\Sigma_k)) = \TNP(\Delta_k) \]
+	f) FIXME
+	\[ \Sigma_{k + 1} = \TNP(\Sigma_k) \stackrel{\text{by i.h. ???}}{=} \TNP(\Delta_{k - 1}) = \TNP(\TP(\Sigma_k)) = \TNP(\Delta_k) \]
 	Clearly
 	\[ \TNP(\Sigma_k) \subseteq \TNP(\TP(\Sigma_k)) \]
 	as we made class of query languages larger.
@@ -235,8 +234,8 @@
 
 	d) proof consists of 2 steps
 	\begin{enumerate}
-		\item TODO check first inclusion
-			\[ \Delta_k = \TP(\Sigma_{k - 1}) \subseteq \TNP(\Sigma_{k - 1}) = \Sigma_k \]
+		\item
+			\[ \Delta_k \stackrel{def}{=} \TP(\Sigma_{k - 1}) \subseteq \TNP(\Sigma_{k - 1}) = \Sigma_k \]
 		\item
 			\[ \Delta_k \stackrel{\text{a)}}{=} co-\Delta_k = co-\TP(\Sigma_{k - 1}) = co-\TP(\Pi_{k - 1}) \subseteq co-\TNP(\Pi_{k - 1}) = \Pi_k \]
 	\end{enumerate}

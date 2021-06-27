@@ -33,12 +33,12 @@ Computation forms a tree, that branches at every QUERY.
 
 \begin{definition}[Turing reducibility]
 	\emph{Turing reducibility} - let A,B languages.
-	We say that A is (deterministically) Turing reducible to B in poly time if there $\exists$ an oracle DTM M working in poly time st
+	We say that A is (deterministically) Turing reducible to B in polynomial time if there $\exists$ an oracle DTM M working in polynomial time such that
 	\[ A = L(M, B), A \leq^T B \]
 \end{definition}
 
 \begin{example}
-	$A \in P \Rightarrow A \leq^T \emptyset$. Since we have poly time algorithm without any oracle.
+	$A \in P \Rightarrow A \leq^T \emptyset$. Since we have polynomial time algorithm without any oracle.
 \end{example}
 
 \begin{definition}[$\TP(A)$]
@@ -50,20 +50,21 @@ Computation forms a tree, that branches at every QUERY.
 	\[ \TP(\C) = \{ B |\, \exists A \in \C: B \leq^T A \} \]
 \end{definition}
 
-\begin{observation}
+\begin{theorem}[$\TP(\TP) = \TP$]\label{p_eq_pp}
 	\[ \TP(\TP) = \TP \]
-\end{observation}
+\end{theorem}
 \begin{proof}
-	$ \TP \subseteq \TP(\TP)$. Let $A \in \TP$, use A as an oracle with 1 QUERY or use empty oracle.
+	$ \TP \subseteq \TP(\TP)$. Let $A \in \TP$, use $A$ as an oracle with 1 QUERY or use empty oracle.
 
 	$\TP(\TP) \subseteq \TP$. Let $B \in \TP(\TP) \iff \exists A \in \TP \exists ODTM\ M: B = L(M, A)$.
 
-	To prove the inclusion, we have to construct ordinary DTM that recognizes A.
-	Such TM $\overline{M}$ simulates M and whenever M enters QUERY state, simulate $M^{\prime}$ to check if word w on oracle tape $\in L(M^{\prime}) = A$.
+	To prove the inclusion, we have to construct ordinary DTM that recognizes $B$.
+	Such TM $M_B$ simulates $M$ and whenever $M$ enters QUERY state, simulate $M_A$ to check if word $w$ on oracle tape
+	\[ w \in L(M_A) = A \]
 
 	Now we have to check time complexity.
 
-	M makes $P(|x|)$ queries (for p polynomial), as the total number of steps is polynomial.
+	$M$ makes $p(|x|)$ queries (for $p$ polynomial), as the total number of steps is polynomial.
 	Each query word length is at most $p_w(|x|) = t$.
 	Every query has at most $p_q(|t|)$ steps.
 	In total, query is $p_q(p_w(|x|))$.
@@ -73,7 +74,7 @@ Computation forms a tree, that branches at every QUERY.
 
 \begin{definition}[Turing reducibility (N)]
 	\emph{Turing reducibility (non-deterministic)} - let A,B languages.
-	We say that A is non-deterministically Turing reducible to B in poly time if there $\exists$ an oracle NTM M working in poly time st
+	We say that $A$ is non-deterministically Turing reducible to $B$ in polynomial time if there $\exists$ an oracle NTM $M$ working in polynomial time such that
 	\[ A = L(M, B), A \leq^{NP} B \]
 \end{definition}
 
@@ -87,16 +88,16 @@ Computation forms a tree, that branches at every QUERY.
 \end{definition}
 
 \begin{note}
-	Relativised definition also works for other classes, e.g. EXPTIME.
+	Relativized definition also works for other classes, e.g. EXPTIME.
 \end{note}
 
 \begin{definition}[PS]
 	\[ PS = \bigcup_{i = 0}^{\infty} DS(n^i) = NPS = \bigcup_{i = 0}^{\infty} NS(n^i) \]
-	Where the 2nd equality holds because of Savic theorem.
+	Where the 2nd equality holds because of Savic theorem \cref{savic}.
 \end{definition}
 
 \begin{definition}[PS(A)]
-	$PS(A) = \{ B | \, B$ accepted by an oracle DTM working in poly space, st $B = L(M, A)\}$.
+	$PS(A) = \{ B | \, B$ accepted by an oracle DTM working in polynomial space, st $B = L(M, A)\}$.
 
 	Also for class of languages $\C$.
 \end{definition}

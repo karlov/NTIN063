@@ -8,6 +8,8 @@
 	\[ \forall A \in \C \iff A^{\ast} \in \C \]
 	Where
 	\[ A^{\ast} = \{ x |\ \exists n \exists y_1 \in A \ldots \exists y_2 \in A: x = (y_1, \ldots, y_n) \} \]
+	And $\forall$ is a normal quantifier.
+
 	In other words, concatenation of the words from $A$ are also in $A$.
 
 	Note that comma separators are important to stay in the same complexity class.
@@ -18,7 +20,8 @@
 	1) $C = \Sigma_0 = \Pi_0 = \Delta_0 = \TP$.\\
 	$\Leftarrow$ trivially $A \subseteq A^{\ast}$ for $n = 1$.
 	$x = (y)$.\\
-	\[ \Rightarrow \exists DTM\ M: A = L(M) \]
+	"$\Rightarrow$". $\exists DTM\ M: A = L(M)$
+
 	We run $M$ on all $y_1, y_2, \ldots, y_n$.
 	We accept $\iff$ all computations on $y_i$ accepts.
 
@@ -45,9 +48,12 @@
 
 \begin{theorem}[Polynomial hierarchy consequences]
 	\[ \exists \Pi_k = \Sigma_{k + 1} \]
+
+	e) from Polynomial Hierarchy with quantifiers \cref{polyn_q}
 \end{theorem}
 \begin{proof}
-	\[ \exists \Pi_k \subseteq \Sigma_{k + 1} \]
+	"$\exists \Pi_k \subseteq \Sigma_{k + 1}$"
+
 	\[ A \in \exists \Pi_k \iff \exists B \in \Pi_k \exists p: x \in A \iff \exists^{p(|x|)} y: (x,y) \in B \]
 	Construct an $NTM\ M$ which works as following:
 	\begin{enumerate}
@@ -57,9 +63,10 @@
 	\end{enumerate}
 
 	We get
-	\[ A = L(M, B) \Rightarrow A \in \TNP(\Pi_k) = \TNP(\Sigma_k) = \Sigma_{k + 1} \]
+	\[ A = L(M, B) \Rightarrow A \in \TNP(\Pi_k) = \TNP(\Sigma_k) \stackrel{def}{=} \Sigma_{k + 1} \]
 
-	\[ \exists \Pi_k \supseteq \Sigma_{k + 1} \]
+	"$\exists \Pi_k \supseteq \Sigma_{k + 1}$"
+
 	Proof by induction on k.
 
 	$k = 0$.
@@ -78,9 +85,9 @@
 
 	We know
 	%todo rewrite
-	\[ z_i \in B^{\ast} \Rightarrow z \in B^{\ast} \in \Sigma_k \subseteq^{i.h.} \exists \Pi_{k - 1}\]
+	\[ z_i \in B^{\ast} \Rightarrow z \in B^{\ast} \in \Sigma_k \stackrel{i.h.}{\subseteq} \exists \Pi_{k - 1}\]
 
-	\[ w_i \in (co-B)^{\ast} \Rightarrow w \in B^{\ast} \in \Sigma_k \subseteq^{i.h.} \exists \Pi_{k - 1}\]
+	\[ w_i \in (co-B)^{\ast} \Rightarrow w \in B^{\ast} \in \Sigma_k \stackrel{i.h.}{\subseteq} \exists \Pi_{k - 1}\]
 
 	So
 	\[x \in A \iff \exists^{p(|x|)} y \exists^{p(|x|)} z \exists^{p_1(|z|)} y \exists^{p(|x|)} w\]

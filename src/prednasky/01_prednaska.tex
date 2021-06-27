@@ -68,7 +68,7 @@ b) tape to store $y$ (vector that encode branch of NTM)
 \end{enumerate}
 \end{note}
 
-\begin{theorem}[NS and DT relation]
+\begin{theorem}[NS and DT relation]\label{ns_dt}
 	\[\forall f:\N \to \N, \forall L \in NS(f(n)) \Rightarrow \exists c_L: L \in DT\left(c_L^{f(n)}\right) \]
 \end{theorem}
 \begin{proof}
@@ -168,7 +168,7 @@ TODO what is $t$?
 	Let $L_1 \in NS(S_1(f(n)))$ arbitrary, $L_1$ is recognized by NTS $M_1$ in space $S_1(f(n))$.
 	We want to prove that $L_1 \in NS(S_2(f(n)))$ by constructing $L_2 \in NS(S_1(n))$ using padding.
 
-	Define $L_2 := \{ x\triangle^i | M_1 $ accepts $x$ in space $S_1(|x| + i \} $.
+	Define $L_2 := \{ x\triangle^i | M_1 $ accepts $x$ in space $S_1(|x| + i) \} $.
 	Where $\triangle$ is a new symbol, that $\notin $ initial $\Sigma$.
 
 	Algorithm of $M_2, L(M_2) = L_2$ on input $x\triangle^i$ is the following:
@@ -232,11 +232,11 @@ space.
 		\item $i = 0:\, NS(n^{s(s + 1)}) \subseteq NS(n^{s^2}) $
 		\item $i = 1:\, NS(n^{(s + 1)(s + 1)}) \subseteq NS(n^{(s + 1)s}) $
 		\item \ldots
-		\item $i = s:\, NS(n^{(s + 1)2s}) \subseteq NS(n^{(2s)s}) $
+		\item $i = s:\, NS(n^{2s(s + 1)}) \subseteq NS(n^{(2s)s}) $
 	\end{itemize}
 	From the exponents we conclude that for every inequality right side is a subset of left side.
 	So we get a chain of subsets and can use Savic theorem to get a contradiction:
-	\[ NS(n^{(s + 1)2s}) \subseteq NS(n^{s^2}) \subseteq DS(n^{2s * s}) \subsetneq DS(n^{2s * s + 2s}) \subseteq NS(n^{(s + 1)2s}) \]
+	\[ NS(n^{(s + 1)2s}) \subseteq NS(n^{s^2}) \stackrel{Savic}{\subseteq} DS(n^{2s \cdot s}) \stackrel{space H}{\subsetneq} DS(n^{2s \cdot s + 2s}) \subseteq NS(n^{2s(s + 1)}) \]
 	As the beginning and the end are the same sets and the chain of subsets has strict inclusion.
 
 \end{proof}

@@ -17,10 +17,10 @@
 
 \subsection{PH collapse}
 
-\begin{consequence}[Polynomial hierarchy collapse at level k]\label{ph_collapse}
+\begin{theorem}[Polynomial hierarchy collapse at level k]\label{ph_collapse}
 	if $\Sigma_k = \Pi_k$ for some $k > 0$ then
 	\[ \forall j \geq 0: \Sigma_{k + j} = \Pi_{k + j} = \Sigma_k \]
-\end{consequence}
+\end{theorem}
 \begin{proof}
 	By induction on j. For 0 is true by assumption.
 
@@ -35,9 +35,9 @@
 	\[ \Pi_{k + j + 1} \xlongequal{\cref{polyn_q}\ f)} \forall \Sigma_{k + j} \xlongequal{I.H.} \forall \Pi_{k + j} \xlongequal{I.H.} \Sigma_k \]
 \end{proof}
 
-\begin{consequence}[PH not collapse]
+\begin{theorem}[PH not collapse]
 	Either $\forall k: \Sigma_k \subset \Sigma_{k + 1}$ or PH collapses.
-\end{consequence}
+\end{theorem}
 \begin{proof}
 	Assume
 	\[ \Sigma_k = \Sigma_{k + 1} \]
@@ -70,13 +70,12 @@
 	Let $L$ be $PS$-complete and $L \in \Sigma_k$ then $PH = \Sigma_k$.
 \end{lemma}
 \begin{proof}
-	Take $L_2 \in PS$ by the polynomial reduction, since
-	\[ \exists DTM\ M_d: x \in L_2 \iff M(x) \in L \]
+	Take $L_2 \in PS$ arbitrary, then by the polynomial reduction
+	\[ \exists DTM\ M_d: x \in L_2 \iff M_d(x) \in L \]
 	$M_d$ is a transducer.
 
 	Also there is acceptor
-	\[ \exists NTM\ M_n: L = L(M_n, D) \]
-	for some $D \in \Sigma_{k - 1}$
+	\[ \exists NTM\ M_n, \exists D \in \Sigma_{k - 1}: L = L(M_n, D) \]
 	Then we construct new NTM by concatenation of $M_d$ and $M_n$.
 
 	% todo join 2 proofs, predn 5 od 33:00
@@ -101,7 +100,7 @@
 \begin{proof}
 	We take L, by $PH = PS$
 	\[ \exists k: L \in \Sigma_k \]
-	then by lemma \cref{ph_col_lemma}
+	then by \cref{ph_col_lemma}
 	\[ PH = PS \]
 \end{proof}
 
@@ -214,12 +213,11 @@ Similarly $E_1$.
 	Every $L \in PS$ arbitrary can be reduces to QBF in poly time.
 
 	By the definition of PS
-	\[ \exists DTM\ M: L = L(M), \exists p(n) \]
-	M accepts L in polynomial space $p(n)$.
+	\[ \exists DTM\ M: L = L(M), \exists p(n)\ \text{M accepts L in space}\ p(n)\]
 
-	We have \[ 2^{c_m p(n)} \] configurations of M and every configuration can be encoded by string of length
+	We have $2^{c_m p(n)}$ configurations of M and every configuration can be encoded by string of length
 	\[ c_m p(n) = m(n) := m \]
-	We assume, that is only 1 accepting configuration.
+	We assume, that there is only 1 accepting configuration.
 
 	$x \in L \iff \exists $ path of length $m$ in \emph{configuration graph} from $C_0 \to C{acc}$.
 	Use similar algorithm as in Savic theorem \cref{savic}, but encode computation in QBF.
@@ -406,7 +404,7 @@ This is stricter, since if we can reduce in log-space, we can also reduce in pol
 	Algorithm to compute $R_i$:
 	% todo rewrite, extremely messy
 	\begin{enumerate}
-		\item $|R_0| = 1|$;
+		\item $|R_0| = 1$;
 		\item guess $0 \leq g \leq n$ and verify:
 			\begin{enumerate}
 				\item $g \geq |R_i|$\\
