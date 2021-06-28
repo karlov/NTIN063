@@ -133,4 +133,137 @@ On the other hand, Traveling salesman problem (TSP) does not have such algorithm
 	\item Completeness: $x \in L \Rightarrow \exists y \in \szo^{\ast}: \Prob[A^y(x) = 1] = 1$
 	\item Soundness: $x \notin L \Rightarrow \forall y \in \szo^{\ast}: \Prob[A^y(x) = 1] \leq \frac{1}{2}$
 	\end{itemize}
+
+	Note that the proof can be exponential, we only care about the polynomial size addressing.
 \end{definition}
+
+\begin{definition}[PCP class]
+	$L \in PCP(r(n), q(n)$ if $\exists c, d > 0: L$ asks a $(c \cdot r(n), d \cdot q(n)$-PCP verifier.
+\end{definition}
+
+\begin{lemma}[PCP properties]\label{pcp_prop}
+	\begin{enumerate}
+		\item We may assume for a $(r, q)$-verifier that every proof $y$
+			\[ |y| \leq q \cdot 2^{r(n)} \]
+			as the \# of queries is bounded by $q$ and $2^{r(n)}$ possible outcomes of random access.
+		\item $PCP(r(n), q(n)) \subseteq NT(2^{\bigO(r(n))} \cdot q(n))$.
+			We construct an NTM which guesses the proof of size $2^{\bigO(r(n)} \cdot q(n)$.
+			$M$ deterministically runs the verifies on all possible choices of the advice.
+			$M$ accepts $\iff$ the verifier accepts in ALL cases.
+	\end{enumerate}
+\end{lemma}
+
+\begin{theorem}[PCP]\label{pcp}
+	\[ \TNP = PCP (\log n, 1) \]
+\end{theorem}
+\begin{proof}
+	"$\subseteq$" follows from \cref{pcp_prop}.
+	\[ PCP (\log n, 1) \subseteq NT(2^{\bigO(\log n)}) = \TNP \]
+
+	"$\supseteq$" hard.
+\end{proof}
+
+\begin{example}[PCP system]
+	Let GNI be pairs of non-isomorphic graphs.
+	Input: $(G_n, G_i)$ graphs on $n$ vertexes.
+
+	Claim: GNI $\in PCP (\log n, 1)$.
+
+	The proof will be a binary string with each location being index by adjacency matrix of a graph on $n$ vertexes.
+	Assume that for correct $y$:
+	\[ y[H] = \threepartdef{0} {H \equiv G_0}{1} {H \equiv G_1} { \in \szo} {else} \]
+
+	Verifies takes at random some $b \in \szo$ than randomly picks a permutation of $[n]$ which defines $H \equiv G_0$, guesses $y[H]$ and accepts $\iff y[H] = b$.
+
+	If $x \in GNI$ then bits corresponding to $G_0$ and $G_1$ are disjoint.
+	With such proof the verifier should succeed, completeness is satisfied.
+
+	Otherwise, there are positions in $y$ which corresponds to both $G_0$ and $G_1$.
+	By the definition of $y[H]$, these bits are random, so the probability of success if $\leq \frac{1}{2}$.
+\end{example}
+
+\begin{corollary}
+	$\exists \rho < 1$ such that if there is an polynomial size approximation algorithm for MAX-3-SAT then $\TP = \TNP$.
+\end{corollary}
+
+\begin{definition}[qCSP]
+	A $qCSP$ instance $\varphi$ is a collection $\varphi_1, \ldots, \varphi_n$ of functions (constraints)$:\szo^n \to \szo$ such that each function $\varphi_i$ depends on at most $q$ variables.
+
+	We say that an assignment $u \in \szo^n$ satisfies constraint $\varphi_i$ if $\varphi_i(u) = 1$.
+	The fraction of constraint satisfied by $u$ is $\sum \frac{\varphi_i(n)}{n}$ and let $val(\varphi_i)$ max of this value over all $u \in \szo^n$.
+
+	Also $\varphi$ is satisfiable if $val(\varphi) = 1$.
+
+	3-SAT is a special case of qCSP, as each clause is equivalent to a function $\varphi_i$.
+\end{definition}
+
+\begin{definition}[Gap CSP]
+	$\forall q \in \N, \rho \leq 1$ a $\rho$-GAP-qCSP is a problem determining whether a given qCSP instance has $val(\varphi) = 1$ or $var(\varphi) < \rho$.
+
+	We say that $\rho$-GAP-qCSP is $\TNP$-hard if there is a polynomial time function $f$ mapping strings to representations of qCSP satisfying
+	\begin{gather*}
+		x \in L \Rightarrow val(f(x)) = 1 \\
+		x \notin L \Rightarrow val(f(x)) < \rho
+	\end{gather*}
+\end{definition}
+
+\begin{theorem}[PCP 1]\label{pcp_1}
+	There exists $\rho < 1: \forall L \in \TNP$ there is polynomial time function $f$ mapping string to representations of 3CNF:
+	\begin{gather*}
+		x \in L \Rightarrow val(f(x)) = 1 \\
+		x \notin L \Rightarrow val(f(x)) < \rho
+	\end{gather*}
+
+	As 3SAT is $\TNP$-complete, we can always map instance of $L$ to satisfiable or unsatisfiable 3CNF.
+	Theorems 2nd claim is stronger: as the standard reduction only guarantees 1 unsatisfiable clause.
+	In this case, we get constant fraction of unsatisfiable clauses.
+\end{theorem}
+%\begin{proof}
+%\end{proof}
+
+\begin{theorem}[PCP 1 stronger]
+	$\forall \varepsilon > 0, \forall \rho = \frac{7}{8} + \varepsilon: \forall L \in \TNP$ there is polynomial time function $f$ mapping string to representations of 3CNF:
+	\begin{gather*}
+		x \in L \Rightarrow val(f(x)) = 1 \\
+		x \notin L \Rightarrow val(f(x)) < \rho
+	\end{gather*}
+\end{theorem}
+
+\begin{theorem}[PCP 2]\label{pcp_2}
+	$\exists q \in \N, \rho < 1: \rho$-GAP-qCSP is $\TNP$-hard.
+\end{theorem}
+
+\begin{theorem}[PCP equivalence]
+	PCP \cref{pcp} is equivalent to PCP 2 \cref{pcp_2}.
+\end{theorem}
+\begin{proof}
+	"$\Rightarrow$". Assume $ \TNP = PCP (\log n, 1)$.
+	We show that $\frac{1}{2}$-GAP-qCSP is $\TNP$-hard by a reduction from 3-SAT to $\frac{1}{2}$-GAP-qCSP.
+	By assumption, there is a PCP system with polynomial time verifier $V$ which makes $q$ queries (constant) and uses $c \cdot \log n$ random bits.
+	Define $V_{x, r}$ function whether $V$ accepts $x$ with random coins $r$.
+	Which depends on at most $q$ variables, as we make at most $q$ queries.
+	Taking $\varphi$ as collection of all functions they form a $qCSP$.
+	Does it satisfy GAP-qCSP?
+
+	If we get an instance of 3-SAT which is satisfiable, then by completeness all constraints should be satisfied.
+
+	On other hand, with a non-satisfiable instance of 3-SAT by soundness at least half of the constraints will give 0. Then $val(\varphi) \leq \frac{1}{2}$.
+
+	Note that
+	\begin{itemize}
+		\item PCP verifier $V \iff CSP$ instance $\varphi$.
+		\item PCP proof $y \iff$ assignment of variables in $\varphi$
+		\item length of the proof $\iff$ \# of variables.
+			We know: \$ of variables $\leq q \cdot 2^r = q \cdot 2^{c \log n} = q \cdot n^c$.
+	\end{itemize}
+
+	"$\Leftarrow$". Assume $ \rho$-GAP-qCSP is $\TNP$-hard for some constant $\rho, q$.
+	Take $L \in \TNP$ arbitrary we want to design PCP system with parameters $(\log n, 1)$ for $L$.
+	Let $f$ be a polynomial time reduction from $L \to \rho$-GAP-qCSP
+	The verifier on input $x$ constructs $f(x) = \varphi$ which is a qCSP instance.
+	Verifier chooses at random $i \in [n]$ and checks $\varphi_i$ by making $q$ queries.
+
+	If $x \in L \Rightarrow \varphi$ accepts with probability 1.
+	On the other hand, $x \notin L \varphi$ accepts with probability $< \rho$.
+	We can adjust the probability to $\frac{1}{2}$ by running the verifier polynomial times.
+\end{proof}

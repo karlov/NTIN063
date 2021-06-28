@@ -114,10 +114,12 @@ Q: $T$ is a boolean function?
 	Class of languages recognizable by families of circuits of polynomial size.
 \end{definition}
 
-\begin{reminder}[Oblivious DTM]\label{obliv_dtm}
+\begin{definition}[Oblivious DTM]\label{obliv_dtm}
 	IF $L$ is recognizable by DTM M in time $p(n)$ then it is also recognizable by DTM $M_1$ with single work tape with time complexity $p^2(n)$.
-	Moreover, the positions of the heads of $M_1$ depend only on \# of steps that $M$ performed and NOT on the input.
-\end{reminder}
+	Moreover, the head movement of $M_1$ are independent of the contents of its tapes but only on the input length ($M_1$ always performs a sequence of left to right and back sweeps of the same form regardless of what is the input).
+
+	Source ~\cite[p. 37]{arora2009computational}.
+\end{definition}
 
 \begin{theorem}[$\TP \subseteq \Ppoly$]\label{tp_ppoly}
 	$\TP \subseteq \Ppoly$.
@@ -138,7 +140,7 @@ Q: $T$ is a boolean function?
 	\[ d_1, d_2, \ldots, d_{T(n)} \]
 	be binary string encoding displays during the computation of $M$ on $x$.
 
-	% todo not sure about this argument, lecture 7 01:20:00
+	% lecture 7 01:20:00
 	Since $M$ is \emph{oblivious}, the position of the head $i$ uniquely defines the position $i_v, i_p$.
 	Because the position of the head is uniquely determined by the \# of steps.
 
@@ -166,7 +168,7 @@ Q: $T$ is a boolean function?
 	M outputs the circuit $C_i$ in $\bigO(\log n)$ time and space.
 
 	Space is reused therefore total space complexity is also $\bigO(\log n)$.
-	However, having $T(n)$ gates time complexity is $\bigO(T(n) * \log n)$ which is polynomial.
+	However, having $T(n)$ gates time complexity is $\bigO(T(n) \cdot \log n)$ which is polynomial.
 \end{corollary}
 
 \begin{note}[$\TP \nsupseteq \Ppoly$]
