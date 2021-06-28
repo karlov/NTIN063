@@ -49,6 +49,7 @@
 	Also, we can ask exponentially many QUERies, however the space is reused, therefore space is bounded by the largest QUERY.
 \end{proof}
 
+% 3rd lecture
 \subsection{Time and Space classes relation}
 
 \begin{reminder}[Space classes]
@@ -262,8 +263,9 @@
 	Same proof is valid for oracle TM.
 \end{proof}
 
+%3th lecture 01:50:00
 \begin{theorem}[NP $\neq$ co-NP]
-	\[ \TNP \cap\ co-\TNP \Rightarrow \TNP \cup\ co-\TNP \subsetneq \Delta_2 \]
+	\[ \TNP \ne co-\TNP \Rightarrow \TNP \cup\ co-\TNP \subsetneq \Delta_2 \]
 \end{theorem}
 \begin{proof}
 	Let
@@ -274,9 +276,9 @@
 	\begin{enumerate}
 		\item if($F \in SAT$)
 		\item \tab if($\overline{F} \in SAT$)
-		\item \tab \tab accept
-		\item \tab else
 		\item \tab \tab reject
+		\item \tab else
+		\item \tab \tab accept
 		\item else
 		\item \tab reject
 	\end{enumerate}

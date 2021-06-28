@@ -138,7 +138,7 @@ On the other hand, Traveling salesman problem (TSP) does not have such algorithm
 \end{definition}
 
 \begin{definition}[PCP class]
-	$L \in PCP(r(n), q(n)$ if $\exists c, d > 0: L$ asks a $(c \cdot r(n), d \cdot q(n)$-PCP verifier.
+	$L \in PCP(r(n), q(n))$ if $\exists c, d > 0: L$ asks a $(c \cdot r(n), d \cdot q(n))$-PCP verifier.
 \end{definition}
 
 \begin{lemma}[PCP properties]\label{pcp_prop}
@@ -147,7 +147,7 @@ On the other hand, Traveling salesman problem (TSP) does not have such algorithm
 			\[ |y| \leq q \cdot 2^{r(n)} \]
 			as the \# of queries is bounded by $q$ and $2^{r(n)}$ possible outcomes of random access.
 		\item $PCP(r(n), q(n)) \subseteq NT(2^{\bigO(r(n))} \cdot q(n))$.
-			We construct an NTM which guesses the proof of size $2^{\bigO(r(n)} \cdot q(n)$.
+			We construct an NTM which guesses the proof of size $2^{\bigO(r(n))} \cdot q(n)$.
 			$M$ deterministically runs the verifies on all possible choices of the advice.
 			$M$ accepts $\iff$ the verifier accepts in ALL cases.
 	\end{enumerate}
@@ -198,7 +198,7 @@ On the other hand, Traveling salesman problem (TSP) does not have such algorithm
 \end{definition}
 
 \begin{definition}[Gap CSP]
-	$\forall q \in \N, \rho \leq 1$ a $\rho$-GAP-qCSP is a problem determining whether a given qCSP instance has $val(\varphi) = 1$ or $var(\varphi) < \rho$.
+	$\forall q \in \N, \rho \leq 1$ a $\rho$-GAP-qCSP is a problem determining whether a given qCSP instance has $val(\varphi) = 1$ or $val(\varphi) < \rho$.
 
 	We say that $\rho$-GAP-qCSP is $\TNP$-hard if there is a polynomial time function $f$ mapping strings to representations of qCSP satisfying
 	\begin{gather*}
@@ -264,6 +264,6 @@ On the other hand, Traveling salesman problem (TSP) does not have such algorithm
 	Verifier chooses at random $i \in [n]$ and checks $\varphi_i$ by making $q$ queries.
 
 	If $x \in L \Rightarrow \varphi$ accepts with probability 1.
-	On the other hand, $x \notin L \varphi$ accepts with probability $< \rho$.
+	On the other hand, $x \notin L \varphi \Rightarrow$ accepts with probability $< \rho$.
 	We can adjust the probability to $\frac{1}{2}$ by running the verifier polynomial times.
 \end{proof}

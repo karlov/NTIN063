@@ -164,9 +164,9 @@
 	Let $L \in AC^i$ arbitrary, then there is a circuit $\{ C_n \}_{n \in \N}$ with depth $\bigO(\log^i n)$ that recognizes $L$.
 	$\{ C_n \}_{n \in \N}$ is a polynomial size family of circuits $\Rightarrow \exists p: |C_n| \leq p(n)$.
 	Then, every gate in $C_n$ has fan-in $\leq p(n)$.
-	Replace every gate in $C_n$ by a binary tree of in-2 gates with depth $\log p(n) \in \bigO(\log n)$.
+	Replace every gate in $C_n$ by a binary tree of fanin-2 gates with depth $\log p(n) \in \bigO(\log n)$.
 	% todo picture lecture 9 12:00
-	Therefore, we can construct $C_n^{new}$ with in-2 of depth $\bigO(\log^{i + 1} n)$ that simulates $C_n \Rightarrow L \in NC^{i + 1}$.
+	Therefore, we can construct $C_n^{new}$ with fanin-2 of depth $\bigO(\log^{i + 1} n)$ that simulates $C_n \Rightarrow L \in NC^{i + 1}$.
 \end{proof}
 
 % book chapter 6.5.1
@@ -211,7 +211,7 @@ A: No, each processor is a TM with output tape. As each of them works in $\log$ 
 	Then $L \in AC^d$, by \cref{ac_dc} $L \in NC^d \Rightarrow L \in NC$.
 
 	"$\Leftarrow$" we have a polynomial size circuit with $\log$ depth.
-	Replace every gate by a processor and simulate and interconnect them in some standard way.
+	Replace every gate by a processor and interconnect them in some standard way.
 	Sumilating $C_n$ getting all signals from level $j$ to $(j + 1)$ may take $\bigO(\log n)$ steps of the parallel computing.
 	Therefore simulation takes $\bigO(\log^{d + 1} n)$.
 \end{proof}

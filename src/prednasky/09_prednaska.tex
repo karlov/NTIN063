@@ -69,7 +69,7 @@
 	Then main loop \emph{breaks} from "while" in step 3, because $N$ will eventually find such $y$.
 
 	% todo why is it different from SAT?
-	Moreover, main loop \emph{breaks} from "while" in step 4 for some $l \ne k$ as $SAT = \ne L(M_l, A) \Rightarrow \exists y: AGREE-O(M_l, A, y)$ outputs NO.
+	Moreover, main loop \emph{breaks} from "while" in step 4 for some $l \ne k$ as $SAT \ne L(M_l, A) \Rightarrow \exists y: AGREE-O(M_l, A, y)$ outputs NO.
 	Finally, main loop never leaves step 4 for $k$.
 
 	Altogether, $\exists c, \forall x: |x| \geq c$ the main loop terminates in step 4 and rejects $x$.

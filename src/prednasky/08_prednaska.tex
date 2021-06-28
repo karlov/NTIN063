@@ -254,7 +254,7 @@
 	$r \in \szo^m$ is \emph{bad} for $x \in \szo^m$ if $M(x, r) \neq L(x)$.
 	For a fixed $x$ there are $\frac{2^m}{2^{n + 1}}$ strings $r$ that are bad for $x$.
 	For all $x$ there exists at $\leq 2^n \cdot \frac{2^m}{2^{n + 1}} = 2^m/2$ bad strings.
-	Therefore $\geq 1/2 2^m$ strings are good $\forall x$.
+	Therefore $\geq \frac{1}{2} 2^m$ strings are good $\forall x$.
 
 	Pick some $r_0$ that is good for $x$.
 	From $\TP \subseteq \Ppoly$ \cref{tp_ppoly} $M$ can be simulated by polynomial size family of circuits $\{ C_{m + n} \}$.
@@ -314,7 +314,7 @@
 		\[ \Prob[\exists r \in \szo^m : r \notin \bigcup (Z + u_i)] < 1 \]
 	Define $r$ is \emph{bad} for $i \iff r \notin Z + u_i \stackrel{XOR}{\iff} r + u_i \notin Z$.
 	Pick $u_1, \ldots u_k \in \szo^m$ uniformly independently.
-	Then
+	Then // TODO fix (n, m)
 	\[ \forall r: \Prob[r + u_i \in Z] \geq 1 - 2^m \Rightarrow \Prob[r \ \text{is bad for}\ i] \leq  2^{-n} \]
 	By independent choice of $u_i$:
 	\[ \Prob[r \ \text{is bad }\ \forall i] < 2^{-nk} \]
