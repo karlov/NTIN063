@@ -130,7 +130,7 @@
 
 	Then,
 	\begin{equation}
-		\exists y \in \szo^{r(k)} \forall x \in \szo^n: \varphi(x, y) = C_k^{out}(\varphi, x)) = 1
+		\exists y \in \szo^{r(k)} \forall x \in \szo^n: \varphi(x, y) = C_k^{out}(x, (\varphi, x)) = 1
 	\tag{$**$}
 	\end{equation}
 
@@ -208,7 +208,7 @@ A: No, each processor is a TM with output tape. As each of them works in $\log$ 
 	Gate at $j$-th level simulates processor in $j$-th step of the computation.
 	The input edges comes from the previous levels and corresponds to the communication channels between the processors.
 
-	Then $L \in AC^d$, by \cref{ac_dc} $L \in NC^d \Rightarrow L \in NC$.
+	Then $L \in AC^d$, by \cref{ac_dc} $L \in NC^{d + 1} \Rightarrow L \in NC$.
 
 	"$\Leftarrow$" we have a polynomial size circuit with $\log$ depth.
 	Replace every gate by a processor and interconnect them in some standard way.
