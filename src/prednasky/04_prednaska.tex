@@ -2,7 +2,7 @@
 %\vspace{5mm}
 %\large
 
-\begin{lemma}[$A^{\ast}$]
+\begin{lemma}[Concatenation $A^{\ast}$]\label{concat}
 	Let $\C$ be an arbitrary class from PH.
 	Then
 	\[ \forall A \in \C \iff A^{\ast} \in \C \]
@@ -36,10 +36,10 @@
 
 	4) $C = \Pi_k$
 	If there is at least one $y_i \in co-A$, whole string $(y_1, y_2, \ldots, y_n) \in (co-A)^{\ast}$.
-	Therefore we proceed roughly the same as in 3), but we proceed for rejecting leaves.
+	Therefore we proceed roughly the same as in 3), but we proceed for rejecting branches.
 \end{proof}
 
-\begin{consequence}
+\begin{consequence}\label{concat_cons}
 	If we have $A,B,T \in \C \Rightarrow D \in \C$ where
 	\[ D = \{ x |\ \exists a \in A, \exists b \in B, \exists t \in T: x = (a, b, t) \} \]
 
@@ -67,30 +67,40 @@
 
 	"$\exists \Pi_k \supseteq \Sigma_{k + 1}$"
 
-	Proof by induction on k.
+	Proof by induction on $k$.
 
 	$k = 0$.
 	\[ \Sigma_1 \subseteq \exists \Pi_0 = \exists \TP = \TNP \]
 
-	induction hypothesis: $\Sigma_k \subseteq \exists \Pi_{k - 1}$.
+	Induction hypothesis: $\Sigma_k \subseteq \exists \Pi_{k - 1}$.
 	Let $A \in \Sigma_{k + 1}$ be arbitrary.
 	Then
 	\[ \exists NTM\ M \exists B \in \Sigma_k: A = L(M, B) \]
-	$x \in A \iff \exists$ accepting computation (poly long) of $M$ on input $x$ which asks if $z_1, z_2, \ldots, z_n \in B$ and if $w_1, \ldots, w_n \in co-B$.
+	$x \in A \iff \exists$ accepting computation (polynomially long) of $M$ on input $x$ which asks if $z_1, z_2, \ldots, z_n \in B$ and if $w_1, \ldots, w_n \in co-B$.
 	Alternatively
 	\[ x \in A \iff \exists^{p(|x|)} y, \exists^{p(|x|)} z = (z_1, z_2, \ldots, z_n), \exists^{p(|x|)} w = (w_1, \ldots, w_n)\]
-	s.t. $y$ encodes an accepting computation of $M$ on $X$ with positive queries $z_1, \ldots, z_n$ and negative queries $w_1, \ldots, w_n$.
+	s.t. $y$ encodes an accepting computation of $M$ on $x$ with positive queries $z_1, \ldots, z_n$ and negative queries $w_1, \ldots, w_n$.
 
-	We claim that the language L of pairs $(x, y) \in \TP \subseteq \Pi_k$.
+	We claim that the language $L = \{ (x, y) \} \in \TP \subseteq \Pi_k$.
 
 	We know
-	%todo rewrite
-	\[ z_i \in B^{\ast} \Rightarrow z \in B^{\ast} \in \Sigma_k \stackrel{i.h.}{\subseteq} \exists \Pi_{k - 1}\]
-
-	\[ w_i \in (co-B)^{\ast} \Rightarrow w \in B^{\ast} \in \Sigma_k \stackrel{i.h.}{\subseteq} \exists \Pi_{k - 1}\]
+	\begin{gather*}
+		B \in \Sigma_k \stackrel{\cref{concat}}{\Rightarrow} z \in B^{\ast} \in \Sigma_k \stackrel{i.h.}{\subseteq} \exists \Pi_{k - 1} \Rightarrow \exists D \in \Pi_{k - 1}, \exists p_1 \\
+		co-B \in \Pi_k \stackrel{\cref{concat}}{\Rightarrow} w \in (co-B)^{\ast} \in \Pi_k
+	\end{gather*}
+	Then
+	\[ z \in B^{\ast} \iff \exists^{p_1(|z|)} t: (z, t) \in D, D \in \Pi_{k - 1} \subseteq \Pi_k \]
 
 	So
-	\[x \in A \iff \exists^{p(|x|)} y \exists^{p(|x|)} z \exists^{p_1(|z|)} y \exists^{p(|x|)} w\]
+	\[x \in A \iff \exists^{p(|x|)} y \exists^{p(|x|)} z \exists^{p_1(|z|)} t \exists^{p(|x|)} w : (x, y) \in L, (z, t) \in D, w \in (co-B)^{\ast} \]
+
+	Finally, define
+	\[ E = \{ s |\ \exists y \exists (z, t) \exists w: (x, y) \in L, (z, t) \in D, w \in (co-B)^{\ast} \& s = \langle (x, y), (z, t), w \rangle \} \]
+	By \cref{concat_cons} $E \in \Pi_k$.
+
+	Then
+	\[x \in A \iff \exists^{p_2(|x|)} (x, y), (z, t), w: \langle (x, y), (z, t), w \rangle \in E \]
+	By definition $A \in \exists \Pi_k$.
 \end{proof}
 
 \begin{definition}[PH by alternating quantifiers]\label{ph_altern}
