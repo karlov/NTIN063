@@ -240,8 +240,9 @@ On the other hand, Traveling salesman problem (TSP) does not have such algorithm
 	"$\Rightarrow$". Assume $ \TNP = PCP (\log n, 1)$.
 	We show that $\frac{1}{2}$-GAP-qCSP is $\TNP$-hard by a reduction from 3-SAT to $\frac{1}{2}$-GAP-qCSP.
 	By assumption, there is a PCP system with polynomial time verifier $V$ which makes $q$ queries (constant) and uses $c \cdot \log n$ random bits.
-	Define $V_{x, r}$ function whether $V$ accepts $x$ with random coins $r$.
-	Which depends on at most $q$ variables, as we make at most $q$ queries.
+	Define $\forall x: V_{x, r}$ function whether $V$ accepts $x$ with random coins $r$.
+	Separate collection for every input.
+	Which depends on at most $q$ variables, as we make at most $q$ queries. $q$ is a constant.
 	Taking $\varphi$ as collection of all functions they form a $qCSP$.
 	Does it satisfy GAP-qCSP?
 
@@ -254,16 +255,17 @@ On the other hand, Traveling salesman problem (TSP) does not have such algorithm
 		\item PCP verifier $V \iff CSP$ instance $\varphi$.
 		\item PCP proof $y \iff$ assignment of variables in $\varphi$
 		\item length of the proof $\iff$ \# of variables.
-			We know: \$ of variables $\leq q \cdot 2^r = q \cdot 2^{c \log n} = q \cdot n^c$.
+			We know: \# of variables $\leq q \cdot 2^r = q \cdot 2^{c \log n} = q \cdot n^c$.
 	\end{itemize}
 
 	"$\Leftarrow$". Assume $ \rho$-GAP-qCSP is $\TNP$-hard for some constant $\rho, q$.
 	Take $L \in \TNP$ arbitrary we want to design PCP system with parameters $(\log n, 1)$ for $L$.
 	Let $f$ be a polynomial time reduction from $L \to \rho$-GAP-qCSP
-	The verifier on input $x$ constructs $f(x) = \varphi$ which is a qCSP instance.
-	Verifier chooses at random $i \in [n]$ and checks $\varphi_i$ by making $q$ queries.
+	The verifier on input $x$ constructs $f(x) = \varphi$ which is a qCSP instance with $m$ constraints.
+	Verifier chooses at random $i \in [m]$ and checks $\varphi_i$ by making $q$ queries.
+	The $\log$ parameter of CSP comes from guessing $\log m$ bits as an encoding of $m$.
 
 	If $x \in L \Rightarrow \varphi$ accepts with probability 1.
-	On the other hand, $x \notin L \varphi \Rightarrow$ accepts with probability $< \rho$.
+	On the other hand, $x \notin L \Rightarrow \varphi $ accepts with probability $< \rho$.
 	We can adjust the probability to $\frac{1}{2}$ by running the verifier polynomial times.
 \end{proof}

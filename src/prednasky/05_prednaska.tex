@@ -236,7 +236,7 @@ Similarly $E_1$.
 	\[ |\psi_m| \in \Omega(2^m p(n)) \]
 
 	Main idea
-	\[ \psi_i(C, C^{\prime}) = \exists C_{int} \forall D_1, D_2 [(D_1 = C \land D_2 = C^{\prime}) \lor (D_1 = C_{int} \land D_2 = C^{\prime})] \Rightarrow \psi(D_1, D_2) \]
+	\[ \psi_i(C, C^{\prime}) = \exists C_{int} \forall D_1, D_2 [(D_1 = C \land D_2 = C^{\prime}) \lor (D_1 = C_{int} \land D_2 = C^{\prime})] \Rightarrow \psi_{i - 1}(D_1, D_2) \]
 	Formally, implication could be replaced by $\neg x \lor y$.
 	Now
 	\[ |\psi_i| = |\psi_{i - 1}| + \bigO(m) \]
@@ -410,7 +410,7 @@ This is stricter, since if we can reduce in log-space, we can also reduce in pol
 				\item $g \geq |R_i|$\\
 					Generate non-deterministically all subsets $V \subseteq V(G)$ of vertices of size $g$.
 					Vertices are ordered by increasing number of their codes.
-					Check whether $\forall v \in V: \exists Path(s, v): |Path(s, v)| = g$.
+					Check whether $\forall v \in V: \exists Path(s, v): |Path(s, v)| = i$.
 				\item $g \leq |R_i|$.\\
 					Is equivalent to check
 					\[ |V \setminus R_i| \geq n - g \]
@@ -420,6 +420,7 @@ This is stricter, since if we can reduce in log-space, we can also reduce in pol
 						\item non deterministically generate $V_t \subseteq V(G): |V_t| = (n - g)$ vertices.
 						\item $\forall a \in V_t$ check $a \in V(G) \setminus R_i$.
 						\item generate $V_r \subseteq V(G): |V_r| = |R_{i - 1}|$ non deterministically: select $|R_{i - 1}|$ vertices and check $Path(s, a): |Path(s, a)| = i - 1$.
+							As $R_{i-1}$ is unique we get same set every time.
 						\item $\forall b \in V_r$ check $a \ne b \land (b, a) \notin E(G)$.
 					\end{enumerate}
 			\end{enumerate}
