@@ -163,6 +163,8 @@ TODO what is $t$?
 	\[ NS(S_1(n)) \subseteq NS(S_2(n)) \Rightarrow NS(S_1(f(n))) \subseteq NS(S_2(f(n))) \]
 
 	Lemma allows to replace $n \to f(n)$.
+
+	We can also prove Translation Lemma for $DS, NT, DT$.
 \end{lemma}
 \begin{proof}
 	Let $L_1 \in NS(S_1(f(n)))$ arbitrary, $L_1$ is recognized by NTS $M_1$ in space $S_1(f(n))$.
@@ -207,10 +209,6 @@ space.
 
 \end{proof}
 
-\begin{note}
-	We can also prove Translation Lemma for $DS, NT, DT$.
-\end{note}
-
 \begin{theorem}[NS hierarchy for polynomials]
 	Let $\varepsilon > 0,\, r > 1$. Then
 	\[ NS(n^r) \subsetneq NS(n^{r + \varepsilon}) \]
@@ -224,7 +222,13 @@ space.
 	Assume by contradiction
 	\[ NS(n^{\frac{s+1}{t}}) \subseteq NS(n^{\frac{s}{t}}) \]
 	Now we use \cref{transl_space} for
-	\[ S_1 = \frac{s+1}{t}, S_2 = \frac{s}{t}, f(n) = n^{(s + i)t}, i = 0, 1 \ldots, t \]
+	\[ S_1 = n^{\frac{s+1}{t}}, S_2 = n^{\frac{s}{t}}, f(n) = n^{(s + i)t}, i = 0, 1 \ldots, t \]
+\begin{note}
+\begin{note}
+\end{note}
+
+\end{note}
+
 	We get
 	\[ \forall i: NS((n^{(s + i)t})^{(s + 1)/t}) \subseteq NS((n^{(s + i)t})^{s/t}) \Rightarrow \forall i: NS(n^{(s + i)(s + 1)}) \subseteq NS(n^{(s + i)s}) \]
 	Now we write for all $i$:
