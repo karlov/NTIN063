@@ -79,7 +79,7 @@
 	$x \in A \iff \exists$ accepting computation (polynomially long) of $M$ on input $x$ which asks if $z_1, z_2, \ldots, z_n \in B$ and if $w_1, \ldots, w_n \in co-B$.
 	Alternatively
 	\[ x \in A \iff \exists^{p(|x|)} y, \exists^{p(|x|)} z = (z_1, z_2, \ldots, z_n), \exists^{p(|x|)} w = (w_1, \ldots, w_n)\]
-	s.t. $y$ encodes an accepting computation of $M$ on $x$ with positive queries $z_1, \ldots, z_n$ and negative queries $w_1, \ldots, w_n$.
+	such that $y$ encodes an accepting computation of $M$ on $x$ with positive queries $z_1, \ldots, z_n$ and negative queries $w_1, \ldots, w_n$.
 
 	We claim that the language $L = \{ (x, y) \} \in \TP \subseteq \Pi_k$.
 
@@ -118,9 +118,11 @@
 	$k \to k + 1$. Let $A \in \Sigma_{k + 1} = \exists \Pi_k$.
 	Then
 	\[ \exists \Pi_k \exists p: x \in A \iff \exists^{p(|x|)} y: (x,y) \in B \]
-	By the i.p.
+	By the i.h.
 	% todo finish, 4th lecture
-	\[ \Rightarrow (x,y) \in B \iff \forall^{p(|x|)} y_1, \exists^{p(|x|)} y_2 \ldots : ((x,y), y_1, y_2, \ldots, y_k) \]
+	\[ \Rightarrow (x,y) \in B \iff \forall^{p(|x|)} y_1, \exists^{p(|x|)} y_2 \ldots : ((x,y), y_1, y_2, \ldots, y_k) \in D, D \in \TP \]
+	Then
+	\[ x \in A \iff \exists^{p_2(|x|)} y \forall^{p_1(|x|)} y_1 \exists^{p_2(|x|)} y_2 \ldots :(x, y, y_1, \ldots y_k) \in D \]
 \end{proof}
 
 \begin{example}
