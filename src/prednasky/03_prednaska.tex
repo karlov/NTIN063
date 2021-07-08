@@ -169,31 +169,37 @@
 		\item $\Pi_{k + 1} = co-\TNP(\Delta_{k + 1})$.
 	\end{enumerate}
 \end{theorem}
-\begin{proof}
-	a) $\TNP(\TP) = \TNP$ also $\TP(\TP) = \TP$.\\
+\begin{proof}~
+\begin{enumerate}[label=\alph*)]
+	\item $\TNP(\TP) = \TNP$ also $\TP(\TP) = \TP$.\\
 	Proof by embedding oracle computation via DTM simulation.
 
-	b) by definition, for $k \geq 1$
+	\item by definition, for $k \geq 1$
 	\[ \Pi_k = co-\TNP(\Sigma_{k - 1}) = co-\Sigma_k \]
 	same for $\Sigma_k$ by symmetry.
 
-	c) we can deduce $\overline{B}$ from questions to $B$ by negating every request.
+	\item we can deduce $\overline{B}$ from questions to $B$ by negating every request.
+	In other words, swap YES/NO answers after queries.
 
-	% todo d), e)
+	\item swap YES/NO answers after queries.
 
-	f) FIXME
-	\[ \Sigma_{k + 1} = \TNP(\Sigma_k) \stackrel{\text{by i.h. ???}}{=} \TNP(\Delta_{k - 1}) = \TNP(\TP(\Sigma_k)) = \TNP(\Delta_k) \]
-	Clearly
+	\item follows from b), c).
+
+	\item
+	\[ \Sigma_{k + 1} = \TNP(\Sigma_k) \stackrel{\text{by (*)}}{=} \TNP(\TP(\Sigma_k)) = \TNP(\Delta_{k + 1}) \]
+	Where (*) follows from
 	\[ \TNP(\Sigma_k) \subseteq \TNP(\TP(\Sigma_k)) \]
 	as we made class of query languages larger.
+
+	"$\supseteq$"\\
 	\[ L \in \TNP(\TP(\Sigma_k)) \Rightarrow \exists NTM\ M_n \exists E \in \TP(\Sigma_k): L = L(M_n, E) \]
 	Also
 	\[ E \in \TP(\Sigma_k) \iff \exists DTM\ M_d, \exists Q \in \Sigma_k: E = L(M_d, Q) \]
 	We want $L \in \TNP(\Sigma_k)$.
 	We proceed similarly as in $\TP(\TP) = \TP$ by simulating $M_n$ and every time it ask a query, use $M_d$ to decide.
 
-	% todo
-	g)
+	\item follows from f) by taking the complements
+\end{enumerate}
 
 \end{proof}
 
